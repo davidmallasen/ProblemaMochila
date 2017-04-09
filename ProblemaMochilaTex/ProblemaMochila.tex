@@ -1,16 +1,28 @@
 \documentclass[12pt, a4paper]{article}
 
-% Esto es para poder escribir acentos directamente:
+%Esto es para poder escribir acentos directamente:
 \usepackage[latin1]{inputenc}
-% Esto es para que el LaTeX sepa que el texto está en español:
+%Esto es para que el LaTeX sepa que el texto está en español:
 \usepackage[spanish]{babel}
 
-% Paquetes de la AMS:
+%Paquetes de la AMS:
 \usepackage{amsmath}
 \usepackage{amsfonts}
 
+%Definiciones
+\newcommand{\talque}{\text{ tal que }}
+
+\newcommand{\twopartdef}[4]{
+	\left\{
+	\begin{array}{ll}
+		#1 & \mbox{si } #2 \\
+		#3 & \mbox{si } #4 \\
+	\end{array}
+	\right.
+}
+
 %Cabecera --------------------------------------
-\title{Problema de la mochila}
+\title{El problema de la mochila}
 \author{David Mallasén Quintana}
 \date{}
 
@@ -28,11 +40,58 @@
 
 \section{Introducción}
 
+\subsection{Descripción del problema y variantes}
+
+El problema de la mochila es un problema de optimización combinatoria, es decir, que busca la mejor solución entre un conjunto finito de posibles soluciones. Supondremos que tenemos una mochila con un peso limitado y que queremos llenarla con una serie de objetos dados por su peso y su valor. El objetivo del problema será maximizar el valor total de los objetos que metamos en la mochila sin exceder su peso máximo.\\
+
+Es uno de los 21 problemas NP-completos de Richard Karp, lista elaborada en 1972 y perteneciente a su trabajo "Reducibility Among Combinatorial Problems". Esto surgió como profundización del trabajo de Stephen Cook, quien en 1971 había demostrado uno de los resultados más importantes y pioneros de la complejidad computacional: la NP-completitud del Problema de satisfacibilidad booleana (SAT). El descubrimiento de Karp de que todos estos importantes problemas eran NP-completos motivó el estudio de la NP-completitud y de la indagación en la famosa pregunta de si $P=NP$.
+
+\subsubsection{Definición formal del problema}
+Supongamos que tenemos $n$ objetos numerados del $1$ al $n$, cada uno con un peso $p_i > 0$ y un valor $v_i > 0$ para cada $i \in \{1 \dots n\}$. Tendremos también una mochila que soporta un peso máximo $M > 0$.\\
+
+Definimos la función $x_i \in \{0, 1\}$ que indicará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$.\\
+
+El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos todos. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
+
+Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la variante en que los objetos se pueden fraccionar. En este caso siempre obtendremos una solución óptima, lo demostraremos en \ref{sec:demOptVoraz}, en la que $\sum_{i=1}^{n} p_i x_i = M$.
+
+\subsection{Desarrollo de los casos de prueba}
+
+\section{Implementación de los algoritmos}
+
+\subsection{Método voraz} \label{sec:voraz}
+
+En este apartado implementaremos una solución voraz al problema de la mochila. En el caso del método voraz obtendremos una solución de forma muy eficiente ($O(n\log n)$). Sin embargo tendremos que imponer la restricción de que los objetos sean fraccionables para que podamos asegurar una solución óptima.
+
+\subsubsection{Descripción de la solución}
+
+Primero ordenaremos los objetos según su densidad $d_i = \frac{v_i}{p_i}$. A la hora de construir la solución iremos cogiendo los objetos enteros en orden decreciente de densidad mientras quepan. Finalmente, si sobra hueco, fraccionaremos el objeto de mayor densidad que nos quede para terminar de rellenar toda la mochila.
+
+\subsubsection{Demostración de optimalidad} \label{sec:demOptVoraz}
+
+Sea $X=(x_1,\dots,x_n)$ la solución construida por el algoritmo voraz como hemos indicado anteriormente. Como hemos supuesto al principio que $\sum_{i=1}^{n} p_i > M$, $\exists j \in \{1,\dots,n\} \talque x_j < 1$. Por la forma en la que construimos la solución sabemos que $0 \leq x_j < 1$ y $x_i = \twopartdef{1}{i < j}{0}{i > j}$. Supongamos que la solución $X$ no es óptima y procedamos mediante el método de reducción de diferencias.\\
+
+Comparamos con una solución óptima $Y = (y_1,\dots,y_n)$. %TODO
+
+\subsubsection{Código}
+
+\subsubsection{Análisis de tiempos}
+
+\subsection{Programación dinámica}
+
+\subsection{Ramificación y poda}
+
+\subsection{Algoritmo genético}
+
+\section{Comparación}
+
 % Bibliografía.
 %-------------------------------------------------------
 \begin{thebibliography}{9}
 
-\bibitem{Cd94} Autor, \emph{Título}, Revista/Editor, (año)
+%Transparencias de algoritmos voraces de clase	
+
+%\bibitem{Cd94} Autor, \emph{Título}, Revista/Editor, (año)
 
 \end{thebibliography}
 
