@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 
 struct Objeto {
     double peso;
@@ -61,11 +62,20 @@ int main() {
     std::vector<double> solucion(n);
     double valorSol;
 
+    auto t1 = std::chrono::steady_clock::now();
+
     mochilaVoraz(objetos, 100, solucion, valorSol);
+
+    auto t2 = std::chrono::steady_clock::now();
+    auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
+            t2 - t1);
 
     std::cout << "ValorSol: " << valorSol << '\n';
     for (int i = 0; i < n; ++i)
         std::cout << "Peso de " << i << ": " << solucion[i] << '\n';
+
+    std::cout << "El algoritmo ha tardado " << time_span.count() << " "
+            "segundos.\n";
 
     return 0;
 }
