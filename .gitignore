@@ -1,3 +1,7 @@
+*/cmake-build-debug/
+*/.idea/
+CMakeLists.txt
+
 ######################### GITIGNORE PARA TEX #############################
 
 ## Core latex/pdflatex auxiliary files:
