@@ -9,6 +9,24 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 
+%Para añadir código
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+
+\lstset{
+	language = C++,
+	frame = single,
+	basicstyle=\scriptsize,
+	commentstyle=\color{mygreen},
+	numbers=left,
+	numberstyle=\tiny\color{mygray},
+	keywordstyle=\color{blue},
+	morekeywords={std, vector, sort, greater, size_t}
+}
+
 %Definiciones
 \newcommand{\talque}{\text{ tal que }}
 
@@ -69,15 +87,39 @@ Primero ordenaremos los objetos según su densidad $d_i = \frac{v_i}{p_i}$. A la 
 
 \subsubsection{Demostración de optimalidad} \label{sec:demOptVoraz}
 
-Sea $X=(x_1,\dots,x_n)$ la solución construida por el algoritmo voraz como hemos indicado anteriormente. Como hemos supuesto al principio que $\sum_{i=1}^{n} p_i > M$, $\exists j \in \{1,\dots,n\} \talque x_j < 1$. Por la forma en la que construimos la solución sabemos que $0 \leq x_j < 1$ y $x_i = \twopartdef{1}{i < j}{0}{i > j}$. Supongamos que la solución $X$ no es óptima y procedamos mediante el método de reducción de diferencias.\\
+Sea $X=(x_1,\dots,x_n)$ la solución construida por el algoritmo voraz como hemos indicado anteriormente. Como hemos supuesto al principio que $\sum_{i=1}^{n} p_i > M$,  $\exists j \in \{1,\dots,n\} \talque x_j < 1$. Por la forma en la que construimos la solución sabemos que $0 \leq x_j < 1$ y $x_i = \twopartdef{1}{i < j}{0}{i > j}$. Supongamos que la solución $X$ no es óptima y procedamos mediante el método de reducción de diferencias. Comparamos con una solución óptima $Y = (y_1,\dots,y_n)$. \\
 
-Comparamos con una solución óptima $Y = (y_1,\dots,y_n)$. %TODO
+Sea $k = \min \{i:y_i \neq x_i\}$. Por como funciona el algoritmo se debe cumplir que $k \leq j$, veamos que $y_k < x_k$:
+\begin{itemize}
+	\item Si \underline{$k < j$}: $x_k = 1$ y, por tanto, $y_k < x_k$.
+	\item Si \underline{$k = j$}: $y_i = 1$ para $1 \leq i < k$ por lo que $y_k > x_k$ implicaría $\sum_{i=1}^{n} p_i y_i > M$, cosa que no puede suceder. Por como hemos elegido $k$, $y_k \neq x_k$, luego debe ser $y_k < x_k$.
+	\item Si \underline{$k > j$}: Por como hemos construido la solución voraz, $\sum_{i=1}^{n} p_i y_i > M$, luego este caso no se puede dar. 
+\end{itemize}
+
+Modificamos la solución óptima aumentando $y_k$ hasta que $y_k = x_k$ y decrementando los $y_{k+1},\dots,y_n$ de forma que el peso de la mochila siga siendo $M$. Obtenemos así $Z = (z_1,\dots,z_n)$ que cumplirá $z_i = x_i$ para $1\leq i \leq k$. También tendremos, por como hemos modificado $Y$ para conseguir $Z$, que: 
+\[\sum_{i=k+1}^{n} p_i(y_i - z_i) = p_k (z_k - y_k) \qquad (*)\]
+Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta ver que no hemos empeorado la situación, es decir, que $\sum_{i=1}^{n} v_i z_i \geq \sum_{i=1}^{n} v_i y_i$:
+
+\[
+\begin{split}
+	\sum_{i=1}^{n} v_i z_i &= \sum_{i=1}^{n} v_i y_i + v_k(z_k - y_k) - \sum_{i=k+1}^{n} v_i(y_i - z_i) = \\
+	& = \sum_{i=1}^{n} v_i y_i + \frac{v_k}{p_k}p_k(z_k - y_k) - \sum_{i=k+1}^{n} \frac{v_i}{p_i}p_i(y_i - z_i) \stackrel{\frac{v_k}{p_k} \geq \frac{v_i}{p_i} \implies -\frac{v_i}{p_i} \geq - \frac{v_k}{p_k}} \geq \\
+	& \geq \sum_{i=1}^{n} v_i y_i + (p_k(z_k - y_k) - \sum_{i=k+1}^{n} p_i(y_i - z_i)) \frac{v_k}{p_k} \overset{(*)}{=} \\
+	& = \sum_{i=1}^{n} v_i y_i
+\end{split}
+\]
 
 \subsubsection{Código}
+
+\lstinputlisting[firstline=29, lastline=70]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de tiempos}
 
 \subsection{Programación dinámica}
+
+\subsubsection{Código}
+
+\lstinputlisting[firstline=72, lastline=118]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsection{Ramificación y poda}
 
@@ -90,6 +132,8 @@ Comparamos con una solución óptima $Y = (y_1,\dots,y_n)$. %TODO
 \begin{thebibliography}{9}
 
 %Transparencias de algoritmos voraces de clase	
+
+%Wikipedia
 
 %\bibitem{Cd94} Autor, \emph{Título}, Revista/Editor, (año)
 
