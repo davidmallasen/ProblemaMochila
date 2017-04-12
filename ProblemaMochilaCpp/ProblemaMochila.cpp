@@ -40,10 +40,11 @@ bool operator<(Nodo const &n1, Nodo const &n2) {
 
 /**
  * Resuelve el problema de la mochila con objetos fraccionables mediante un
- * algoritmo voraz.
+ * algoritmo voraz. Presuponemos que la suma de los pesos de todos los
+ * objetos > M.
  *
- * Coste en tiempo: O(n logn), n = numero de objetos
- * Coste en espacio: O(n)
+ * Coste en tiempo: O(n logn), n = numero de objetos.
+ * Coste en espacio: O(n).
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
  * @param M Peso maximo que soporta la mochila.
@@ -73,7 +74,6 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
     }
 
     //Si aun no se ha llenado la mochila completamos partiendo el objeto
-    //@TODO comprobar que quedan objetos por mirar
     if (M > 0) {
         solucion[d[i].obj] = M / objetos[d[i].obj].peso;
         valorSol += objetos[d[i].obj].valor * solucion[d[i].obj];
@@ -85,7 +85,7 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
  * programacion dinamica. El peso de cada objeto y el peso maximo de la
  * mochila deben ser enteros positivos.
  *
- * Coste: O(nM) en tiempo y espacio, n = numero de objetos, M peso que
+ * Coste: O(nM) en tiempo y espacio, n = numero de objetos, M = peso que
  * soporta la mochila.
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
@@ -102,40 +102,35 @@ void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int M,
             (M + 1, 0));
 
     //Rellenamos la tabla
-    //objetos[i - 1] en lugar de i ya que mochila va de [1..n] y objetos va de
-    // [0, n)
+    //objetos[i - 1] ya que mochila va de [1..n] y objetos va de [0, n)
     for (size_t i = 1; i <= n; ++i) {
         for (int j = 1; j <= M; ++j) {
             if (objetos[i - 1].peso > j)    //Si no cabe no lo cogemos
                 mochila[i][j] = mochila[i - 1][j];
             else    //Si cabe tomamos el maximo entre cogerlo y no cogerlo
-                mochila[i][j] = std::max(mochila[i - 1][j],
-                                         mochila[i - 1][j -
-                                                        objetos[i - 1].peso] +
-                                         objetos[i - 1].valor);
+                mochila[i][j] =
+                        std::max(mochila[i - 1][j],
+                                 mochila[i - 1][j - objetos[i - 1].peso] +
+                                 objetos[i - 1].valor);
         }
     }
     valorSol = mochila[n][M];
 
     //Calculamos que objetos hemos cogido
-    int resto = M;
     for (size_t i = n; i >= 1; --i) {
-        if (mochila[i][resto] ==
-            mochila[i - 1][resto])    //No cogido el objeto i
+        if (mochila[i][M] == mochila[i - 1][M]) //No cogido el objeto i
             solucion[i - 1] = false;
         else {    //Cogido el objeto i
             solucion[i - 1] = true;
-            resto -= objetos[i - 1].peso;
+            M -= objetos[i - 1].peso;
         }
     }
 }
 
 /**
  * Calcula las estimaciones optimista y pesimista segun el estado en el que
- * nos encontremos.
- *
- * Presupone que los objetos estan ordenados en orden decreciente de su
- * densidad (valor/peso).
+ * nos encontremos. Presupone que los objetos estan ordenados en orden
+ * decreciente de su densidad (valor/peso).
  *
  * Coste: O(n-k), n = numero de objetos, k = indice por el que vamos.
  * Coste espacio: O(1).
@@ -180,9 +175,7 @@ const &d, double M, int k, double pesoAc, double valorAc, double &opt,
  * Resuelve el problema de la mochila 0-1 mediante un algoritmo de
  * ramifiacion y poda.
  *
- * Coste: @TODO
- *
- * @TODO Se presupone que los objetos estan ordenados segun su densidad >
+ * Coste: O(n 2^n), n = numero de objetos.
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
  * @param M Peso maximo que soporta la mochila.
@@ -207,7 +200,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
     std::sort(d.begin(), d.end(), std::greater<Densidad>());
 
     //Generamos la raiz
-    Y.k = -1;   //Empezamos en -1 para que vaya de [0, n) @TODO
+    Y.k = -1;   //Empezamos en -1 para que vaya de [0, n)
     Y.pesoAc = 0;
     Y.valorAc = 0;
     Y.sol.resize(n, false);
@@ -255,7 +248,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
 
 int main() {
     size_t n = 5;
-    std::vector<ObjetoInt> objetos(n);
+    std::vector<ObjetoReal> objetos(n);
     for (int i = 0; i < n; ++i)
         objetos[i].peso = (i + 1) * 10;
 
@@ -263,14 +256,14 @@ int main() {
     objetos[1].valor = 30;
     objetos[2].valor = 66;
     objetos[3].valor = 40;
-    objetos[4].valor = 60;
+    objetos[4].valor = 70;
 
     std::vector<bool> solucion(n);
     double valorSol;
 
     auto t1 = std::chrono::steady_clock::now();
 
-    mochilaProgDin(objetos, 100, solucion, valorSol);
+    mochilaRamPoda(objetos, 100, solucion, valorSol);
 
     auto t2 = std::chrono::steady_clock::now();
     auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
