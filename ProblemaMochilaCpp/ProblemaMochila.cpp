@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <chrono>
 #include <queue>
+#include <stdlib.h>
+#include <time.h>
 
-//Estructuras auxiliares -------------------------------------------------------
+//Estructuras auxiliares comunes------------------------------------------------
 
 struct ObjetoReal {
     double peso;
@@ -25,18 +27,7 @@ bool operator>(Densidad const &d1, Densidad const &d2) {
     return d1.densidad > d2.densidad;
 }
 
-struct Nodo {
-    std::vector<bool> sol;
-    int k;
-    double pesoAc, valorAc;
-    double valorOpt;    //Prioridad
-};
-
-bool operator<(Nodo const &n1, Nodo const &n2) {
-    return n1.valorOpt < n2.valorOpt;
-}
-
-//Algoritmos -------------------------------------------------------------------
+//Voraz-------------------------------------------------------------------------
 
 /**
  * Resuelve el problema de la mochila con objetos fraccionables mediante un
@@ -79,6 +70,8 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
         valorSol += objetos[d[i].obj].valor * solucion[d[i].obj];
     }
 }
+
+//Programacion dinamica---------------------------------------------------------
 
 /**
  * Resuelve el problema de la mochila 0-1 mediante un algoritmo de
@@ -125,6 +118,19 @@ void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int M,
             M -= objetos[i - 1].peso;
         }
     }
+}
+
+//Ramificacion y poda-----------------------------------------------------------
+
+struct Nodo {
+    std::vector<bool> sol;
+    int k;
+    double pesoAc, valorAc;
+    double valorOpt;    //Prioridad
+};
+
+bool operator<(Nodo const &n1, Nodo const &n2) {
+    return n1.valorOpt < n2.valorOpt;
 }
 
 /**
@@ -244,9 +250,110 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
     }
 }
 
-//Main -------------------------------------------------------------------------
+//Algoritmo genetico------------------------------------------------------------
+
+struct Cromosoma {
+    std::vector<bool> crom;
+    double valor;
+};
+
+/**
+ * Calcula la aptitud de un cromosoma. Tomamos la aptitud como el valor de
+ * los objetos que tiene. Si sobrepasa el limite de peso se quitan objetos
+ * aleatoriamente hasta que el cromosoma sea valido.
+ *
+ * Coste: O(n), n = numero de objetos.
+ *
+ * @param c Cromosoma al cual le queremos calcular la aptitud.
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ */
+void funcAptitud(Cromosoma &c, std::vector<ObjetoReal> const &objetos,
+                 const double M) {
+    double pesoAc, valorAc;
+    pesoAc = valorAc = 0;
+
+    //Calculamos lo que tenemos en la mochila
+    for (int i = 0; i < c.crom.size(); ++i) {
+        if (c.crom[i]) {
+            pesoAc += objetos[i].peso;
+            valorAc += objetos[i].valor;
+        }
+    }
+
+    //Si no cabe en la mochila, vamos descartando aleatoriamene hasta que quepa
+    size_t r = rand() % c.crom.size();
+    while (pesoAc > M) {
+        if (c.crom[r]) {
+            c.crom[r] = false;
+            pesoAc -= objetos[r].peso;
+            valorAc -= objetos[r].valor;
+        }
+        r = (r + 1) % c.crom.size();
+    }
+
+    c.valor = valorAc;
+}
+
+/**
+ * Inicializa la poblacion de forma aleatoria y calcula la aptitud de cada
+ * cromosoma.
+ *
+ * Coste: O(nm), n = numero de objetos, m = tamanyo de la poblacion.
+ *
+ * @param poblacion Conjunto de cromosomas.
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ */
+void iniPoblacion(std::vector<Cromosoma> &poblacion, std::vector<ObjetoReal>
+const &objetos, const double M) {
+    for (Cromosoma c : poblacion) {
+        for (int i = 0; i < c.crom.size(); ++i)
+            c.crom[i] = rand() % 2;
+
+        funcAptitud(c, objetos, M);
+    }
+}
+
+/**
+ * Suponemos que seleccionados ya esta creado con el mismo tamanyo que poblacion
+ * @TODO
+ * @param poblacion
+ * @param seleccionados
+ */
+void funcSeleccion(std::vector<Cromosoma> const &poblacion,
+                   std::vector<Cromosoma> const &seleccionados) {
+    //Calculamos la suma de todos los valores
+    double valorAc = 0;
+    for (Cromosoma c : poblacion) {
+        valorAc += c.valor;
+    }
+
+    //Elegimos el elemento cuyo valor acumulado supere un numero aleatorio
+    // entre 0 y la suma de todos los valores
+    for (int i = 0; i < poblacion.size(); ++i) {
+        double r = valorAc * ((double) rand() / (double) RAND_MAX);
+
+        double valorAux = 0;
+        int j;
+        for (j = 0; valorAux < r; ++j)
+            valorAux += poblacion[j].valor;
+
+        seleccionados[i] = poblacion[j];
+    }
+}
+
+void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
+                     std::vector<bool> &solMejor, double &valorMejor) {
+
+}
+
+//Main--------------------------------------------------------------------------
 
 int main() {
+
+    srand(time(NULL));
+
     size_t n = 5;
     std::vector<ObjetoReal> objetos(n);
     for (int i = 0; i < n; ++i)
