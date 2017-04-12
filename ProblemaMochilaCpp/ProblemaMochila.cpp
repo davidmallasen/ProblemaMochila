@@ -18,7 +18,7 @@ struct ObjetoInt {
 
 struct Densidad {
     double densidad;
-    size_t objeto;
+    size_t obj;
 };
 
 bool operator>(Densidad const &d1, Densidad const &d2) {
@@ -45,14 +45,12 @@ bool operator<(Nodo const &n1, Nodo const &n2) {
  * Coste en tiempo: O(n logn), n = numero de objetos
  * Coste en espacio: O(n)
  *
- * @todo CAMBIAR COSTE EN ESPACIO A O(1) REDEFINIENDO < DE OBJETOREAL!!!!!!!!!!!
- *
  * @param objetos Conjunto de objetos que tenemos disponibles.
- * @param pesoMochila Peso maximo que soporta la mochila.
+ * @param M Peso maximo que soporta la mochila.
  * @param solucion Indica cuanto se debe coger de cada objeto [0, 1].
  * @param valorSol Valor de la mochila con los objetos dados por solucion.
  */
-void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double pesoMochila,
+void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
                   std::vector<double> &solucion, double &valorSol) {
     size_t n = objetos.size();
 
@@ -60,7 +58,7 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double pesoMochila,
     std::vector<Densidad> d(n);
     for (size_t i = 0; i < n; ++i) {
         d[i].densidad = objetos[i].valor / objetos[i].peso;
-        d[i].objeto = i;    //Para saber a que objeto corresponde
+        d[i].obj = i;    //Para saber a que objeto corresponde
     }
 
     //Ordenamos de mayor a menor las densidades
@@ -68,17 +66,17 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double pesoMochila,
 
     //Cogemos los objetos mientras quepan enteros
     size_t i;
-    for (i = 0; i < n && pesoMochila - objetos[d[i].objeto].peso >= 0; ++i) {
-        valorSol += objetos[d[i].objeto].valor;
-        pesoMochila -= objetos[d[i].objeto].peso;
-        solucion[d[i].objeto] = 1;
+    for (i = 0; i < n && M - objetos[d[i].obj].peso >= 0; ++i) {
+        valorSol += objetos[d[i].obj].valor;
+        M -= objetos[d[i].obj].peso;
+        solucion[d[i].obj] = 1;
     }
 
     //Si aun no se ha llenado la mochila completamos partiendo el objeto
     //@TODO comprobar que quedan objetos por mirar
-    if (pesoMochila > 0) {
-        solucion[d[i].objeto] = pesoMochila / objetos[d[i].objeto].peso;
-        valorSol += objetos[d[i].objeto].valor * solucion[d[i].objeto];
+    if (M > 0) {
+        solucion[d[i].obj] = M / objetos[d[i].obj].peso;
+        valorSol += objetos[d[i].obj].valor * solucion[d[i].obj];
     }
 }
 
@@ -87,26 +85,27 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double pesoMochila,
  * programacion dinamica. El peso de cada objeto y el peso maximo de la
  * mochila deben ser enteros positivos.
  *
- * Coste: O(nM) en tiempo y espacio, n = numero de objetos, M = pesoMochila
+ * Coste: O(nM) en tiempo y espacio, n = numero de objetos, M peso que
+ * soporta la mochila.
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
- * @param pesoMochila Peso maximo que soporta la mochila.
+ * @param M Peso maximo que soporta la mochila.
  * @param solucion Indica si se coge el objeto o no.
  * @param valorSol Valor de la mochila con los objetos dados por solucion.
  */
-void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int pesoMochila,
+void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int M,
                     std::vector<bool> &solucion, double &valorSol) {
     size_t n = objetos.size();
 
     //Creamos e inicializamos a 0 la tabla con la que resolvemos el problema
     std::vector<std::vector<double>> mochila(n + 1, std::vector<double>
-            (pesoMochila + 1, 0));
+            (M + 1, 0));
 
     //Rellenamos la tabla
     //objetos[i - 1] en lugar de i ya que mochila va de [1..n] y objetos va de
     // [0, n)
     for (size_t i = 1; i <= n; ++i) {
-        for (int j = 1; j <= pesoMochila; ++j) {
+        for (int j = 1; j <= M; ++j) {
             if (objetos[i - 1].peso > j)    //Si no cabe no lo cogemos
                 mochila[i][j] = mochila[i - 1][j];
             else    //Si cabe tomamos el maximo entre cogerlo y no cogerlo
@@ -116,10 +115,10 @@ void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int pesoMochila,
                                          objetos[i - 1].valor);
         }
     }
-    valorSol = mochila[n][pesoMochila];
+    valorSol = mochila[n][M];
 
     //Calculamos que objetos hemos cogido
-    int resto = pesoMochila;
+    int resto = M;
     for (size_t i = n; i >= 1; --i) {
         if (mochila[i][resto] ==
             mochila[i - 1][resto])    //No cogido el objeto i
@@ -132,43 +131,47 @@ void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int pesoMochila,
 }
 
 /**
- * Calcula las estimaciones optimista y pesimista
+ * Calcula las estimaciones optimista y pesimista segun el estado en el que
+ * nos encontremos.
  *
- * Coste: @TODO
+ * Presupone que los objetos estan ordenados en orden decreciente de su
+ * densidad (valor/peso).
  *
- * @param objetos
- * @param pesoMochila
- * @param k
- * @param pesoAc
- * @param valorAc
- * @param opt
- * @param pes
+ * Coste: O(n-k), n = numero de objetos, k = indice por el que vamos.
+ * Coste espacio: O(1).
+ *
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param d Vector ordenado en orden creciente de las densidades de los objetos.
+ * @param M Peso maximo que soporta la mochila.
+ * @param k Indice del objeto por el que vamos.
+ * @param pesoAc Peso acumulado en la mochila.
+ * @param valorAc Valor acumulado en la mochila.
+ * @param opt Cota optimista.
+ * @param pes Cota pesimista.
  */
-void calculoEst(std::vector<ObjetoReal> const &objetos, double pesoMochila,
-                int k, double pesoAc, double valorAc, double &opt,
+void calculoEst(std::vector<ObjetoReal> const &objetos, std::vector<Densidad>
+const &d, double M, int k, double pesoAc, double valorAc, double &opt,
                 double &pes) {
-    double hueco = pesoMochila - pesoAc;
-    int n = objetos.size();
+    double hueco = M - pesoAc;
+    size_t n = objetos.size();
     pes = opt = valorAc;
     k++;
-    while (k < n &&
-           objetos[k].peso <= hueco) {  //Podemos coger el objeto k entero
-        hueco -= objetos[k].peso;
-        opt += objetos[k].valor;
-        pes += objetos[k].valor;
-        k++;  //@TODO cambiar a for??
+    for (k; k < n && objetos[d[k].obj].peso <= hueco; ++k) {
+        //Cogemos el objeto k entero
+        hueco -= objetos[d[k].obj].peso;
+        opt += objetos[d[k].obj].valor;
+        pes += objetos[d[k].obj].valor;
     }
-    if(k < n) { //Quedan objetos por probar y objetos[k].peso > hueco
+    if (k < n) { //Quedan objetos por probar y objetos[k].peso > hueco
         //Fraccionamos el objeto k (solucion voraz)
-        opt += (hueco / objetos[k].peso) * objetos[k].valor;
+        opt += (hueco / objetos[d[k].obj].peso) * objetos[d[k].obj].valor;
         //Extendemos a una solucion en la version 0-1
         k++;
-        while(k < n && hueco > 0) {
-            if(objetos[k].peso <= hueco) {
-                hueco -=  objetos[k].peso;
-                pes += objetos[k].valor;
+        for (k; k < n && hueco > 0; ++k) {
+            if (objetos[d[k].obj].peso <= hueco) {
+                hueco -= objetos[d[k].obj].peso;
+                pes += objetos[d[k].obj].valor;
             }
-            k++; //@TODO cambiar a for
         }
     }
 }
@@ -179,23 +182,36 @@ void calculoEst(std::vector<ObjetoReal> const &objetos, double pesoMochila,
  *
  * Coste: @TODO
  *
- * @TODO Anyadir los comentarios de las transparencias
  * @TODO Se presupone que los objetos estan ordenados segun su densidad >
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
- * @param pesoMochila Peso maximo que soporta la mochila.
+ * @param M Peso maximo que soporta la mochila.
  * @param solMejor Indica si se coge el objeto o no.
  * @param valorMejor Valor de la mochila con los objetos dados por solMejor.
  */
-void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double pesoMochila,
+void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
                     std::vector<bool> &solMejor, double &valorMejor) {
     Nodo X, Y;
     std::priority_queue<Nodo> C;
     size_t n = objetos.size();
+    double pes;
+
+    //Calculamos las densidades de cada objeto
+    std::vector<Densidad> d(n);
+    for (size_t i = 0; i < n; ++i) {
+        d[i].densidad = objetos[i].valor / objetos[i].peso;
+        d[i].obj = i;    //Para saber a que objeto corresponde
+    }
+
+    //Ordenamos de mayor a menor las densidades
+    std::sort(d.begin(), d.end(), std::greater<Densidad>());
+
+    //Generamos la raiz
     Y.k = -1;   //Empezamos en -1 para que vaya de [0, n) @TODO
     Y.pesoAc = 0;
     Y.valorAc = 0;
-    calculoEst();
+    Y.sol.resize(n, false);
+    calculoEst(objetos, d, M, Y.k, Y.pesoAc, Y.valorAc, Y.valorOpt, valorMejor);
 
     C.push(Y);
     while (!C.empty() && C.top().valorOpt >= valorMejor) {
@@ -204,10 +220,11 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double pesoMochila,
         X.k = Y.k + 1;
         X.sol = Y.sol;
 
-        if (Y.pesoAc + objetos[X.k].peso <= pesoMochila) {
-            X.sol[X.k] = true;
-            X.pesoAc = Y.pesoAc + objetos[X.k].peso;
-            X.valorAc = Y.valorAc + objetos[X.k].valor;
+        //Si cabe probamos a meter el objeto en la mochila
+        if (Y.pesoAc + objetos[d[X.k].obj].peso <= M) {
+            X.sol[d[X.k].obj] = true;
+            X.pesoAc = Y.pesoAc + objetos[d[X.k].obj].peso;
+            X.valorAc = Y.valorAc + objetos[d[X.k].obj].valor;
             X.valorOpt = Y.valorOpt;
             if (X.k == n) {
                 solMejor = X.sol;
@@ -217,9 +234,10 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double pesoMochila,
             }
         }
 
-        calculoEst();
+        //Probamos a no meter el objeto en la mochila
+        calculoEst(objetos, d, M, X.k, Y.pesoAc, Y.valorAc, X.valorOpt, pes);
         if (X.valorOpt >= valorMejor) {
-            X.sol[X.k] = false;
+            X.sol[d[X.k].obj] = false;
             X.pesoAc = Y.pesoAc;
             X.valorAc = Y.valorAc;
             if (X.k == n) {
@@ -227,7 +245,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double pesoMochila,
                 valorMejor = X.valorAc;
             } else {
                 C.push(X);
-                valorMejor = std::max(valorMejor, 0/*pes */);
+                valorMejor = std::max(valorMejor, pes);
             }
         }
     }
