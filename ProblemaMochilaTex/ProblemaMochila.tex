@@ -113,9 +113,31 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 
 \lstinputlisting[firstline=29, lastline=70]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-\subsubsection{Análisis de tiempos}
+\subsubsection{Análisis de costes}
+
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log(n))$, donde $n$ es el numero de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
 
 \subsection{Programación dinámica}
+
+\subsubsection{Descripción de la solución}
+
+Veamos la forma de abordar el problema desde el punto de vista de la programación dinámica. Primero definimos la función:
+\begin{description}
+\item \textit{mochila(i, j)} = máximo valor que podemos poner en la mochila de peso máximo j considerando los objetos del 1 al i.
+\end{description}
+
+Tomamos como casos base:
+\[
+\begin{split}
+mochila(0, j) &= 0 \qquad 0 \leq j \leq M\\
+mochila(i, 0) &= 0 \qquad 0 \leq i \leq n\\
+\end{split}
+\]
+Y como función recursiva:
+\[
+mochila(i, j) = \twopartdef{mochila(i-1, j)}{p_i > j}{\max \{mochila(i-1, j), mochila(i-1, j-p_i)+v_i\}}{p_i \leq j}
+\]
+Así pues vamos probando cada objeto y, si no cabe, no lo cogemos pero si cabe tomamos el máximo entre cogerlo y no cogerlo.%TODO
 
 \subsubsection{Código}
 
