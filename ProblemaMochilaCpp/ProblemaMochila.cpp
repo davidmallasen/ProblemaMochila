@@ -334,7 +334,7 @@ void iniPoblacion(std::vector<Cromosoma> &poblacion,
 /*
  * Suponemos que seleccionados ya esta creado con el mismo tamanyo que poblacion
  * Suponemos que los cromosomas ya tienen su valor calculado
- * Coste: n², reducir a n logn ordenando y luego escogiendo segun
+ * Coste: n^2, reducir a n logn ordenando y luego escogiendo segun
  * cierta probabilidad
  * @param poblacion
  * @param seleccionados
