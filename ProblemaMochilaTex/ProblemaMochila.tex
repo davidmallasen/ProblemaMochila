@@ -115,9 +115,11 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log(n))$, donde $n$ es el numero de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log(n))$, donde $n$ es el número de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
 
 \subsection{Programación dinámica}
+
+TODO--------------------------------
 
 \subsubsection{Descripción de la solución}
 
@@ -137,15 +139,39 @@ Y como función recursiva:
 \[
 mochila(i, j) = \twopartdef{mochila(i-1, j)}{p_i > j}{\max \{mochila(i-1, j), mochila(i-1, j-p_i)+v_i\}}{p_i \leq j}
 \]
-Así pues vamos probando cada objeto y, si no cabe, no lo cogemos pero si cabe tomamos el máximo entre cogerlo y no cogerlo.%TODO
+Así pues vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tomamos el máximo entre cogerlo y no cogerlo. Para ello recorremos la tabla por filas de forma ascendente (cada vez el intervalo $[0, i]$ es más grande) y cada fila la recorremos también de forma ascendente (cada vez la mochila soporta un peso mayor $j$ hasta llegar a $M$). De esta forma el valor que buscamos lo tendremos en la posición $(n, M)$.\\
+
+Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución haremos el proceso inverso. Recorreremos las filas de forma descendente y para cada objeto comprobaremos si lo hemos cogido o no.
 
 \subsubsection{Código}
 
 \lstinputlisting[firstline=72, lastline=118]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
+\subsubsection{Análisis de costes}
+
+Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde n es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico en realidad tenemos un coste exponencial con respecto a los datos de entrada ya que $M$ (lineal) lo es con respecto al número que representa (?). TODO (PREGUNTAR!!!!!!!!!!!!!!!!!!!!!!!)
+
 \subsection{Ramificación y poda}
+TODO-------------------------------
+\subsubsection{Descripción de la solución}
+
+
+
+\subsubsection{Código}
+
+\lstinputlisting[firstline=122, lastline=247]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+\subsubsection{Análisis de costes}
 
 \subsection{Algoritmo genético}
+TODO--------------------------------
+\subsubsection{Descripción de la solución}
+
+\subsubsection{Código}
+
+\lstinputlisting[firstline=251, lastline=573]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+\subsubsection{Análisis de costes}
 
 \section{Comparación}
 
