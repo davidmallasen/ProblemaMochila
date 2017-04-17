@@ -69,7 +69,7 @@ Supongamos que tenemos $n$ objetos numerados del $1$ al $n$, cada uno con un pes
 
 Definimos la función $x_i \in \{0, 1\}$ que indicará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$.\\
 
-El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos todos. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
+El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos s. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
 
 Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la variante en que los objetos se pueden fraccionar. En este caso siempre obtendremos una solución óptima, lo demostraremos en \ref{sec:demOptVoraz}, en la que $\sum_{i=1}^{n} p_i x_i = M$.
 
@@ -143,25 +143,40 @@ Así pues vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tom
 
 Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución haremos el proceso inverso. Recorreremos las filas de forma descendente y para cada objeto comprobaremos si lo hemos cogido o no.
 
+TODO (AÑADIR IMAGEN DE LA TABLA!!!!!!!!!!!!!!!)
+
 \subsubsection{Código}
 
 \lstinputlisting[firstline=72, lastline=118]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
-Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde n es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico en realidad tenemos un coste exponencial con respecto a los datos de entrada ya que $M$ (lineal) lo es con respecto al número que representa (?). TODO (PREGUNTAR!!!!!!!!!!!!!!!!!!!!!!!)
+Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico en realidad tenemos un coste exponencial con respecto a los datos de entrada ya que $M$ (lineal) lo es con respecto al número que representa (?). TODO (PREGUNTAR!!!!!!!!!!!!!!!!!!!!!!!)
 
 \subsection{Ramificación y poda}
 TODO-------------------------------
 \subsubsection{Descripción de la solución}
 
+TODO (AÑADIR IMAGEN DEL ESQUEMA DEL ARBOL!!!!!!!!!!!!!!!!!!!!!!!!!)
 
+A la hora de abordar el problema desde el punto de vista de la ramificación y poda seguiremos el esquema optimista/pesimista. La cola de prioridad donde iremos introduciendo los nodos será de máximos y tomaremos como prioridad el valor óptimo que calculemos. Así, la estructura de cada nodo será la siguiente: 
+
+\lstinputlisting[firstline=122, lastline=132]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+Para el nodo $X$ se cumplirá: \[valorOpt(X) \geq valorFinal(X) \geq valorPes(X)\]
+donde $valorFinal(X)$ será el valor que tendrá la mochila en la mejor solución alcanzable desde $X$. Además para cualquier solución $Y$ a la que podamos llegar desde $X$ se cumple que: \[valorOpt(X) \geq valorFinal(X) \geq valor(Y)\]
+
+A la hora de calcular $valorOpt(X)$, como el problema es de maximización, tendremos que calcular una cota superior de la mejor solución alcanzable. Para ello utilizaremos el algoritmo voraz que resuelve el problema cuando los objetos se pueden partir. Como esa solución es óptima y tiene menos restricciones que la solución 0-1, no puede haber ninguna solución sin fraccionar objetos que sea mejor.\\
+
+Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochila todos los objetos que se pueda sobre los que todavía no hayamos decidido. Para ello los tomaremos en el orden del algoritmo voraz.
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=122, lastline=247]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=133, lastline=247]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
+
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad. Luego el coste en memoria es también de $O(n2^n)$.
 
 \subsection{Algoritmo genético}
 TODO--------------------------------
