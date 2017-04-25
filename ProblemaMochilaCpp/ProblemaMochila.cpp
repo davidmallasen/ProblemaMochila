@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <queue>
+#include <cmath>
 
 //Estructuras auxiliares comunes------------------------------------------------
 

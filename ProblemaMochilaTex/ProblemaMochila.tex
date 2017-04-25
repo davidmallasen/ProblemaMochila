@@ -119,7 +119,7 @@ Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al ti
 
 \subsection{Programación dinámica}
 
-TODO--------------------------------
+En este apartado implementaremos un algoritmo de programación dinámica para el problema de la mochila en su versión 0-1. Obtendremos una solución exponencial con respecto al tamaño de los datos de entrada.
 
 \subsubsection{Descripción de la solución}
 
@@ -151,10 +151,12 @@ TODO (AÑADIR IMAGEN DE LA TABLA!!!!!!!!!!!!!!!)
 
 \subsubsection{Análisis de costes}
 
-Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico en realidad tenemos un coste exponencial con respecto a los datos de entrada ya que $M$ (lineal) lo es con respecto al número que representa (?). TODO (PREGUNTAR!!!!!!!!!!!!!!!!!!!!!!!)
+Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico, en realidad tenemos un coste exponencial con respecto al tamaño de los datos de entrada. Esto se debe a que $M$ es un número que representaremos en una cierta base $d$ y esta representación, $\log_d(M)$, es exponencial frente a $M$.
 
 \subsection{Ramificación y poda}
-TODO-------------------------------
+
+En este apartado implementaremos un algoritmo de ramificación y poda para resolver el problema de la mochila en la versión 0-1. Al igual que en programación dinámica, obtendremos un coste exponencial ($O(n2^n)$).
+
 \subsubsection{Descripción de la solución}
 
 TODO (AÑADIR IMAGEN DEL ESQUEMA DEL ARBOL!!!!!!!!!!!!!!!!!!!!!!!!!)
@@ -179,8 +181,30 @@ Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochi
 Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad. Luego el coste en memoria es también de $O(n2^n)$.
 
 \subsection{Algoritmo genético}
-TODO--------------------------------
+
+En este apartado implementaremos un algoritmo genético para resolver el problema de la mochila 0-1. Al tratarse de un algoritmo heurístico no se asegura una solución óptima aunque generalmente obtendremos una buena solución en un tiempo razonable.
+
 \subsubsection{Descripción de la solución}
+
+Veamos las estructuras y las funciones que hemos tomado a la hora de implementar el algoritmo genético. Representaremos cada solución como un cromosoma que contendrá el vector de soluciones y su valor asociado. Como estamos tratando de maximizar el valor de la mochila, un cromosoma será mejor que otro si su valor es mayor. Más adelante necesitaremos también ordenar toda la población y lo haremos mediante un vector auxiliar de índices así que implementamos también una estructura comparadora.
+
+TODO AÑADIR CROMOSOMA, EL MENOR DE CROMOSOMA Y INDCOMPVALOR
+
+A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de los objetos que tiene. Como tenemos que tener en cuenta la restricción de que el total de los pesos de la mochila no puede superar el peso máximo $M$, será aquí donde impongamos esto. Si una solución de las que hemos obtenido al inicio o después de un cruce o mutación supera en peso a $M$, iremos quitando objetos de manera aleatoria hasta que cumplamos dicha condición. Para inicializar la población lo haremos de manera aleatoria.
+
+TODO AÑADIR APTITUD E INICIALIZACION
+
+Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.
+
+De esta forma primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar un cromosoma más de una vez.
+
+TODO AÑADIR SELECCION
+
+Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información a partir de dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria de 1 a 3 elementos (si antes un objeto se cogía ahora no y viceversa).
+
+TODO AÑADIR CRUCE Y MUTACIÓN 
+
+TODO...
 
 \subsubsection{Código}
 
@@ -197,6 +221,10 @@ TODO--------------------------------
 %Transparencias de algoritmos voraces de clase	
 
 %Wikipedia
+
+%Trabajo del primer cuatri
+
+% Pagina implementacion genetica
 
 %\bibitem{Cd94} Autor, \emph{Título}, Revista/Editor, (año)
 
