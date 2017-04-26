@@ -323,12 +323,12 @@ void funcAptitud(Cromosoma &c, std::vector<ObjetoReal> const &objetos,
  * Coste: O(mn), n = numero de objetos, m = tamanyo de la poblacion.
  *
  * @param poblacion Conjunto de cromosomas.
- * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param nObjetos Numero de objetos que tenemos disponibles.
  */
 void iniPoblacion(std::vector<Cromosoma> &poblacion,
-                  std::vector<ObjetoReal> const &objetos) {
+                  size_t nObjetos) {
     for (Cromosoma &c : poblacion)
-        for (int i = 0; i < objetos.size(); ++i)
+        for (int i = 0; i < nObjetos; ++i)
             c.crom.push_back(rand() % 2);
 }
 
@@ -557,7 +557,7 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
     for (Cromosoma &c : seleccionados)
         c.crom.resize(n);
 
-    iniPoblacion(poblacion, objetos);
+    iniPoblacion(poblacion, n);
     for (Cromosoma &c : poblacion)
         funcAptitud(c, objetos, M);
     calcMejores(poblacion, ultMedias, ultMejores, solMejor, valorMejor);
