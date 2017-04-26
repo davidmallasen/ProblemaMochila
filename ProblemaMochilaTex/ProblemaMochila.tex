@@ -9,6 +9,13 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 
+%Para añadir imagenes
+\usepackage{graphicx}
+\graphicspath{ {imagenes/} }
+
+%Hipervinculos
+\usepackage{hyperref}
+
 %Para añadir código
 \usepackage{listings}
 \usepackage{color}
@@ -60,26 +67,28 @@
 
 \subsection{Descripción del problema y variantes}
 
-El problema de la mochila es un problema de optimización combinatoria, es decir, que busca la mejor solución entre un conjunto finito de posibles soluciones. Supondremos que tenemos una mochila con un peso limitado y que queremos llenarla con una serie de objetos dados por su peso y su valor. El objetivo del problema será maximizar el valor total de los objetos que metamos en la mochila sin exceder su peso máximo.\\
+El problema de la mochila es un problema de optimización combinatoria, es decir, que busca la mejor solución entre un conjunto finito de posibles soluciones. Supondremos que tenemos una mochila con un peso limitado y que queremos llenarla con una serie de objetos dados por su peso y su valor. El objetivo del problema será maximizar el valor total de los objetos que metamos en la mochila sin exceder el peso máximo.\\
 
-Es uno de los 21 problemas NP-completos de Richard Karp, lista elaborada en 1972 y perteneciente a su trabajo "Reducibility Among Combinatorial Problems". Esto surgió como profundización del trabajo de Stephen Cook, quien en 1971 había demostrado uno de los resultados más importantes y pioneros de la complejidad computacional: la NP-completitud del Problema de satisfacibilidad booleana (SAT). El descubrimiento de Karp de que todos estos importantes problemas eran NP-completos motivó el estudio de la NP-completitud y de la indagación en la famosa pregunta de si $P=NP$.
+El problema de la mochila es uno de los 21 problemas NP-completos de Richard Karp, lista elaborada en 1972 y perteneciente a su trabajo \textit{Reducibility Among Combinatorial Problems}. Esto surgió como profundización del trabajo de Stephen Cook, quien en 1971 había demostrado uno de los resultados más importantes y pioneros de la complejidad computacional: la NP-completitud del Problema de satisfacibilidad booleana (SAT). El descubrimiento de Karp de que todos estos importantes problemas eran NP-completos motivó el estudio de la NP-completitud y de la indagación en la famosa pregunta de si $P=NP$.
 
 \subsubsection{Definición formal del problema}
-Supongamos que tenemos $n$ objetos numerados del $1$ al $n$, cada uno con un peso $p_i > 0$ y un valor $v_i > 0$ para cada $i \in \{1 \dots n\}$. Tendremos también una mochila que soporta un peso máximo $M > 0$.\\
+Supongamos que tenemos $n$ objetos numerados del $1$ al $n$, cada uno con un peso $p_i > 0$ y un valor $v_i > 0$ para cada $i \in \{1, \dots, n\}$. Tendremos también una mochila que soporta un peso máximo $M > 0$.\\
 
-Definimos la función $x_i \in \{0, 1\}$ que indicará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$.\\
+Definimos la función indicadora $x_i \in \{0, 1\}$ que representará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$.\\
 
-El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos s. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
+El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos todos. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
 
-Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la variante en que los objetos se pueden fraccionar. En este caso siempre obtendremos una solución óptima, lo demostraremos en \ref{sec:demOptVoraz}, en la que $\sum_{i=1}^{n} p_i x_i = M$.
+Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la variante en que los objetos se pueden fraccionar, es decir, $x_i \in [0, 1]$. En este caso siempre obtendremos una solución óptima, lo demostraremos en \ref{sec:demOptVoraz}, en la que $\sum_{i=1}^{n} p_i x_i = M$.
 
 \subsection{Desarrollo de los casos de prueba}
+
+Incluir breve explicación sobre cómo se desarrollarán los casos de prueba. Inicialización de los valores, tamaño de los casos, cómputo de los tiempos y código de las llamadas.
 
 \section{Implementación de los algoritmos}
 
 \subsection{Método voraz} \label{sec:voraz}
 
-En este apartado implementaremos una solución voraz al problema de la mochila. En el caso del método voraz obtendremos una solución de forma muy eficiente ($O(n\log n)$). Sin embargo tendremos que imponer la restricción de que los objetos sean fraccionables para que podamos asegurar una solución óptima.
+En este apartado implementaremos una solución voraz al problema de la mochila. En el caso del método voraz obtendremos una solución muy eficiente ($O(n\log n)$). Sin embargo tendremos que imponer la restricción de que los objetos sean fraccionables para que podamos asegurar una solución óptima.
 
 \subsubsection{Descripción de la solución}
 
@@ -111,11 +120,11 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=29, lastline=70]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=31, lastline=70]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log(n))$, donde $n$ es el número de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log n)$, donde $n$ es el número de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
 
 \subsection{Programación dinámica}
 
@@ -125,7 +134,7 @@ En este apartado implementaremos un algoritmo de programación dinámica para el p
 
 Veamos la forma de abordar el problema desde el punto de vista de la programación dinámica. Primero definimos la función:
 \begin{description}
-\item \textit{mochila(i, j)} = máximo valor que podemos poner en la mochila de peso máximo j considerando los objetos del 1 al i.
+\item \textit{mochila(i, j)} = máximo valor que podemos poner en la mochila de peso máximo $j$ considerando los objetos del $1$ al $i$.
 \end{description}
 
 Tomamos como casos base:
@@ -139,15 +148,18 @@ Y como función recursiva:
 \[
 mochila(i, j) = \twopartdef{mochila(i-1, j)}{p_i > j}{\max \{mochila(i-1, j), mochila(i-1, j-p_i)+v_i\}}{p_i \leq j}
 \]
-Así pues vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tomamos el máximo entre cogerlo y no cogerlo. Para ello recorremos la tabla por filas de forma ascendente (cada vez el intervalo $[0, i]$ es más grande) y cada fila la recorremos también de forma ascendente (cada vez la mochila soporta un peso mayor $j$ hasta llegar a $M$). De esta forma el valor que buscamos lo tendremos en la posición $(n, M)$.\\
+Así pues vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tomamos el máximo entre cogerlo y no cogerlo. Para ello recorremos la tabla por filas de forma ascendente (cada vez el intervalo $[0, i]$ es más grande) y cada fila la recorremos también de forma ascendente (cada vez la mochila soporta un peso mayor $j$ hasta llegar a $M$). De esta forma el valor que buscamos lo tendremos en la posición $(n, M)$.
+
+\begin{figure}[h]
+\includegraphics[scale=0.5]{tablaProgDin}
+\centering
+\end{figure}
 
 Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución haremos el proceso inverso. Recorreremos las filas de forma descendente y para cada objeto comprobaremos si lo hemos cogido o no.
 
-TODO (AÑADIR IMAGEN DE LA TABLA!!!!!!!!!!!!!!!)
-
 \subsubsection{Código}
 
-\lstinputlisting[firstline=72, lastline=118]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=74, lastline=119]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
@@ -159,14 +171,19 @@ En este apartado implementaremos un algoritmo de ramificación y poda para resolv
 
 \subsubsection{Descripción de la solución}
 
-TODO (AÑADIR IMAGEN DEL ESQUEMA DEL ARBOL!!!!!!!!!!!!!!!!!!!!!!!!!)
+A la hora de resolver el problema desde el punto de vista de la programación dinámica, tomaremos un árbol de decisiones binario que represente si se coge o no cada objeto.
 
-A la hora de abordar el problema desde el punto de vista de la ramificación y poda seguiremos el esquema optimista/pesimista. La cola de prioridad donde iremos introduciendo los nodos será de máximos y tomaremos como prioridad el valor óptimo que calculemos. Así, la estructura de cada nodo será la siguiente: 
+\begin{figure}[h]
+	\includegraphics[scale=0.5]{arbolRamPoda}
+	\centering
+\end{figure}
 
-\lstinputlisting[firstline=122, lastline=132]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+A partir de esto seguiremos el esquema optimista/pesimista. La cola de prioridad donde iremos introduciendo los nodos será de máximos y tomaremos como prioridad el valor óptimo que calculemos. Así, la estructura de cada nodo será la siguiente: 
+
+\lstinputlisting[firstline=123, lastline=132]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Para el nodo $X$ se cumplirá: \[valorOpt(X) \geq valorFinal(X) \geq valorPes(X)\]
-donde $valorFinal(X)$ será el valor que tendrá la mochila en la mejor solución alcanzable desde $X$. Además para cualquier solución $Y$ a la que podamos llegar desde $X$ se cumple que: \[valorOpt(X) \geq valorFinal(X) \geq valor(Y)\]
+donde $valorFinal(X)$ será el valor que tendrá la mochila en la mejor solución alcanzable desde $X$. Además, para cualquier solución $Y$ a la que podamos llegar desde $X$ se cumple que: \[valorOpt(X) \geq valorFinal(X) \geq valor(Y)\]
 
 A la hora de calcular $valorOpt(X)$, como el problema es de maximización, tendremos que calcular una cota superior de la mejor solución alcanzable. Para ello utilizaremos el algoritmo voraz que resuelve el problema cuando los objetos se pueden partir. Como esa solución es óptima y tiene menos restricciones que la solución 0-1, no puede haber ninguna solución sin fraccionar objetos que sea mejor.\\
 
@@ -174,59 +191,71 @@ Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochi
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=133, lastline=247]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=134, lastline=249]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad. Luego el coste en memoria es también de $O(n2^n)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad y hay como mucho $2^{n-1}$ hojas. Luego el coste en memoria es también de $O(n2^n)$.
 
 \subsection{Algoritmo genético}
 
 En este apartado implementaremos un algoritmo genético para resolver el problema de la mochila 0-1. Al tratarse de un algoritmo heurístico no se asegura una solución óptima aunque generalmente obtendremos una buena solución en un tiempo razonable.
 
-\subsubsection{Descripción de la solución}
+\subsubsection{Descripción de la solución y código de las funciones}
 
-Veamos las estructuras y las funciones que hemos tomado a la hora de implementar el algoritmo genético. Representaremos cada solución como un cromosoma que contendrá el vector de soluciones y su valor asociado. Como estamos tratando de maximizar el valor de la mochila, un cromosoma será mejor que otro si su valor es mayor. Más adelante necesitaremos también ordenar toda la población y lo haremos mediante un vector auxiliar de índices así que implementamos también una estructura comparadora.
+Veamos las estructuras y las funciones que hemos utilizado a la hora de implementar el algoritmo genético. Representaremos cada solución como un cromosoma que contendrá el vector de soluciones y su valor asociado. Como estamos tratando de maximizar el valor de la mochila, un cromosoma será mejor que otro si su valor es mayor. Más adelante necesitaremos también ordenar toda la población y lo haremos mediante un vector auxiliar de índices así que implementamos también una estructura comparadora.
 
-TODO AÑADIR CROMOSOMA, EL MENOR DE CROMOSOMA Y INDCOMPVALOR
+\lstinputlisting[firstline=253, lastline=272]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de los objetos que tiene. Como tenemos que tener en cuenta la restricción de que el total de los pesos de la mochila no puede superar el peso máximo $M$, será aquí donde impongamos esto. Si una solución de las que hemos obtenido al inicio o después de un cruce o mutación supera en peso a $M$, iremos quitando objetos de manera aleatoria hasta que cumplamos dicha condición. Para inicializar la población lo haremos de manera aleatoria.
 
-TODO AÑADIR APTITUD E INICIALIZACION
+\lstinputlisting[firstline=283, lastline=334]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.
+Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.\\
 
-De esta forma primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar un cromosoma más de una vez.
+Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar un cromosoma más de una vez.
 
-TODO AÑADIR SELECCION
+\lstinputlisting[firstline=336, lastline=377]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información a partir de dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria de 1 a 3 elementos (si antes un objeto se cogía ahora no y viceversa).
+Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas, y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información a partir de dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria de 1 a 3 elementos (si antes un objeto se cogía ahora no y viceversa).
 
-TODO AÑADIR CRUCE Y MUTACIÓN 
+\lstinputlisting[firstline=379, lastline=426]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-TODO...
+Como condición de terminación iremos comprobando si se ha mejorado la mejor solución que teníamos hasta el momento o la media de la población en alguna de las últimas generaciones. Si se ha mejorado alguna de ambas se seguirá con la ejecución y sino terminará. Añadiremos también un máximo de generaciones tras las cuales el algoritmo se detendrá aunque no se cumpla la condición anterior.
+
+\lstinputlisting[firstline=428, lastline=461]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+Utilizaremos una función auxiliar para actualizar los valores de la mejor solución que tenemos y las medias que usamos en la condición de parada.
+
+\lstinputlisting[firstline=463, lastline=503]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+Finalmente nuestro programa principal será el encargado de inicializar la población e ir evolucionando las sucesivas generaciones hasta que se cumpla la condición de terminación. Devolverá como parámetro el mejor valor que hayamos encontrado en todas las generaciones y los objetos que componían la mochila para ese valor.
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=251, lastline=573]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=505, lastline=552]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. Veamos primero el coste en espacio: Guardaremos la población actual y los cromosomas seleccionados para formar parte de la siguiente, luego tendremos un coste $O(m)$ respecto a los datos de entrada (tenemos un vector de $n$ objetos), siendo $m$ el tamaño de la población que elijamos.\\
+
+En cuanto al coste en tiempo, se trata de un algoritmo heurístico que en el caso peor terminará cuando complete el máximo de generaciones. Luego llamando $n$ al numero de objetos, $m$ al tamaño que elijamos de la población y $g$ al número máximo de generaciones, obtendremos un coste $O(g\max\{nm, n\log n\})$. Justificamos el coste viendo que el bucle se ejecutará un máximo de $g$ veces y cada iteración tiene un coste $\max\{nm, n\log n\}$ dado por las funciones de cruce y selección respectivamente.
+
 \section{Comparación}
+
+Comparativa de tiempos en las ejecuciones de los distintos algoritmos. Analizar diferencias entre programación dinámica y ramificación y poda. Ver que el voraz es mucho más rápido y justificar lo bueno, o no, que puede llegar a ser el algoritmo genético según los resultados.
 
 % Bibliografía.
 %-------------------------------------------------------
 \begin{thebibliography}{9}
+	
+\bibitem{wikipedia} Artículos de la enciclopedia libre Wikipedia sobre el problema de la mochila y la lista de 21 problemas NP-completos de Karp.
 
-%Transparencias de algoritmos voraces de clase	
+\bibitem{transparencias} Material de clase sobre algoritmos voraces, programación dinámica y ramificación y poda.
 
-%Wikipedia
+\bibitem{trabAlgGen} Trabajo sobre los algoritmos genéticos hecho en el primer cuatrimestre.
 
-%Trabajo del primer cuatri
-
-% Pagina implementacion genetica
-
-%\bibitem{Cd94} Autor, \emph{Título}, Revista/Editor, (año)
+\bibitem{paperAlgGen} Hristakeva-Shrestha, \emph{Solving the 0-1 Knapsack Problem with Genetic Algorithms}, Simpson College \url{http://www.micsymposium.org/mics_2004/Hristake.pdf}
 
 \end{thebibliography}
 
