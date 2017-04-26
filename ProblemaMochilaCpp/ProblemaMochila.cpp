@@ -139,7 +139,7 @@ bool operator<(Nodo const &n1, Nodo const &n2) {
  * Coste: O(n-k), n = numero de objetos, k = indice por el que vamos.
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
- * @param d Vector ordenado en orden creciente de las densidades de los objetos.
+ * @param d Vector ordenado en orden creciente de las densidades.
  * @param M Peso maximo que soporta la mochila.
  * @param k Indice del objeto por el que vamos.
  * @param pesoAc Peso acumulado en la mochila.
@@ -207,7 +207,8 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
     Y.pesoAc = 0;
     Y.valorAc = 0;
     Y.sol.resize(n, false);
-    calculoEst(objetos, d, M, Y.k, Y.pesoAc, Y.valorAc, Y.valorOpt, valorMejor);
+    calculoEst(objetos, d, M, Y.k, Y.pesoAc, Y.valorAc, Y.valorOpt,
+               valorMejor);
 
     C.push(Y);
     while (!C.empty() && C.top().valorOpt >= valorMejor) {
@@ -280,9 +281,9 @@ const double PROB_2CUARTIL = 0.8;
 const double PROB_3CUARTIL = 0.95;
 
 /**
- * Calcula la aptitud de un cromosoma. Tomamos la aptitud de cada cromosoma como
- * el valor de los objetos que tiene. Si sobrepasa el limite de peso se quitan
- * objetos aleatoriamente hasta que el cromosoma sea valido.
+ * Calcula la aptitud de un cromosoma. Tomamos la aptitud de cada cromosoma
+ * como el valor de los objetos que tiene. Si sobrepasa el limite de peso
+ * se quitan objetos aleatoriamente hasta que el cromosoma sea valido.
  *
  * Coste: O(n), n = numero de objetos.
  *
@@ -303,7 +304,7 @@ void funcAptitud(Cromosoma &c, std::vector<ObjetoReal> const &objetos,
         }
     }
 
-    //Si no cabe en la mochila, vamos descartando aleatoriamente hasta que quepa
+    //Si no cabe en la mochila, descartamos aleatoriamente hasta que quepa
     size_t r = rand() % c.crom.size();
     while (pesoAc > M) {
         if (c.crom[r]) {
@@ -332,36 +333,6 @@ void iniPoblacion(std::vector<Cromosoma> &poblacion,
             c.crom.push_back(rand() % 2);
 }
 
-/*
- * Suponemos que seleccionados ya esta creado con el mismo tamanyo que poblacion
- * Suponemos que los cromosomas ya tienen su valor calculado
- * Coste: n^2, reducir a n logn ordenando y luego escogiendo segun
- * cierta probabilidad
- * @param poblacion
- * @param seleccionados
-
-void funcSeleccion(std::vector<Cromosoma> const &poblacion,
-                   std::vector<Cromosoma> &seleccionados) {
-    //Calculamos la suma de todos los valores
-    double valorAc = 0;
-    for (Cromosoma const &c : poblacion)
-        valorAc += c.valor;
-
-    //Elegimos el elemento cuyo valor acumulado supere un numero aleatorio
-    // entre 0 y la suma de todos los valores
-    for (int i = 0; i < poblacion.size(); ++i) {
-        double r = valorAc * ((double) rand() / (double) RAND_MAX);
-
-        double valorAux = 0;
-        int j;
-        for (j = 0; valorAux < r; ++j)
-            valorAux += poblacion[j].valor;
-
-        if (j > 0) j--;
-        seleccionados[i] = poblacion[j];
-    }
-}*/
-
 /**
  * Selecciona los individuos que formaran parte de la siguiente generacion.
  * Escoge un porcentaje (PROB_ELITISMO) de los mejores cromosomas de la
@@ -373,7 +344,7 @@ void funcSeleccion(std::vector<Cromosoma> const &poblacion,
  * @param poblacion Conjunto de cromosomas con las aptitudes ya calculadas.
  * @param seleccionados Vector donde almacenaremos los individuos
  * seleccionados a formar parte de la siguiente generacion. Presuponemos que
- * ya esta creado con el mismo tamanyo que @param poblacion.
+ * ya esta creado con el mismo tamanyo que poblacion.
  */
 void funcSeleccion(std::vector<Cromosoma> &poblacion,
                    std::vector<Cromosoma> &seleccionados) {
@@ -390,15 +361,15 @@ void funcSeleccion(std::vector<Cromosoma> &poblacion,
     for (i; i < nElit; ++i)
         seleccionados[i] = poblacion[ind[i]];
 
-    //Completa seleccionando con mayor probabilidad a los cromosomas mas aptos
+    //Completa seleccionando con mayor probabilidad los cromosomas mas aptos
     for (i; i < n; ++i) {
-        double r = (double) rand() / (double) RAND_MAX;
-        size_t j = rand() % n / 4;
-        if (r > PROB_3CUARTIL) {
-            j += (3 * n) / 4;
-        } else if (r > PROB_2CUARTIL) {
+        double r = (double) rand() / (double) RAND_MAX; //Entre 0 y 1
+        size_t j = rand() % n / 4;  //Posicion inferior al primer cuartil
+        if (r > PROB_3CUARTIL) {    //Desplazamos la posicion a entre el
+            j += (3 * n) / 4;        // tercer cuartil y el final
+        } else if (r > PROB_2CUARTIL) { //Entre el 2 y el 3
             j += n / 2;
-        } else if (r > PROB_1CUARTIL) {
+        } else if (r > PROB_1CUARTIL) { //Entre el 1 y el 2
             j += n / 4;
         }
         seleccionados[i] = poblacion[ind[j]];
@@ -424,7 +395,7 @@ void funcCruce(std::vector<Cromosoma> &seleccionados) {
             size_t k = rand() % seleccionados[i].crom.size();
 
             bool aux;
-            for (int j = 0; j < k; ++j) {//Cruzamos el intervalo que corresponde
+            for (int j = 0; j < k; ++j) {   //Cruzamos el intervalo
                 aux = seleccionados[i].crom[j];
                 seleccionados[i].crom[j] = seleccionados[i - 1].crom[j];
                 seleccionados[i - 1].crom[j] = aux;
@@ -473,7 +444,7 @@ bool condTerminacion(std::vector<double> &ultMedias,
     if (generacionAct < TAM_ULT)
         return false;
 
-    //Si se ha superado el maximos de generaciones
+    //Si se ha superado el maximo de generaciones
     if (generacionAct >= MAX_GENERACIONES)
         return true;
 
@@ -533,11 +504,12 @@ void calcMejores(std::vector<Cromosoma> const &poblacion, std::vector<double>
 
 /**
  * Resuelve el problema de la mochila O-1 mediante un algoritmo genetico. No
- * se asegura la solucion optima. Se suele obtemer una solucion buena en un
+ * se asegura la solucion optima. Se suele obtener una solucion buena en un
  * tiempo razonable.
  *
- * Coste: O(nm * MAX_GENERACIONES), n = numero de objetos, m = tamanyo de la
- * poblacion.
+ * Coste tiempo: O(nm * MAX_GENERACIONES), n = numero de objetos, m = tamanyo
+ *                  de la poblacion.
+ * Coste espacio: O(m)
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
  * @param M Peso maximo que soporta la mochila.
@@ -548,21 +520,27 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
                      std::vector<bool> &solMejor, double &valorMejor) {
     const size_t n = objetos.size();
 
+    //Inicializamos las estructuras
     std::vector<Cromosoma> poblacion(n);
     std::vector<Cromosoma> seleccionados(n);
     std::vector<double> ultMedias(TAM_ULT);
     std::vector<double> ultMejores(TAM_ULT);
-
     valorMejor = -1;
     for (Cromosoma &c : seleccionados)
         c.crom.resize(n);
 
+    //Generamos la poblacion inicial y calculamos sus aptitudes
     iniPoblacion(poblacion, n);
     for (Cromosoma &c : poblacion)
         funcAptitud(c, objetos, M);
     calcMejores(poblacion, ultMedias, ultMejores, solMejor, valorMejor);
-    for (int generacionAct = 0; !condTerminacion(ultMedias, ultMejores,
-                                                 generacionAct); generacionAct++) {
+
+    //Mientras que no se cumpla la condicion de terminacion vamos
+    // evolucionando las sucesivas generaciones
+    for (int generacionAct = 0;
+         !condTerminacion(ultMedias, ultMejores, generacionAct);
+         generacionAct++) {
+
         funcSeleccion(poblacion, seleccionados);
         funcCruce(seleccionados);
         funcMutacion(seleccionados);
