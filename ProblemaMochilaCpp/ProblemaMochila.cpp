@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 #include <chrono>
@@ -551,37 +552,111 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
     }
 }
 
-//Main--------------------------------------------------------------------------
+//Comparacion----------------------------------------------------------------
+
+/**
+ * Genera un fichero de nombre nombreFichero con el tamanyo de la mochila
+ * M y el numero de objetos nObjetos en la primera linea separados por un
+ * espacio. Genera nObjetos aleatorios con la restriccion de que el peso y
+ * el valor esten en (0, maxPesoObjeto) o (0, maxValorObjeto).
+ * Escribe los objetos a partir de la segunda linea. Cada linea de
+ * objeto son dos numeros, peso y valor separados por un espacio.
+ *
+ * @param nombreFichero Nombre del fichero donde guardar los datos
+ * @param nObjetos Numero de objetos a generar
+ * @param maxPesoObjeto Peso maximo de cada objeto
+ * @param maxValorObjeto Valor maximo de cada objeto
+ * @param M Peso maximo soportado por la mochila
+ */
+void generaCasoPruebaMochila(std::string nombreFichero, int nObjetos, double
+maxPesoObjeto, double maxValorObjeto, double M) {
+
+    double peso, valor;
+    std::ofstream out;
+    out.open(nombreFichero);
+
+    out << M << ' ' << nObjetos << '\n';
+    for(int i = 0; i < nObjetos; ++i) {
+        peso = ((double) rand() / (double) RAND_MAX) * maxPesoObjeto;
+        valor = ((double) rand() / (double) RAND_MAX) * maxValorObjeto;
+
+        out << peso << ' ' << valor << '\n';
+    }
+
+    out.close();
+}
+
+/**
+ * Construye el vector de objetos a partir de los datos de nombreFichero,
+ * se presupone estructura coherente con el metodo generaCasoPruebaMochila.
+ * Devuelve tambien el tamanyo maximo de la mochila M.
+ *
+ * @param nombreFichero Nombre del fichero del cual leer.
+ * @param M Tamanyo maximo de la mochila.
+ * @param objetos Vector de objetos. Se presupone vacio.
+ */
+void leeCasoPruebaMochila(std::string nombreFichero, double & M,
+                          std::vector<ObjetoReal> &objetos) {
+    std::ifstream in;
+    in.open(nombreFichero);
+    if(!in.is_open()) {
+        std::cout << "ERROR. No se ha podido abrir el fichero.\n";
+        return;
+    }
+
+    int nObjetos;
+    in >> M >> nObjetos;
+    objetos.resize(nObjetos);
+
+    for(int i = 0; i < nObjetos; ++i) {
+        in >> objetos[i].peso >> objetos[i].valor;
+    }
+
+    in.close();
+}
+
+//Main-----------------------------------------------------------------------
+
+const std::string NOMBRE_FICHERO = "prueba.txt";
+const int N_OBJETOS = 100000;
+const double MAX_PESO_OBJETO = 200;
+const double MAX_VALOR_OBJETO = 500;
+const double MAX_MOCHILA = 750;
 
 int main() {
 
     srand((unsigned int) time(NULL));
 
-    size_t n = 5;
-    std::vector<ObjetoReal> objetos(n);
-    for (int i = 0; i < n; ++i)
-        objetos[i].peso = (i + 1) * 10;
+    std::vector<ObjetoReal> objetos;
+    double M;
 
-    objetos[0].valor = 20;
-    objetos[1].valor = 30;
-    objetos[2].valor = 66;
-    objetos[3].valor = 40;
-    objetos[4].valor = 70;
+    //generaCasoPruebaMochila(NOMBRE_FICHERO, N_OBJETOS, MAX_PESO_OBJETO,
+    //MAX_VALOR_OBJETO, MAX_MOCHILA);
 
-    std::vector<bool> solucion(n);
+    leeCasoPruebaMochila(NOMBRE_FICHERO, M, objetos);
+
+    std::vector<bool> solucion(objetos.size());
     double valorSol;
 
     auto t1 = std::chrono::steady_clock::now();
 
-    mochilaGenetico(objetos, 100, solucion, valorSol);
+    mochilaGenetico(objetos, M, solucion, valorSol);
 
     auto t2 = std::chrono::steady_clock::now();
     auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
             t2 - t1);
 
+    double pesoSol = 0;
+
+    for (int i = 0; i < objetos.size(); ++i) {
+        //std::cout << "Peso de " << i << ": " << solucion[i] << '\n';
+        if(solucion[i]) {
+            pesoSol += objetos[i].peso;
+        }
+    }
+
     std::cout << "ValorSol: " << valorSol << '\n';
-    for (int i = 0; i < n; ++i)
-        std::cout << "Peso de " << i << ": " << solucion[i] << '\n';
+    std::cout << "PesoSol: " << pesoSol << '\n';
 
     std::cout << "El algoritmo ha tardado " << time_span.count() << " "
             "segundos.\n";
