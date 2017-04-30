@@ -5,6 +5,7 @@
 #include <chrono>
 #include <queue>
 #include <cmath>
+#include <deque>
 
 //Estructuras auxiliares comunes------------------------------------------------
 
@@ -56,6 +57,7 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
     std::sort(d.begin(), d.end(), std::greater<Densidad>());
 
     //Cogemos los objetos mientras quepan enteros
+    valorSol = 0;
     size_t i;
     for (i = 0; i < n && M - objetos[d[i].obj].peso >= 0; ++i) {
         valorSol += objetos[d[i].obj].valor;
@@ -224,7 +226,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
             X.pesoAc = Y.pesoAc + objetos[d[X.k].obj].peso;
             X.valorAc = Y.valorAc + objetos[d[X.k].obj].valor;
             X.valorOpt = Y.valorOpt;
-            if (X.k == n) {
+            if (X.k == n - 1) {
                 solMejor = X.sol;
                 valorMejor = X.valorAc;
             } else {
@@ -238,7 +240,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
             X.sol[d[X.k].obj] = false;
             X.pesoAc = Y.pesoAc;
             X.valorAc = Y.valorAc;
-            if (X.k == n) {
+            if (X.k == n - 1) {
                 solMejor = X.sol;
                 valorMejor = X.valorAc;
             } else {
@@ -272,14 +274,16 @@ struct IndCompValor {
     }
 };
 
-const int MAX_GENERACIONES = 50;
-const int TAM_ULT = 5;
-const double PROB_MUTACION = 0.001;
+const int MAX_GENERACIONES = 1000;
+const int TAM_POBL = 100;
+const int TAM_ULT = 10;
+const double PROB_MUTACION = 0.05;
+const double PORC_MUTACION = 0.01;
 const double PROB_CRUCE = 0.85;
-const double PROB_ELITISMO = 0.05;
+const double PROB_ELITISMO = 0.1;
 const double PROB_1CUARTIL = 0.5;
 const double PROB_2CUARTIL = 0.8;
-const double PROB_3CUARTIL = 0.95;
+const double PROB_3CUARTIL = 1;
 
 /**
  * Calcula la aptitud de un cromosoma. Tomamos la aptitud de cada cromosoma
@@ -350,6 +354,8 @@ void iniPoblacion(std::vector<Cromosoma> &poblacion,
 void funcSeleccion(std::vector<Cromosoma> &poblacion,
                    std::vector<Cromosoma> &seleccionados) {
     std::vector<int> ind(poblacion.size());
+    for (int i = 0; i < ind.size(); ++i)
+        ind[i] = i;
     IndCompValor comp(&poblacion);
     const size_t n = seleccionados.size();
 
@@ -395,18 +401,16 @@ void funcCruce(std::vector<Cromosoma> &seleccionados) {
             //Elegimos el punto de cruce simple
             size_t k = rand() % seleccionados[i].crom.size();
 
-            bool aux;
-            for (int j = 0; j < k; ++j) {   //Cruzamos el intervalo
-                aux = seleccionados[i].crom[j];
-                seleccionados[i].crom[j] = seleccionados[i - 1].crom[j];
-                seleccionados[i - 1].crom[j] = aux;
-            }
+            for (int j = 0; j < k; ++j)   //Cruzamos el intervalo
+                std::swap(seleccionados[i].crom[j],
+                          seleccionados[i - 1].crom[j]);
         }
     }
 }
 
 /**
- * Muta de 1 a 3 elementos de cada cromosoma con probabilidad PROB_MUTACION.
+ * Muta un porcentaje PORC_MUTACION de los elementos de cada cromosoma con
+ * probabilidad PROB_MUTACION.
  *
  * Coste: O(n), n = numero de objetos.
  *
@@ -417,8 +421,9 @@ void funcMutacion(std::vector<Cromosoma> &seleccionados) {
         double r = (double) rand() / (double) RAND_MAX;
         if (r <= PROB_MUTACION) { //Si se debe mutar
 
-            int numMut = (rand() % 3) + 1;
-            for (int i = 0; i < numMut; ++i) {  //Mutamos de 1 a 3 elementos
+            int numMut = rand() % (int) std::ceil(c.crom.size() *
+                                                  PORC_MUTACION);
+            for (int i = 0; i < numMut; ++i) {
                 size_t j = rand() % c.crom.size();
                 c.crom[j] = !c.crom[j];
             }
@@ -433,14 +438,14 @@ void funcMutacion(std::vector<Cromosoma> &seleccionados) {
  *
  * Coste: O(1).
  *
- * @param ultMedias Vector que contiene las ultimas TAM_ULT mejores medias.
- * @param ultMejores Vector que contiene los ultimos TAM_ULT mejores valores.
+ * @param ultMedias Contiene las ultimas TAM_ULT mejores medias.
+ * @param ultMejores Contiene los ultimos TAM_ULT mejores valores.
  * @param generacionAct Generacion por la que vamos.
  * @return True si se cumple alguna condicion de terminacion, false en caso
  * contrario.
  */
-bool condTerminacion(std::vector<double> &ultMedias,
-                     std::vector<double> &ultMejores, int generacionAct) {
+bool condTerminacion(std::deque<double> &ultMedias,
+                     std::deque<double> &ultMejores, int generacionAct) {
     //Nunca terminamos en las primeras generaciones
     if (generacionAct < TAM_ULT)
         return false;
@@ -451,10 +456,9 @@ bool condTerminacion(std::vector<double> &ultMedias,
 
     //Comprobamos si se ha mejorado la media o el valor mejor ultimamente
     bool mejora = false;
-    double mediaAnt = ultMedias[0], mejorAnt = ultMejores[0];
-
-    for (int i = 1; i < TAM_ULT && !mejora; ++i) {
-        if (ultMedias[i] > mediaAnt || ultMejores[i] > mejorAnt)
+    for (int i = 0; i < TAM_ULT - 1 && !mejora; ++i) {
+        if (ultMedias[i] > ultMedias.back() ||
+            ultMejores[i] > ultMejores.back())
             mejora = true;
     }
 
@@ -469,19 +473,17 @@ bool condTerminacion(std::vector<double> &ultMedias,
  * Coste: O(n), n = numero de objetos.
  *
  * @param poblacion Conjunto de cromosomas con las aptitudes ya calculadas.
- * @param ultMedias Vector con las TAM_ULT ultimas medias.
- * @param ultMejores Vector con los TAM_ULT ultimos mejores valores.
- * @param solMejor Solucion mejor hasta el momento.
- * @param valorMejor Valor de la solucion mejor hasta el momento.
+ * @param ultMedias Contiene las TAM_ULT ultimas medias.
+ * @param ultMejores Contiene los TAM_ULT ultimos mejores valores.
+ * @param solMejor Mejor solucion hasta el momento.
+ * @param valorMejor Valor de la mejor solucion hasta el momento.
  */
-void calcMejores(std::vector<Cromosoma> const &poblacion, std::vector<double>
-&ultMedias, std::vector<double> &ultMejores, std::vector<bool> &solMejor,
+void calcMejores(std::vector<Cromosoma> const &poblacion, std::deque<double>
+&ultMedias, std::deque<double> &ultMejores, std::vector<bool> &solMejor,
                  double &valorMejor) {
-    //Desplazamos los ultimos valores para actualizar
-    for (int i = TAM_ULT - 1; i > 0; --i) {
-        ultMedias[i] = ultMedias[i - 1];
-        ultMejores[i] = ultMejores[i - 1];
-    }
+
+    ultMedias.pop_back();
+    ultMejores.pop_back();
 
     //Calculamos los parametros de esta generacion
     double sumaVal = 0, mejor = -1;
@@ -495,8 +497,8 @@ void calcMejores(std::vector<Cromosoma> const &poblacion, std::vector<double>
     }
 
     //Actualizamos
-    ultMejores[0] = mejor;
-    ultMedias[0] = sumaVal / poblacion.size();
+    ultMejores.push_front(mejor);
+    ultMedias.push_front(sumaVal / poblacion.size());
     if (mejor > valorMejor) {
         valorMejor = mejor;
         solMejor = solMejorAux;
@@ -519,19 +521,18 @@ void calcMejores(std::vector<Cromosoma> const &poblacion, std::vector<double>
  */
 void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
                      std::vector<bool> &solMejor, double &valorMejor) {
-    const size_t n = objetos.size();
 
     //Inicializamos las estructuras
-    std::vector<Cromosoma> poblacion(n);
-    std::vector<Cromosoma> seleccionados(n);
-    std::vector<double> ultMedias(TAM_ULT);
-    std::vector<double> ultMejores(TAM_ULT);
+    std::vector<Cromosoma> poblacion(TAM_POBL);
+    std::vector<Cromosoma> seleccionados(TAM_POBL);
+    std::deque<double> ultMedias(TAM_ULT);
+    std::deque<double> ultMejores(TAM_ULT);
     valorMejor = -1;
     for (Cromosoma &c : seleccionados)
-        c.crom.resize(n);
+        c.crom.resize(objetos.size());
 
     //Generamos la poblacion inicial y calculamos sus aptitudes
-    iniPoblacion(poblacion, n);
+    iniPoblacion(poblacion, objetos.size());
     for (Cromosoma &c : poblacion)
         funcAptitud(c, objetos, M);
     calcMejores(poblacion, ultMedias, ultMejores, solMejor, valorMejor);
@@ -568,16 +569,35 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
  * @param maxValorObjeto Valor maximo de cada objeto
  * @param M Peso maximo soportado por la mochila
  */
-void generaCasoPruebaMochila(std::string nombreFichero, int nObjetos, double
-maxPesoObjeto, double maxValorObjeto, double M) {
-
+void generaCasoPruebaMochilaReal(std::string nombreFichero, int nObjetos,
+                                 double maxPesoObjeto, double maxValorObjeto,
+                                 double M) {
     double peso, valor;
     std::ofstream out;
     out.open(nombreFichero);
 
     out << M << ' ' << nObjetos << '\n';
-    for(int i = 0; i < nObjetos; ++i) {
+    for (int i = 0; i < nObjetos; ++i) {
         peso = ((double) rand() / (double) RAND_MAX) * maxPesoObjeto;
+        valor = ((double) rand() / (double) RAND_MAX) * maxValorObjeto;
+
+        out << peso << ' ' << valor << '\n';
+    }
+
+    out.close();
+}
+
+void generaCasoPruebaMochilaInt(std::string nombreFichero, int nObjetos,
+                                int maxPesoObjeto, double maxValorObjeto,
+                                int M) {
+    double valor;
+    int peso;
+    std::ofstream out;
+    out.open(nombreFichero);
+
+    out << M << ' ' << nObjetos << '\n';
+    for (int i = 0; i < nObjetos; ++i) {
+        peso = rand() % maxPesoObjeto;
         valor = ((double) rand() / (double) RAND_MAX) * maxValorObjeto;
 
         out << peso << ' ' << valor << '\n';
@@ -595,11 +615,11 @@ maxPesoObjeto, double maxValorObjeto, double M) {
  * @param M Tamanyo maximo de la mochila.
  * @param objetos Vector de objetos. Se presupone vacio.
  */
-void leeCasoPruebaMochila(std::string nombreFichero, double & M,
-                          std::vector<ObjetoReal> &objetos) {
+void leeCasoPruebaMochilaReal(std::string nombreFichero, double &M,
+                              std::vector<ObjetoReal> &objetos) {
     std::ifstream in;
     in.open(nombreFichero);
-    if(!in.is_open()) {
+    if (!in.is_open()) {
         std::cout << "ERROR. No se ha podido abrir el fichero.\n";
         return;
     }
@@ -608,7 +628,27 @@ void leeCasoPruebaMochila(std::string nombreFichero, double & M,
     in >> M >> nObjetos;
     objetos.resize(nObjetos);
 
-    for(int i = 0; i < nObjetos; ++i) {
+    for (int i = 0; i < nObjetos; ++i) {
+        in >> objetos[i].peso >> objetos[i].valor;
+    }
+
+    in.close();
+}
+
+void leeCasoPruebaMochilaInt(std::string nombreFichero, int &M,
+                             std::vector<ObjetoInt> &objetos) {
+    std::ifstream in;
+    in.open(nombreFichero);
+    if (!in.is_open()) {
+        std::cout << "ERROR. No se ha podido abrir el fichero.\n";
+        return;
+    }
+
+    int nObjetos;
+    in >> M >> nObjetos;
+    objetos.resize(nObjetos);
+
+    for (int i = 0; i < nObjetos; ++i) {
         in >> objetos[i].peso >> objetos[i].valor;
     }
 
@@ -617,49 +657,220 @@ void leeCasoPruebaMochila(std::string nombreFichero, double & M,
 
 //Main-----------------------------------------------------------------------
 
-const std::string NOMBRE_FICHERO = "prueba.txt";
-const int N_OBJETOS = 100000;
-const double MAX_PESO_OBJETO = 200;
-const double MAX_VALOR_OBJETO = 500;
-const double MAX_MOCHILA = 750;
+const std::string NOMBRE_FICHERO = "pruebaReal2.txt";
+const int N_OBJETOS = 1000;
+const double MAX_PESO_OBJETO = 100;
+const double MAX_VALOR_OBJETO = 100;
+const double MAX_MOCHILA = 2500;
+
+const int NUM_IT_CASO_PRUEBA = 5;
+
+void casoPruebaVoraz();
+void casoPruebaVoraz(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt);
+
+void casoPruebaProgDin();
+void casoPruebaProgDin(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt);
+
+void casoPruebaRamPoda();
+void casoPruebaRamPoda(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt);
+
+void casoPruebaGenetico();
+void casoPruebaGenetico(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt);
 
 int main() {
-
     srand((unsigned int) time(NULL));
-
-    std::vector<ObjetoReal> objetos;
-    double M;
-
-    //generaCasoPruebaMochila(NOMBRE_FICHERO, N_OBJETOS, MAX_PESO_OBJETO,
-    //MAX_VALOR_OBJETO, MAX_MOCHILA);
-
-    leeCasoPruebaMochila(NOMBRE_FICHERO, M, objetos);
-
-    std::vector<bool> solucion(objetos.size());
-    double valorSol;
 
     auto t1 = std::chrono::steady_clock::now();
 
-    mochilaGenetico(objetos, M, solucion, valorSol);
+    casoPruebaVoraz();
+    casoPruebaProgDin();
+    casoPruebaRamPoda();
+    casoPruebaGenetico();
 
     auto t2 = std::chrono::steady_clock::now();
     auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
             t2 - t1);
 
-    double pesoSol = 0;
-
-    for (int i = 0; i < objetos.size(); ++i) {
-        //std::cout << "Peso de " << i << ": " << solucion[i] << '\n';
-        if(solucion[i]) {
-            pesoSol += objetos[i].peso;
-        }
-    }
-
-    std::cout << "ValorSol: " << valorSol << '\n';
-    std::cout << "PesoSol: " << pesoSol << '\n';
-
-    std::cout << "El algoritmo ha tardado " << time_span.count() << " "
-            "segundos.\n";
+    std::cout << "Los casos de prueba han tardado " << time_span.count()
+              << " segundos.\n\n";
 
     return 0;
+}
+
+void casoPruebaVoraz() {
+    std::cout << "-----CASO PRUEBA VORAZ-----\n";
+    casoPruebaVoraz("Caso Prueba 1000A", "CasoPruebaInt1000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 1000B", "CasoPruebaInt1000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 1000C", "CasoPruebaInt1000C",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 100000A", "CasoPruebaInt100000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 100000B", "CasoPruebaInt100000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 100000C", "CasoPruebaInt100000C",
+                    NUM_IT_CASO_PRUEBA);
+}
+
+void casoPruebaProgDin() {
+    std::cout << "-----CASO PRUEBA PROG DIN-----\n";
+    casoPruebaProgDin("Caso Prueba 1000A", "CasoPruebaInt1000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 1000B", "CasoPruebaInt1000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 1000C", "CasoPruebaInt1000C",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 100000A", "CasoPruebaInt100000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 100000B", "CasoPruebaInt100000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 100000C", "CasoPruebaInt100000C",
+                    NUM_IT_CASO_PRUEBA);
+}
+
+void casoPruebaRamPoda() {
+    std::cout << "-----CASO PRUEBA RAM PODA-----\n";
+    casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaInt1000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaInt1000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaInt1000C",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 100000A", "CasoPruebaInt100000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 100000B", "CasoPruebaInt100000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 100000C", "CasoPruebaInt100000C",
+                    NUM_IT_CASO_PRUEBA);
+}
+
+void casoPruebaGenetico() {
+    std::cout << "-----CASO PRUEBA GENETICO-----\n";
+    casoPruebaGenetico("Caso Prueba 1000A", "CasoPruebaInt1000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaGenetico("Caso Prueba 1000B", "CasoPruebaInt1000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaGenetico("Caso Prueba 1000C", "CasoPruebaInt1000C",
+                    NUM_IT_CASO_PRUEBA);
+}
+
+void casoPruebaVoraz(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt) {
+    std::vector<ObjetoReal> objetos;
+    double M;
+    double valorSol;
+
+    //VORAZ
+    std::cout << casoPrueba << "\n\n";
+    for (int i = 1; i <= nIt; ++i) {
+
+        leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
+
+        std::vector<double> solucion(objetos.size());
+
+        auto t1 = std::chrono::steady_clock::now();
+
+        mochilaVoraz(objetos, M, solucion, valorSol);
+
+        auto t2 = std::chrono::steady_clock::now();
+        auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
+                t2 - t1);
+
+        std::cout << "Vuelta: " << i << "ValorSol: " << valorSol << '\n';
+        std::cout << "El algoritmo ha tardado " << time_span.count()
+                  << " segundos.\n\n";
+    }
+    std::cout << "-------------------------------\n";
+}
+
+void casoPruebaProgDin(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt) {
+    std::vector<ObjetoInt> objetos;
+    int M;
+    double valorSol;
+
+    //VORAZ
+    std::cout << casoPrueba << "\n\n";
+    for (int i = 1; i <= nIt; ++i) {
+
+        leeCasoPruebaMochilaInt(nombreFichero, M, objetos);
+
+        std::vector<bool> solucion(objetos.size());
+
+        auto t1 = std::chrono::steady_clock::now();
+
+        mochilaProgDin(objetos, M, solucion, valorSol);
+
+        auto t2 = std::chrono::steady_clock::now();
+        auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
+                t2 - t1);
+
+        std::cout << "Vuelta: " << i << "ValorSol: " << valorSol << '\n';
+        std::cout << "El algoritmo ha tardado " << time_span.count()
+                  << " segundos.\n\n";
+    }
+    std::cout << "-------------------------------\n";
+}
+
+void casoPruebaRamPoda(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt) {
+    std::vector<ObjetoReal> objetos;
+    double M;
+    double valorSol;
+
+    //VORAZ
+    std::cout << casoPrueba << "\n\n";
+    for (int i = 1; i <= nIt; ++i) {
+
+        leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
+
+        std::vector<bool> solucion(objetos.size());
+
+        auto t1 = std::chrono::steady_clock::now();
+
+        mochilaRamPoda(objetos, M, solucion, valorSol);
+
+        auto t2 = std::chrono::steady_clock::now();
+        auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
+                t2 - t1);
+
+        std::cout << "Vuelta: " << i << "ValorSol: " << valorSol << '\n';
+        std::cout << "El algoritmo ha tardado " << time_span.count()
+                  << " segundos.\n\n";
+    }
+    std::cout << "-------------------------------\n";
+}
+
+void casoPruebaGenetico(std::string const &casoPrueba, std::string const &
+nombreFichero, const int nIt) {
+    std::vector<ObjetoReal> objetos;
+    double M;
+    double valorSol;
+
+    //VORAZ
+    std::cout << casoPrueba << "\n\n";
+    for (int i = 1; i <= nIt; ++i) {
+
+        leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
+
+        std::vector<bool> solucion(objetos.size());
+
+        auto t1 = std::chrono::steady_clock::now();
+
+        mochilaGenetico(objetos, M, solucion, valorSol);
+
+        auto t2 = std::chrono::steady_clock::now();
+        auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
+                t2 - t1);
+
+        std::cout << "Vuelta: " << i << "ValorSol: " << valorSol << '\n';
+        std::cout << "El algoritmo ha tardado " << time_span.count()
+                  << " segundos.\n\n";
+    }
+    std::cout << "-------------------------------\n";
 }
