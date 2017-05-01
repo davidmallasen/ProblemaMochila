@@ -3,385 +3,494 @@
 Caso Prueba 1000A
 
 Vuelta: 1ValorSol: 11896
-El algoritmo ha tardado 0.000304875 segundos.
+El algoritmo ha tardado 0.000296225 segundos.
 
 Vuelta: 2ValorSol: 11896
-El algoritmo ha tardado 0.000290797 segundos.
+El algoritmo ha tardado 0.000248155 segundos.
 
 Vuelta: 3ValorSol: 11896
-El algoritmo ha tardado 0.000278247 segundos.
+El algoritmo ha tardado 0.000246668 segundos.
 
 Vuelta: 4ValorSol: 11896
-El algoritmo ha tardado 0.000254435 segundos.
+El algoritmo ha tardado 0.000307004 segundos.
 
 Vuelta: 5ValorSol: 11896
-El algoritmo ha tardado 0.000254656 segundos.
+El algoritmo ha tardado 0.000283159 segundos.
 
 -------------------------------
 Caso Prueba 1000B
 
 Vuelta: 1ValorSol: 13248.4
-El algoritmo ha tardado 0.000259512 segundos.
+El algoritmo ha tardado 0.000244328 segundos.
 
 Vuelta: 2ValorSol: 13248.4
-El algoritmo ha tardado 0.000250953 segundos.
+El algoritmo ha tardado 0.000314252 segundos.
 
 Vuelta: 3ValorSol: 13248.4
-El algoritmo ha tardado 0.000243624 segundos.
+El algoritmo ha tardado 0.00027718 segundos.
 
 Vuelta: 4ValorSol: 13248.4
-El algoritmo ha tardado 0.000246844 segundos.
+El algoritmo ha tardado 0.00024833 segundos.
 
 Vuelta: 5ValorSol: 13248.4
-El algoritmo ha tardado 0.000283978 segundos.
+El algoritmo ha tardado 0.000248945 segundos.
 
 -------------------------------
 Caso Prueba 1000C
 
 Vuelta: 1ValorSol: 12880
-El algoritmo ha tardado 0.000279927 segundos.
+El algoritmo ha tardado 0.000309675 segundos.
 
 Vuelta: 2ValorSol: 12880
-El algoritmo ha tardado 0.000259328 segundos.
+El algoritmo ha tardado 0.000244566 segundos.
 
 Vuelta: 3ValorSol: 12880
-El algoritmo ha tardado 0.000259256 segundos.
+El algoritmo ha tardado 0.000244443 segundos.
 
 Vuelta: 4ValorSol: 12880
-El algoritmo ha tardado 0.000286852 segundos.
+El algoritmo ha tardado 0.000266653 segundos.
 
 Vuelta: 5ValorSol: 12880
-El algoritmo ha tardado 0.000255433 segundos.
+El algoritmo ha tardado 0.000244938 segundos.
 
 -------------------------------
 Caso Prueba 100000A
 
 Vuelta: 1ValorSol: 154919
-El algoritmo ha tardado 0.0417845 segundos.
+El algoritmo ha tardado 0.0410645 segundos.
 
 Vuelta: 2ValorSol: 154919
-El algoritmo ha tardado 0.0416027 segundos.
+El algoritmo ha tardado 0.0402031 segundos.
 
 Vuelta: 3ValorSol: 154919
-El algoritmo ha tardado 0.0407885 segundos.
+El algoritmo ha tardado 0.040214 segundos.
 
 Vuelta: 4ValorSol: 154919
-El algoritmo ha tardado 0.0463479 segundos.
+El algoritmo ha tardado 0.0518382 segundos.
 
 Vuelta: 5ValorSol: 154919
-El algoritmo ha tardado 0.042202 segundos.
+El algoritmo ha tardado 0.0426802 segundos.
 
 -------------------------------
 Caso Prueba 100000B
 
 Vuelta: 1ValorSol: 160308
-El algoritmo ha tardado 0.0447019 segundos.
+El algoritmo ha tardado 0.0429207 segundos.
 
 Vuelta: 2ValorSol: 160308
-El algoritmo ha tardado 0.044881 segundos.
+El algoritmo ha tardado 0.0395976 segundos.
 
 Vuelta: 3ValorSol: 160308
-El algoritmo ha tardado 0.0498155 segundos.
+El algoritmo ha tardado 0.0419968 segundos.
 
 Vuelta: 4ValorSol: 160308
-El algoritmo ha tardado 0.0451648 segundos.
+El algoritmo ha tardado 0.0465641 segundos.
 
 Vuelta: 5ValorSol: 160308
-El algoritmo ha tardado 0.0426745 segundos.
+El algoritmo ha tardado 0.0443287 segundos.
 
 -------------------------------
 Caso Prueba 100000C
 
 Vuelta: 1ValorSol: 158040
-El algoritmo ha tardado 0.0503415 segundos.
+El algoritmo ha tardado 0.0470175 segundos.
 
 Vuelta: 2ValorSol: 158040
-El algoritmo ha tardado 0.0423932 segundos.
+El algoritmo ha tardado 0.0402492 segundos.
 
 Vuelta: 3ValorSol: 158040
-El algoritmo ha tardado 0.0506979 segundos.
+El algoritmo ha tardado 0.0468434 segundos.
 
 Vuelta: 4ValorSol: 158040
-El algoritmo ha tardado 0.0575754 segundos.
+El algoritmo ha tardado 0.0425787 segundos.
 
 Vuelta: 5ValorSol: 158040
-El algoritmo ha tardado 0.0450015 segundos.
+El algoritmo ha tardado 0.0373995 segundos.
+
+-------------------------------
+Caso Prueba 1000000A
+
+Vuelta: 1ValorSol: 716968
+El algoritmo ha tardado 0.441143 segundos.
+
+Vuelta: 2ValorSol: 716968
+El algoritmo ha tardado 0.43948 segundos.
+
+Vuelta: 3ValorSol: 716968
+El algoritmo ha tardado 0.450587 segundos.
+
+Vuelta: 4ValorSol: 716968
+El algoritmo ha tardado 0.441343 segundos.
+
+Vuelta: 5ValorSol: 716968
+El algoritmo ha tardado 0.445715 segundos.
+
+-------------------------------
+Caso Prueba 1000000B
+
+Vuelta: 1ValorSol: 715433
+El algoritmo ha tardado 0.438897 segundos.
+
+Vuelta: 2ValorSol: 715433
+El algoritmo ha tardado 0.43871 segundos.
+
+Vuelta: 3ValorSol: 715433
+El algoritmo ha tardado 0.438078 segundos.
+
+Vuelta: 4ValorSol: 715433
+El algoritmo ha tardado 0.437937 segundos.
+
+Vuelta: 5ValorSol: 715433
+El algoritmo ha tardado 0.443597 segundos.
+
+-------------------------------
+Caso Prueba 1000000C
+
+Vuelta: 1ValorSol: 719530
+El algoritmo ha tardado 0.437861 segundos.
+
+Vuelta: 2ValorSol: 719530
+El algoritmo ha tardado 0.436771 segundos.
+
+Vuelta: 3ValorSol: 719530
+El algoritmo ha tardado 0.438694 segundos.
+
+Vuelta: 4ValorSol: 719530
+El algoritmo ha tardado 0.455709 segundos.
+
+Vuelta: 5ValorSol: 719530
+El algoritmo ha tardado 0.466017 segundos.
 
 -------------------------------
 -----CASO PRUEBA PROG DIN-----
 Caso Prueba 1000A
 
 Vuelta: 1ValorSol: 11894.3
-El algoritmo ha tardado 0.0694067 segundos.
+El algoritmo ha tardado 0.0567945 segundos.
 
 Vuelta: 2ValorSol: 11894.3
-El algoritmo ha tardado 0.0653215 segundos.
+El algoritmo ha tardado 0.0529021 segundos.
 
 Vuelta: 3ValorSol: 11894.3
-El algoritmo ha tardado 0.0610496 segundos.
+El algoritmo ha tardado 0.0515075 segundos.
 
 Vuelta: 4ValorSol: 11894.3
-El algoritmo ha tardado 0.0572082 segundos.
+El algoritmo ha tardado 0.0494474 segundos.
 
 Vuelta: 5ValorSol: 11894.3
-El algoritmo ha tardado 0.0591217 segundos.
+El algoritmo ha tardado 0.0502609 segundos.
 
 -------------------------------
 Caso Prueba 1000B
 
 Vuelta: 1ValorSol: 13247.2
-El algoritmo ha tardado 0.0592942 segundos.
+El algoritmo ha tardado 0.0494917 segundos.
 
 Vuelta: 2ValorSol: 13247.2
-El algoritmo ha tardado 0.0588325 segundos.
+El algoritmo ha tardado 0.0495283 segundos.
 
 Vuelta: 3ValorSol: 13247.2
-El algoritmo ha tardado 0.0598743 segundos.
+El algoritmo ha tardado 0.0497972 segundos.
 
 Vuelta: 4ValorSol: 13247.2
-El algoritmo ha tardado 0.0597707 segundos.
+El algoritmo ha tardado 0.0529075 segundos.
 
 Vuelta: 5ValorSol: 13247.2
-El algoritmo ha tardado 0.0588514 segundos.
+El algoritmo ha tardado 0.0571309 segundos.
 
 -------------------------------
 Caso Prueba 1000C
 
 Vuelta: 1ValorSol: 12878
-El algoritmo ha tardado 0.0597048 segundos.
+El algoritmo ha tardado 0.0495315 segundos.
 
 Vuelta: 2ValorSol: 12878
-El algoritmo ha tardado 0.0646278 segundos.
+El algoritmo ha tardado 0.0492763 segundos.
 
 Vuelta: 3ValorSol: 12878
-El algoritmo ha tardado 0.063335 segundos.
+El algoritmo ha tardado 0.0521267 segundos.
 
 Vuelta: 4ValorSol: 12878
-El algoritmo ha tardado 0.0589296 segundos.
+El algoritmo ha tardado 0.0551241 segundos.
 
 Vuelta: 5ValorSol: 12878
-El algoritmo ha tardado 0.0594323 segundos.
+El algoritmo ha tardado 0.0502818 segundos.
 
 -------------------------------
 Caso Prueba 100000A
 
 Vuelta: 1ValorSol: 154919
-El algoritmo ha tardado 5.5955 segundos.
+El algoritmo ha tardado 5.37346 segundos.
 
 Vuelta: 2ValorSol: 154919
-El algoritmo ha tardado 5.60566 segundos.
+El algoritmo ha tardado 5.24564 segundos.
 
 Vuelta: 3ValorSol: 154919
-El algoritmo ha tardado 5.57831 segundos.
+El algoritmo ha tardado 5.24645 segundos.
 
 Vuelta: 4ValorSol: 154919
-El algoritmo ha tardado 5.66116 segundos.
+El algoritmo ha tardado 5.25432 segundos.
 
 Vuelta: 5ValorSol: 154919
-El algoritmo ha tardado 5.67392 segundos.
+El algoritmo ha tardado 5.29088 segundos.
 
 -------------------------------
 Caso Prueba 100000B
 
 Vuelta: 1ValorSol: 160308
-El algoritmo ha tardado 5.58396 segundos.
+El algoritmo ha tardado 5.25208 segundos.
 
 Vuelta: 2ValorSol: 160308
-El algoritmo ha tardado 5.64848 segundos.
+El algoritmo ha tardado 5.25827 segundos.
 
 Vuelta: 3ValorSol: 160308
-El algoritmo ha tardado 5.6303 segundos.
+El algoritmo ha tardado 5.25834 segundos.
 
 Vuelta: 4ValorSol: 160308
-El algoritmo ha tardado 5.52431 segundos.
+El algoritmo ha tardado 5.24831 segundos.
 
 Vuelta: 5ValorSol: 160308
-El algoritmo ha tardado 5.5166 segundos.
+El algoritmo ha tardado 5.24812 segundos.
 
 -------------------------------
 Caso Prueba 100000C
 
 Vuelta: 1ValorSol: 158040
-El algoritmo ha tardado 5.57371 segundos.
+El algoritmo ha tardado 5.25784 segundos.
 
 Vuelta: 2ValorSol: 158040
-El algoritmo ha tardado 5.58601 segundos.
+El algoritmo ha tardado 5.25807 segundos.
 
 Vuelta: 3ValorSol: 158040
-El algoritmo ha tardado 5.57088 segundos.
+El algoritmo ha tardado 5.2633 segundos.
 
 Vuelta: 4ValorSol: 158040
-El algoritmo ha tardado 5.64391 segundos.
+El algoritmo ha tardado 5.26578 segundos.
 
 Vuelta: 5ValorSol: 158040
-El algoritmo ha tardado 5.59471 segundos.
+El algoritmo ha tardado 5.25858 segundos.
 
 -------------------------------
 -----CASO PRUEBA RAM PODA-----
 Caso Prueba 1000A
 
 Vuelta: 1ValorSol: 11894.3
-El algoritmo ha tardado 0.00906068 segundos.
+El algoritmo ha tardado 0.00830399 segundos.
 
 Vuelta: 2ValorSol: 11894.3
-El algoritmo ha tardado 0.00914378 segundos.
+El algoritmo ha tardado 0.0083286 segundos.
 
 Vuelta: 3ValorSol: 11894.3
-El algoritmo ha tardado 0.00892454 segundos.
+El algoritmo ha tardado 0.00828829 segundos.
 
 Vuelta: 4ValorSol: 11894.3
-El algoritmo ha tardado 0.00886213 segundos.
+El algoritmo ha tardado 0.00832558 segundos.
 
 Vuelta: 5ValorSol: 11894.3
-El algoritmo ha tardado 0.00869378 segundos.
+El algoritmo ha tardado 0.0082991 segundos.
 
 -------------------------------
 Caso Prueba 1000B
 
 Vuelta: 1ValorSol: 13247.2
-El algoritmo ha tardado 0.00760976 segundos.
+El algoritmo ha tardado 0.00705418 segundos.
 
 Vuelta: 2ValorSol: 13247.2
-El algoritmo ha tardado 0.00736899 segundos.
+El algoritmo ha tardado 0.00707042 segundos.
 
 Vuelta: 3ValorSol: 13247.2
-El algoritmo ha tardado 0.00781772 segundos.
+El algoritmo ha tardado 0.00701855 segundos.
 
 Vuelta: 4ValorSol: 13247.2
-El algoritmo ha tardado 0.00750841 segundos.
+El algoritmo ha tardado 0.00703812 segundos.
 
 Vuelta: 5ValorSol: 13247.2
-El algoritmo ha tardado 0.00754108 segundos.
+El algoritmo ha tardado 0.00706513 segundos.
 
 -------------------------------
 Caso Prueba 1000C
 
 Vuelta: 1ValorSol: 12878
-El algoritmo ha tardado 0.0153011 segundos.
+El algoritmo ha tardado 0.0144457 segundos.
 
 Vuelta: 2ValorSol: 12878
-El algoritmo ha tardado 0.0154677 segundos.
+El algoritmo ha tardado 0.0144039 segundos.
 
 Vuelta: 3ValorSol: 12878
-El algoritmo ha tardado 0.0153189 segundos.
+El algoritmo ha tardado 0.0145462 segundos.
 
 Vuelta: 4ValorSol: 12878
-El algoritmo ha tardado 0.0151667 segundos.
+El algoritmo ha tardado 0.0144883 segundos.
 
 Vuelta: 5ValorSol: 12878
-El algoritmo ha tardado 0.014854 segundos.
+El algoritmo ha tardado 0.0144518 segundos.
 
 -------------------------------
 Caso Prueba 100000A
 
 Vuelta: 1ValorSol: 154919
-El algoritmo ha tardado 0.555608 segundos.
+El algoritmo ha tardado 0.526553 segundos.
 
 Vuelta: 2ValorSol: 154919
-El algoritmo ha tardado 0.566277 segundos.
+El algoritmo ha tardado 0.509281 segundos.
 
 Vuelta: 3ValorSol: 154919
-El algoritmo ha tardado 0.559448 segundos.
+El algoritmo ha tardado 0.509218 segundos.
 
 Vuelta: 4ValorSol: 154919
-El algoritmo ha tardado 0.572964 segundos.
+El algoritmo ha tardado 0.520795 segundos.
 
 Vuelta: 5ValorSol: 154919
-El algoritmo ha tardado 0.563777 segundos.
+El algoritmo ha tardado 0.520827 segundos.
 
 -------------------------------
 Caso Prueba 100000B
 
 Vuelta: 1ValorSol: 160308
-El algoritmo ha tardado 0.558169 segundos.
+El algoritmo ha tardado 0.528937 segundos.
 
 Vuelta: 2ValorSol: 160308
-El algoritmo ha tardado 0.577563 segundos.
+El algoritmo ha tardado 0.528514 segundos.
 
 Vuelta: 3ValorSol: 160308
-El algoritmo ha tardado 0.556777 segundos.
+El algoritmo ha tardado 0.527728 segundos.
 
 Vuelta: 4ValorSol: 160308
-El algoritmo ha tardado 0.555542 segundos.
+El algoritmo ha tardado 0.528223 segundos.
 
 Vuelta: 5ValorSol: 160308
-El algoritmo ha tardado 0.55588 segundos.
+El algoritmo ha tardado 0.52891 segundos.
 
 -------------------------------
 Caso Prueba 100000C
 
 Vuelta: 1ValorSol: 158040
-El algoritmo ha tardado 0.5481 segundos.
+El algoritmo ha tardado 0.523101 segundos.
 
 Vuelta: 2ValorSol: 158040
-El algoritmo ha tardado 0.546802 segundos.
+El algoritmo ha tardado 0.510976 segundos.
 
 Vuelta: 3ValorSol: 158040
-El algoritmo ha tardado 0.554637 segundos.
+El algoritmo ha tardado 0.509006 segundos.
 
 Vuelta: 4ValorSol: 158040
-El algoritmo ha tardado 0.547864 segundos.
+El algoritmo ha tardado 0.508797 segundos.
 
 Vuelta: 5ValorSol: 158040
-El algoritmo ha tardado 0.552434 segundos.
+El algoritmo ha tardado 0.508675 segundos.
+
+-------------------------------
+Caso Prueba 1000000A
+
+Vuelta: 1ValorSol: 716968
+El algoritmo ha tardado 17.3997 segundos.
+
+Vuelta: 2ValorSol: 716968
+El algoritmo ha tardado 17.4682 segundos.
+
+Vuelta: 3ValorSol: 716968
+El algoritmo ha tardado 17.4364 segundos.
+
+Vuelta: 4ValorSol: 716968
+El algoritmo ha tardado 17.4397 segundos.
+
+Vuelta: 5ValorSol: 716968
+El algoritmo ha tardado 17.4338 segundos.
+
+-------------------------------
+Caso Prueba 1000000B
+
+Vuelta: 1ValorSol: 715433
+El algoritmo ha tardado 17.2723 segundos.
+
+Vuelta: 2ValorSol: 715433
+El algoritmo ha tardado 17.2741 segundos.
+
+Vuelta: 3ValorSol: 715433
+El algoritmo ha tardado 17.2893 segundos.
+
+Vuelta: 4ValorSol: 715433
+El algoritmo ha tardado 17.384 segundos.
+
+Vuelta: 5ValorSol: 715433
+El algoritmo ha tardado 17.4002 segundos.
+
+-------------------------------
+Caso Prueba 1000000C
+
+Vuelta: 1ValorSol: 719530
+El algoritmo ha tardado 17.3583 segundos.
+
+Vuelta: 2ValorSol: 719530
+El algoritmo ha tardado 17.3655 segundos.
+
+Vuelta: 3ValorSol: 719530
+El algoritmo ha tardado 17.3561 segundos.
+
+Vuelta: 4ValorSol: 719530
+El algoritmo ha tardado 17.3399 segundos.
+
+Vuelta: 5ValorSol: 719530
+El algoritmo ha tardado 17.3232 segundos.
 
 -------------------------------
 -----CASO PRUEBA GENETICO-----
 Caso Prueba 1000A
 
-Vuelta: 1ValorSol: 6644.14
-El algoritmo ha tardado 1.64445 segundos.
+Vuelta: 1ValorSol: 5764.47
+El algoritmo ha tardado 1.16997 segundos.
 
-Vuelta: 2ValorSol: 5378.59
-El algoritmo ha tardado 0.647452 segundos.
+Vuelta: 2ValorSol: 6495.53
+El algoritmo ha tardado 1.5944 segundos.
 
-Vuelta: 3ValorSol: 5975.88
-El algoritmo ha tardado 1.34538 segundos.
+Vuelta: 3ValorSol: 6472.72
+El algoritmo ha tardado 1.57276 segundos.
 
-Vuelta: 4ValorSol: 6366.78
-El algoritmo ha tardado 1.34765 segundos.
+Vuelta: 4ValorSol: 6078.09
+El algoritmo ha tardado 1.61283 segundos.
 
-Vuelta: 5ValorSol: 5790.55
-El algoritmo ha tardado 0.875211 segundos.
+Vuelta: 5ValorSol: 6222.86
+El algoritmo ha tardado 1.07231 segundos.
 
 -------------------------------
 Caso Prueba 1000B
 
-Vuelta: 1ValorSol: 6264.51
-El algoritmo ha tardado 1.00311 segundos.
+Vuelta: 1ValorSol: 7765.15
+El algoritmo ha tardado 2.12079 segundos.
 
-Vuelta: 2ValorSol: 6905.14
-El algoritmo ha tardado 1.81833 segundos.
+Vuelta: 2ValorSol: 8063.08
+El algoritmo ha tardado 2.66731 segundos.
 
-Vuelta: 3ValorSol: 6476.63
-El algoritmo ha tardado 1.2916 segundos.
+Vuelta: 3ValorSol: 8030.65
+El algoritmo ha tardado 2.07825 segundos.
 
-Vuelta: 4ValorSol: 6109.37
-El algoritmo ha tardado 0.96649 segundos.
+Vuelta: 4ValorSol: 6942.78
+El algoritmo ha tardado 1.29964 segundos.
 
-Vuelta: 5ValorSol: 6584.37
-El algoritmo ha tardado 1.36758 segundos.
+Vuelta: 5ValorSol: 7606.13
+El algoritmo ha tardado 1.80356 segundos.
 
 -------------------------------
 Caso Prueba 1000C
 
-Vuelta: 1ValorSol: 6815.48
-El algoritmo ha tardado 1.39891 segundos.
+Vuelta: 1ValorSol: 6689.46
+El algoritmo ha tardado 1.26314 segundos.
 
-Vuelta: 2ValorSol: 7019.9
-El algoritmo ha tardado 1.9874 segundos.
+Vuelta: 2ValorSol: 6546.82
+El algoritmo ha tardado 1.93528 segundos.
 
-Vuelta: 3ValorSol: 7066.11
-El algoritmo ha tardado 1.62216 segundos.
+Vuelta: 3ValorSol: 6976.87
+El algoritmo ha tardado 1.57683 segundos.
 
-Vuelta: 4ValorSol: 7566.61
-El algoritmo ha tardado 1.4539 segundos.
+Vuelta: 4ValorSol: 6202.73
+El algoritmo ha tardado 0.924147 segundos.
 
-Vuelta: 5ValorSol: 5953.15
-El algoritmo ha tardado 0.839692 segundos.
+Vuelta: 5ValorSol: 6558.78
+El algoritmo ha tardado 1.53916 segundos.
 
 -------------------------------
-Los casos de prueba han tardado 115.418 segundos.
+Los casos de prueba han tardado 391.766 segundos.
 
 
 Process finished with exit code 0
+

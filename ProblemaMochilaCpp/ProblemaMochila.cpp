@@ -283,7 +283,7 @@ const double PROB_CRUCE = 0.85;
 const double PROB_ELITISMO = 0.1;
 const double PROB_1CUARTIL = 0.5;
 const double PROB_2CUARTIL = 0.8;
-const double PROB_3CUARTIL = 1;
+const double PROB_3CUARTIL = 0.95;
 
 /**
  * Calcula la aptitud de un cromosoma. Tomamos la aptitud de cada cromosoma
@@ -658,7 +658,7 @@ void leeCasoPruebaMochilaInt(std::string nombreFichero, int &M,
 //Main-----------------------------------------------------------------------
 
 const std::string NOMBRE_FICHERO = "pruebaReal2.txt";
-const int N_OBJETOS = 1000;
+const int N_OBJETOS = 1000000;
 const double MAX_PESO_OBJETO = 100;
 const double MAX_VALOR_OBJETO = 100;
 const double MAX_MOCHILA = 2500;
@@ -683,7 +683,17 @@ nombreFichero, const int nIt);
 
 int main() {
     srand((unsigned int) time(NULL));
-
+/*
+    generaCasoPruebaMochilaInt("CasoPruebaInt1000000A.txt", N_OBJETOS,
+                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
+                               MAX_MOCHILA);
+    generaCasoPruebaMochilaInt("CasoPruebaInt1000000B.txt", N_OBJETOS,
+                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
+                               MAX_MOCHILA);
+    generaCasoPruebaMochilaInt("CasoPruebaInt1000000C.txt", N_OBJETOS,
+                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
+                               MAX_MOCHILA);
+*/
     auto t1 = std::chrono::steady_clock::now();
 
     casoPruebaVoraz();
@@ -703,28 +713,39 @@ int main() {
 
 void casoPruebaVoraz() {
     std::cout << "-----CASO PRUEBA VORAZ-----\n";
+
     casoPruebaVoraz("Caso Prueba 1000A", "CasoPruebaInt1000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaVoraz("Caso Prueba 1000B", "CasoPruebaInt1000B",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaVoraz("Caso Prueba 1000C", "CasoPruebaInt1000C",
                     NUM_IT_CASO_PRUEBA);
+
     casoPruebaVoraz("Caso Prueba 100000A", "CasoPruebaInt100000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaVoraz("Caso Prueba 100000B", "CasoPruebaInt100000B",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaVoraz("Caso Prueba 100000C", "CasoPruebaInt100000C",
                     NUM_IT_CASO_PRUEBA);
+
+    casoPruebaVoraz("Caso Prueba 1000000A", "CasoPruebaInt1000000A",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 1000000B", "CasoPruebaInt1000000B",
+                    NUM_IT_CASO_PRUEBA);
+    casoPruebaVoraz("Caso Prueba 1000000C", "CasoPruebaInt1000000C",
+                    NUM_IT_CASO_PRUEBA);
 }
 
 void casoPruebaProgDin() {
     std::cout << "-----CASO PRUEBA PROG DIN-----\n";
+
     casoPruebaProgDin("Caso Prueba 1000A", "CasoPruebaInt1000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaProgDin("Caso Prueba 1000B", "CasoPruebaInt1000B",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaProgDin("Caso Prueba 1000C", "CasoPruebaInt1000C",
                     NUM_IT_CASO_PRUEBA);
+
     casoPruebaProgDin("Caso Prueba 100000A", "CasoPruebaInt100000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaProgDin("Caso Prueba 100000B", "CasoPruebaInt100000B",
@@ -735,22 +756,32 @@ void casoPruebaProgDin() {
 
 void casoPruebaRamPoda() {
     std::cout << "-----CASO PRUEBA RAM PODA-----\n";
+
     casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaInt1000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaInt1000B",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaInt1000C",
                     NUM_IT_CASO_PRUEBA);
+
     casoPruebaRamPoda("Caso Prueba 100000A", "CasoPruebaInt100000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaRamPoda("Caso Prueba 100000B", "CasoPruebaInt100000B",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaRamPoda("Caso Prueba 100000C", "CasoPruebaInt100000C",
                     NUM_IT_CASO_PRUEBA);
+
+    casoPruebaRamPoda("Caso Prueba 1000000A", "CasoPruebaInt1000000A",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 1000000B", "CasoPruebaInt1000000B",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 1000000C", "CasoPruebaInt1000000C",
+                      NUM_IT_CASO_PRUEBA);
 }
 
 void casoPruebaGenetico() {
     std::cout << "-----CASO PRUEBA GENETICO-----\n";
+
     casoPruebaGenetico("Caso Prueba 1000A", "CasoPruebaInt1000A",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaGenetico("Caso Prueba 1000B", "CasoPruebaInt1000B",
