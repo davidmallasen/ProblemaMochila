@@ -3,7 +3,7 @@
 %Esto es para poder escribir acentos directamente:
 \usepackage[latin1]{inputenc}
 %Esto es para que el LaTeX sepa que el texto está en español:
-\usepackage[spanish]{babel}
+\usepackage[spanish, es-tabla]{babel}
 
 %Paquetes de la AMS:
 \usepackage{amsmath}
@@ -15,6 +15,12 @@
 
 %Hipervinculos
 \usepackage{hyperref}
+
+%Tablas
+%Creadas en http://www.tablesgenerator.com
+\usepackage{tabu}
+\usepackage{multirow}
+\usepackage{float}
 
 %Para añadir código
 \usepackage{listings}
@@ -80,9 +86,22 @@ El caso en el que todos los objetos caben juntos en la mochila no tiene mucho in
 
 Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la variante en que los objetos se pueden fraccionar, es decir, $x_i \in [0, 1]$. En este caso siempre obtendremos una solución óptima, lo demostraremos en \ref{sec:demOptVoraz}, en la que $\sum_{i=1}^{n} p_i x_i = M$.
 
-\subsection{Desarrollo de los casos de prueba}
+\subsection{Desarrollo de los casos de prueba} \label{sec:desCasosPrueba}
 
-Incluir breve explicación sobre cómo se desarrollarán los casos de prueba. Inicialización de los valores, tamaño de los casos, cómputo de los tiempos y código de las llamadas.
+A la hora de evaluar los algoritmos generaremos ficheros donde guardar los casos de prueba que vayamos a ejecutar y posteriormente los ejecutaremos calculando el tiempo que tardan y comprobando la solución.\\
+
+Para generar los casos de prueba lo haremos de manera aleatoria. Generaremos un número de objetos a los cuales les limitaremos el peso y valor para evitar desbordamientos en casos muy grandes. Además se guardará también el peso máximo de la mochila y el numero de objetos. Incluimos a continuación el código para generar un caso de prueba donde los pesos de los objetos y el tamaño máximo de la mochila son números reales. El caso en que estos números sean enteros es análogo.
+
+\lstinputlisting[firstline=558, lastline=588]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+Posteriormente leeremos los ficheros que hemos generado, guardando los objetos y los valores del caso en las estructuras que utilizaremos para llamar al algoritmo. El código en el caso de construir objetos con pesos reales es el siguiente: 
+
+\lstinputlisting[firstline=609, lastline=636]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
+Finalmente ejecutaremos el algoritmo en cuestión varias veces para evitar las pequeñas variaciones de los tiempos, ajenas a los algoritmos, entre unas ejecuciones y otras. Devolveremos por pantalla el valor de la solución y el tiempo transcurrido. El código para ejecutar un caso de prueba sobre el algoritmo voraz lo incluimos a continuación.
+
+\lstinputlisting[firstline=773, lastline=809]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+
 
 \section{Implementación de los algoritmos}
 
@@ -120,7 +139,7 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=31, lastline=70]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=33, lastline=73]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
@@ -159,7 +178,7 @@ Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución ha
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=74, lastline=119]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=77, lastline=122]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
@@ -180,7 +199,7 @@ A la hora de resolver el problema desde el punto de vista de la programación din
 
 A partir de esto seguiremos el esquema optimista/pesimista. La cola de prioridad donde iremos introduciendo los nodos será de máximos y tomaremos como prioridad el valor óptimo que calculemos. Así, la estructura de cada nodo será la siguiente: 
 
-\lstinputlisting[firstline=123, lastline=132]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=126, lastline=135]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Para el nodo $X$ se cumplirá: \[valorOpt(X) \geq valorFinal(X) \geq valorPes(X)\]
 donde $valorFinal(X)$ será el valor que tendrá la mochila en la mejor solución alcanzable desde $X$. Además, para cualquier solución $Y$ a la que podamos llegar desde $X$ se cumple que: \[valorOpt(X) \geq valorFinal(X) \geq valor(Y)\]
@@ -191,7 +210,7 @@ Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochi
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=134, lastline=249]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=137, lastline=252]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
@@ -205,35 +224,35 @@ En este apartado implementaremos un algoritmo genético para resolver el problema
 
 Veamos las estructuras y las funciones que hemos utilizado a la hora de implementar el algoritmo genético. Representaremos cada solución como un cromosoma que contendrá el vector de soluciones y su valor asociado. Como estamos tratando de maximizar el valor de la mochila, un cromosoma será mejor que otro si su valor es mayor. Más adelante necesitaremos también ordenar toda la población y lo haremos mediante un vector auxiliar de índices así que implementamos también una estructura comparadora.
 
-\lstinputlisting[firstline=253, lastline=272]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=256, lastline=275]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de los objetos que tiene. Como tenemos que tener en cuenta la restricción de que el total de los pesos de la mochila no puede superar el peso máximo $M$, será aquí donde impongamos esto. Si una solución de las que hemos obtenido al inicio o después de un cruce o mutación supera en peso a $M$, iremos quitando objetos de manera aleatoria hasta que cumplamos dicha condición. Para inicializar la población lo haremos de manera aleatoria.
 
-\lstinputlisting[firstline=283, lastline=334]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=288, lastline=339]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.\\
 
 Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar un cromosoma más de una vez.
 
-\lstinputlisting[firstline=336, lastline=377]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=341, lastline=384]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas, y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información a partir de dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria de 1 a 3 elementos (si antes un objeto se cogía ahora no y viceversa).
+Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas, y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información hasta dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria un porcentaje de sus elementos (si antes un objeto se cogía ahora no y viceversa).
 
-\lstinputlisting[firstline=379, lastline=426]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=386, lastline=432]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Como condición de terminación iremos comprobando si se ha mejorado la mejor solución que teníamos hasta el momento o la media de la población en alguna de las últimas generaciones. Si se ha mejorado alguna de ambas se seguirá con la ejecución y sino terminará. Añadiremos también un máximo de generaciones tras las cuales el algoritmo se detendrá aunque no se cumpla la condición anterior.
 
-\lstinputlisting[firstline=428, lastline=461]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=434, lastline=466]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Utilizaremos una función auxiliar para actualizar los valores de la mejor solución que tenemos y las medias que usamos en la condición de parada.
 
-\lstinputlisting[firstline=463, lastline=503]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=468, lastline=506]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Finalmente nuestro programa principal será el encargado de inicializar la población e ir evolucionando las sucesivas generaciones hasta que se cumpla la condición de terminación. Devolverá como parámetro el mejor valor que hayamos encontrado en todas las generaciones y los objetos que componían la mochila para ese valor.
 
 \subsubsection{Código}
 
-\lstinputlisting[firstline=505, lastline=552]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=508, lastline=554]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 \subsubsection{Análisis de costes}
 
@@ -243,7 +262,102 @@ En cuanto al coste en tiempo, se trata de un algoritmo heurístico que en el caso
 
 \section{Comparación}
 
-Comparativa de tiempos en las ejecuciones de los distintos algoritmos. Analizar diferencias entre programación dinámica y ramificación y poda. Ver que el voraz es mucho más rápido y justificar lo bueno, o no, que puede llegar a ser el algoritmo genético según los resultados.
+Comparativa de tiempos en las ejecuciones de los distintos algoritmos. Analizar diferencias entre programación dinámica y ramificación y poda. Ver que el voraz es mucho más rápido y justificar lo bueno, o no, que puede llegar a ser el algoritmo genético según los resultados.\\
+
+Comparemos ahora los distintos algoritmos que hemos implementado ejecutando una batería de casos de prueba según hemos construido en el apartado \ref{sec:desCasosPrueba}. Construiremos tres casos de prueba para cada número de objetos y los ejecutaremos 3 veces cada uno con los distintos algoritmos, salvo en el caso del algoritmo genético. Para este algoritmo, con el fin de poder estudiar mejor su comportamiento, ejecutaremos cada caso 10 veces. El peso y el valor máximo de cada objeto será 100 y el peso máximo soportado por la mochila será 2500. Estos valores son completamente arbitrarios ya que, salvo casos extremos, el comportamiento de los algoritmos es independiente de estos factores y la relación entre ellos.\\
+
+Generaremos casos de 1000, 100000 y 1000000 objetos. Probaremos el algoritmo voraz con las tres cantidades, los algoritmos de ramificación y poda y programación dinámica solo con 1000 y 100000 objetos y el algoritmo genético solo con 1000 objetos. Estos números y el hecho de ejecutar los algoritmos solo para algunos tamaños de casos de prueba lo hemos deducido empíricamente viendo los tiempos que tardaba cada algoritmo.
+
+Mostramos a continuación en la tabla \ref{tab:casosPruebaVorYRamPodaR} los datos recopilados en las diferentes ejecuciones. Los tiempos que se muestran son la media de las tres ejecuciones de cada caso.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c|cc}
+		& \multicolumn{2}{c|}{\textbf{Voraz}} & \multicolumn{2}{c|}{\textbf{Ram. y Poda (Real)}} \\ \hline
+		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & \multicolumn{1}{c|}{Tiempo} & \multicolumn{1}{c|}{Valor} \\ \hline
+		1000A & 0,000249 & 12803,3 & \multicolumn{1}{c|}{0,0171} & \multicolumn{1}{c|}{12801} \\
+		1000B & 0,000262 & 12445,7 & \multicolumn{1}{c|}{0,0130} & \multicolumn{1}{c|}{12444,5} \\
+		1000C & 0,000252 & 12905,5 & \multicolumn{1}{c|}{0,0110} & \multicolumn{1}{c|}{12904,1} \\ \hline
+		100000A & 0,0422 & 128475 & \multicolumn{1}{c|}{38,6} & \multicolumn{1}{c|}{128474} \\
+		100000B & 0,0421 & 133659 & \multicolumn{1}{c|}{66,8} & \multicolumn{1}{c|}{133659} \\
+		100000C & 0,0423 & 129030 & \multicolumn{1}{c|}{33,8} & \multicolumn{1}{c|}{129029} \\ \hline
+		1000000A & 0,460 & 410797 &  &  \\
+		1000000B & 0,454 & 408655 &  &  \\
+		1000000C & 0,457 & 407775 &  &  \\ \cline{1-3}
+	\end{tabular}
+	\caption{Tiempos (en segundos) y valores de las ejecuciones de los distintos casos de prueba sobre los algoritmos voraz y ramificación y poda en su variante con números reales.}
+	\label{tab:casosPruebaVorYRamPodaR}
+\end{table}
+
+Observamos que, como era de esperar, el algoritmo voraz es el más rápido con diferencia e incluso tomando tamaños de 1000000 de elementos tarda menos de medio segundo. En comparación tenemos el algoritmo de ramificación y poda cuando trabaja con números reales (veremos a continuación por qué diferenciamos). Este algoritmo exponencial ya para el caso de 100000 de elementos tarda entre medio minuto y un minuto dependiendo del caso en particular. Esta diferencia considerable entre unos casos (el caso 100000A y 100000C) y otros (el 100000B) del mismo tamaño la podemos achacar a la cantidad de ramas que podrá podar el algoritmo en su ejecución.\\
+
+Si nos fijamos ahora en los valores que devuelven ambos algoritmos veremos como el valor del algoritmo voraz siempre será mayor o igual que el del algoritmo de ramificación y poda. Esto era esperable desde el planteamiento del problema para ambos casos ya que en el primero permitimos trocear los objetos y en el segundo no. Aún así, cabe destacar la poca diferencia que hay entre ambos valores. Esto se deberá a la forma de construir los casos de prueba, de forma aleatoria, ya que se pueden construir fácilmente casos pequeños donde esta diferencia sea muy grande.\\
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c|c|c|}
+		& \multicolumn{2}{c|}{\textbf{Ram. y Poda (Int)}} & \multicolumn{2}{c|}{\textbf{Prog. Din.}} \\ \hline
+		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & Tiempo & Valor \\ \hline
+		1000A & 0,0602 & 13165,8 & 0,0520 & 13165,8 \\
+		1000B & 0,0644 & 12972,5 & 0,0512 & 12972,5 \\
+		1000C & 0,0632 & 13647,5 & 0,0511 & 13647,5 \\ \hline
+		100000A & 5,6010 & 159232 & 5,4551 & 159232 \\
+		100000B & 5,5077 & 156013 & 5,4382 & 156013 \\
+		100000C & 5,5036 & 157786 & 5,4287 & 157786 \\ \hline
+	\end{tabular}
+	\caption{Tiempos (en segundos) y valores de las ejecuciones de los distintos casos de prueba sobre los algoritmos.}
+	\label{tab:casosRamPodaIYProgDin}
+\end{table}
+
+A la hora de comparar los dos algoritmos exponenciales, vemos que el de programación dinámica es sustancialmente más rápido que el de ramificación y poda cuando este último trabaja con números reales. Sorprendentemente, ejecutando este último algoritmo con números enteros en lugar de reales los tiempos bajan drásticamente como podemos ver en la comparación de la tabla \ref{tab:casosRamPodaIYProgDin}. Así vemos que en este caso ambos algoritmos tienen resultados sin diferencias notables entre uno y otro. Evidentemente, ambos algoritmos devuelven el mismo valor como resultado.\\
+
+Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000. 
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lcccc}
+		& \multicolumn{4}{c}{\textbf{Genético}} \\ \cline{2-5} 
+		\multicolumn{1}{l|}{} & \multicolumn{2}{c|}{Parámetros A} & \multicolumn{2}{c}{Parámetros B} \\ \hline
+		\multicolumn{1}{l|}{\textbf{Caso}} & \multicolumn{1}{c|}{Tiempo} & \multicolumn{1}{c|}{Valor} & \multicolumn{1}{c|}{Tiempo} & Valor \\ \hline
+		\multicolumn{1}{l|}{1000A} & \multicolumn{1}{c|}{1,3657} & \multicolumn{1}{c|}{6365,26} & \multicolumn{1}{c|}{4,1778} & 8404,04 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,8804} & \multicolumn{1}{c|}{5698,52} & \multicolumn{1}{c|}{4,8370} & 8083,7 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,5510} & \multicolumn{1}{c|}{7309,02} & \multicolumn{1}{c|}{5,8133} & 9103,2 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,8246} & \multicolumn{1}{c|}{5592,46} & \multicolumn{1}{c|}{3,2265} & 8385,36 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,6826} & \multicolumn{1}{c|}{6509,06} & \multicolumn{1}{c|}{4,2955} & 8745,99 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,5860} & \multicolumn{1}{c|}{6647,46} & \multicolumn{1}{c|}{6,2247} & 9080,07 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,3431} & \multicolumn{1}{c|}{6935,55} & \multicolumn{1}{c|}{1,6927} & 7163,77 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,9354} & \multicolumn{1}{c|}{6224,15} & \multicolumn{1}{c|}{2,3283} & 7437,2 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,6642} & \multicolumn{1}{c|}{6948,62} & \multicolumn{1}{c|}{5,4778} & 8840,18 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,3325} & \multicolumn{1}{c|}{4644,46} & \multicolumn{1}{c|}{4,2357} & 8303,36 \\ \hline
+		\multicolumn{1}{l|}{Media} & \multicolumn{1}{c|}{1,2165} & \multicolumn{1}{c|}{6287,456} & \multicolumn{1}{c|}{4,2309} & 8354,687 \\ \hline
+		& \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} \\ \hline
+		\multicolumn{1}{l|}{1000B} & \multicolumn{1}{c|}{1,7015} & \multicolumn{1}{c|}{7019,75} & \multicolumn{1}{c|}{5,9562} & 8004,94 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,4515} & \multicolumn{1}{c|}{4870,14} & \multicolumn{1}{c|}{5,5291} & 8201,76 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,2480} & \multicolumn{1}{c|}{6470,11} & \multicolumn{1}{c|}{4,4462} & 7746,2 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,9441} & \multicolumn{1}{c|}{5456,98} & \multicolumn{1}{c|}{5,2488} & 9069,21 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,7079} & \multicolumn{1}{c|}{6849,38} & \multicolumn{1}{c|}{2,6198} & 7443,36 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,6683} & \multicolumn{1}{c|}{7066,49} & \multicolumn{1}{c|}{6,8396} & 9391,17 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,6927} & \multicolumn{1}{c|}{6785,64} & \multicolumn{1}{c|}{2,9504} & 7626,07 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,7423} & \multicolumn{1}{c|}{5186,24} & \multicolumn{1}{c|}{3,5481} & 8588,01 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,4724} & \multicolumn{1}{c|}{6222,11} & \multicolumn{1}{c|}{4,2377} & 8088,93 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{2,8176} & \multicolumn{1}{c|}{7136,79} & \multicolumn{1}{c|}{4,7617} & 8474,92 \\ \hline
+		\multicolumn{1}{l|}{Media} & \multicolumn{1}{c|}{1,4446} & \multicolumn{1}{c|}{6306,363} & \multicolumn{1}{c|}{4,6137} & 8263,457 \\ \hline
+		& \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} \\ \hline
+		\multicolumn{1}{l|}{1000C} & \multicolumn{1}{c|}{1,6137} & \multicolumn{1}{c|}{6788,4} & \multicolumn{1}{c|}{3,3136} & 8592,67 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,6749} & \multicolumn{1}{c|}{7192,69} & \multicolumn{1}{c|}{2,9546} & 7163,36 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,9530} & \multicolumn{1}{c|}{5311,1} & \multicolumn{1}{c|}{2,1096} & 6864,59 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{2,6441} & \multicolumn{1}{c|}{8479,58} & \multicolumn{1}{c|}{3,6007} & 7977,89 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,9831} & \multicolumn{1}{c|}{7029,83} & \multicolumn{1}{c|}{2,7865} & 6779,97 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,8745} & \multicolumn{1}{c|}{6610,03} & \multicolumn{1}{c|}{7,1270} & 9328,72 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,9290} & \multicolumn{1}{c|}{7331,75} & \multicolumn{1}{c|}{5,3016} & 9095,04 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{0,7222} & \multicolumn{1}{c|}{5305,44} & \multicolumn{1}{c|}{5,3340} & 8846,7 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,3151} & \multicolumn{1}{c|}{6265,06} & \multicolumn{1}{c|}{7,0775} & 9920,19 \\
+		\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{1,8414} & \multicolumn{1}{c|}{7367,8} & \multicolumn{1}{c|}{4,6577} & 8702,84 \\ \hline
+		\multicolumn{1}{l|}{Media} & \multicolumn{1}{c|}{1,6551} & \multicolumn{1}{c|}{6768,168} & \multicolumn{1}{c|}{4,4263} & 8327,197
+	\end{tabular}
+	\caption{Tiempos (en segundos) y valores de las distintas ejecuciones de cada caso de prueba sobre el algoritmo genético en sus versiones con parámetros A y B.}
+	\label{tab:casosPruebaGen}
+\end{table}
 
 % Bibliografía.
 %-------------------------------------------------------

@@ -274,13 +274,13 @@ struct IndCompValor {
     }
 };
 
-const int MAX_GENERACIONES = 1000;
+const int MAX_GENERACIONES = 2000;
 const int TAM_POBL = 100;
-const int TAM_ULT = 10;
+const int TAM_ULT = 30;
 const double PROB_MUTACION = 0.05;
 const double PORC_MUTACION = 0.01;
-const double PROB_CRUCE = 0.85;
-const double PROB_ELITISMO = 0.1;
+const double PROB_CRUCE = 0.95;
+const double PROB_ELITISMO = 0.05;
 const double PROB_1CUARTIL = 0.5;
 const double PROB_2CUARTIL = 0.8;
 const double PROB_3CUARTIL = 0.95;
@@ -683,47 +683,17 @@ nombreFichero, const int nIt);
 
 int main() {
     srand((unsigned int) time(NULL));
-/*
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000A.txt", 1000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000B.txt", 1000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000C.txt", 1000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
 
-    generaCasoPruebaMochilaReal("CasoPruebaReal100000A.txt", 100000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal100000B.txt", 100000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal100000C.txt", 100000,
-                               MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                               MAX_MOCHILA);
-
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000000A.txt", 1000000,
-                                MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                                MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000000B.txt", 1000000,
-                                MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                                MAX_MOCHILA);
-    generaCasoPruebaMochilaReal("CasoPruebaReal1000000C.txt", 1000000,
-                                MAX_PESO_OBJETO, MAX_VALOR_OBJETO,
-                                MAX_MOCHILA);
-*/
     auto t1 = std::chrono::steady_clock::now();
 
-    casoPruebaVoraz();
-    casoPruebaProgDin();
+    //casoPruebaVoraz();
+    //casoPruebaProgDin();
     casoPruebaRamPoda();
-    casoPruebaGenetico();
+    //casoPruebaGenetico();
 
     auto t2 = std::chrono::steady_clock::now();
-    auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
-            t2 - t1);
+    auto time_span =
+          std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
     std::cout << "Los casos de prueba han tardado " << time_span.count()
               << " segundos.\n\n";
@@ -776,7 +746,7 @@ void casoPruebaProgDin() {
 
 void casoPruebaRamPoda() {
     std::cout << "-----CASO PRUEBA RAM PODA-----\n";
-
+/*
     casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaReal1000A.txt",
                     NUM_IT_CASO_PRUEBA);
     casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaReal1000B.txt",
@@ -784,12 +754,29 @@ void casoPruebaRamPoda() {
     casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaReal1000C.txt",
                     NUM_IT_CASO_PRUEBA);
 
-    casoPruebaRamPoda("Caso Prueba 100000A", "CasoPruebaReal100000A.txt",
-                    NUM_IT_CASO_PRUEBA);
-    casoPruebaRamPoda("Caso Prueba 100000B", "CasoPruebaReal100000B.txt",
-                    NUM_IT_CASO_PRUEBA);
-    casoPruebaRamPoda("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba Real 100000A",
+                      "CasoPruebaReal100000A.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba Real 100000B",
+                      "CasoPruebaReal100000B.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba Real 100000C",
+                      "CasoPruebaReal100000C.txt",
+                      NUM_IT_CASO_PRUEBA);
+*/
+    casoPruebaProgDin("Caso Prueba 1000A", "CasoPruebaInt1000A.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 1000B", "CasoPruebaInt1000B.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba 1000C", "CasoPruebaInt1000C.txt",
+                      NUM_IT_CASO_PRUEBA);
+
+    casoPruebaProgDin("Caso Prueba Int 100000A", "CasoPruebaInt100000A.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba Int 100000B", "CasoPruebaInt100000B.txt",
+                      NUM_IT_CASO_PRUEBA);
+    casoPruebaProgDin("Caso Prueba Int 100000C", "CasoPruebaInt100000C.txt",
+                      NUM_IT_CASO_PRUEBA);
 }
 
 void casoPruebaGenetico() {
@@ -800,13 +787,22 @@ void casoPruebaGenetico() {
     casoPruebaGenetico("Caso Prueba 1000C", "CasoPruebaReal1000C.txt", 10);
 }
 
+/**
+ * Ejecuta sobre el algoritmo voraz el caso de prueba casoPrueba contenido en
+ * el fichero nombreFichero un numero de veces dado por nIt. Muestra por
+ * pantalla el valor de la solucion obtenida por el algoritmo y el tiempo
+ * que ha tardado.
+ *
+ * @param casoPrueba Nombre del caso de prueba.
+ * @param nombreFichero Fichero de donde cargar el caso de prueba.
+ * @param nIt Numero de veces a ejecutar el algoritmo.
+ */
 void casoPruebaVoraz(std::string const &casoPrueba, std::string const &
 nombreFichero, const int nIt) {
     std::vector<ObjetoReal> objetos;
     double M;
     double valorSol;
 
-    //VORAZ
     std::cout << casoPrueba << "\n\n";
     for (int i = 1; i <= nIt; ++i) {
 
@@ -819,8 +815,8 @@ nombreFichero, const int nIt) {
         mochilaVoraz(objetos, M, solucion, valorSol);
 
         auto t2 = std::chrono::steady_clock::now();
-        auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
-                t2 - t1);
+        auto time_span =
+          std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()
@@ -835,7 +831,6 @@ nombreFichero, const int nIt) {
     int M;
     double valorSol;
 
-    //VORAZ
     std::cout << casoPrueba << "\n\n";
     for (int i = 1; i <= nIt; ++i) {
 
@@ -864,7 +859,6 @@ nombreFichero, const int nIt) {
     double M;
     double valorSol;
 
-    //VORAZ
     std::cout << casoPrueba << "\n\n";
     for (int i = 1; i <= nIt; ++i) {
 
@@ -893,7 +887,6 @@ nombreFichero, const int nIt) {
     double M;
     double valorSol;
 
-    //VORAZ
     std::cout << casoPrueba << "\n\n";
     for (int i = 1; i <= nIt; ++i) {
 
