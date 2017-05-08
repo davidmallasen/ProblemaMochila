@@ -37,7 +37,7 @@
 	numbers=left,
 	numberstyle=\tiny\color{mygray},
 	keywordstyle=\color{blue},
-	morekeywords={std, vector, sort, greater, size_t}
+	morekeywords={std, vector, sort, greater, size_t, ofstream, string}
 }
 
 %Definiciones
@@ -73,14 +73,14 @@
 
 \subsection{Descripción del problema y variantes}
 
-El problema de la mochila es un problema de optimización combinatoria, es decir, que busca la mejor solución entre un conjunto finito de posibles soluciones. Supondremos que tenemos una mochila con un peso limitado y que queremos llenarla con una serie de objetos dados por su peso y su valor. El objetivo del problema será maximizar el valor total de los objetos que metamos en la mochila sin exceder el peso máximo.\\
+El problema de la mochila es un problema de optimización combinatoria, es decir, que busca la mejor solución entre un conjunto finito de posibles soluciones. Supondremos que tenemos una mochila con un peso limitado y que queremos llenarla con una serie de objetos dados por su peso y su valor. El objetivo del problema será maximizar el valor total de los objetos que metamos en la mochila sin exceder el peso máximo de ésta.\\
 
-El problema de la mochila es uno de los 21 problemas NP-completos de Richard Karp, lista elaborada en 1972 y perteneciente a su trabajo \textit{Reducibility Among Combinatorial Problems}. Esto surgió como profundización del trabajo de Stephen Cook, quien en 1971 había demostrado uno de los resultados más importantes y pioneros de la complejidad computacional: la NP-completitud del Problema de satisfacibilidad booleana (SAT). El descubrimiento de Karp de que todos estos importantes problemas eran NP-completos motivó el estudio de la NP-completitud y de la indagación en la famosa pregunta de si $P=NP$.
+El problema de la mochila es uno de los 21 problemas NP-completos de Richard Karp, lista elaborada en 1972 y perteneciente a su trabajo \textit{Reducibility Among Combinatorial Problems}. Esto surgió como profundización del trabajo de Stephen Cook, quien en 1971 había demostrado uno de los resultados más importantes y pioneros de la complejidad computacional: la NP-completitud del Problema de satisfacibilidad booleana (SAT). El descubrimiento de Karp de que todos estos importantes problemas eran NP-completos, motivó el estudio de la NP-completitud y la indagación en la famosa pregunta de si $P=NP$.
 
 \subsubsection{Definición formal del problema}
 Supongamos que tenemos $n$ objetos numerados del $1$ al $n$, cada uno con un peso $p_i > 0$ y un valor $v_i > 0$ para cada $i \in \{1, \dots, n\}$. Tendremos también una mochila que soporta un peso máximo $M > 0$.\\
 
-Definimos la función indicadora $x_i \in \{0, 1\}$ que representará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$.\\
+Definimos la función indicadora $x_i \in \{0, 1\}$ que representará si se ha cogido el objeto $i$ ($x_i = 1$) o no ($x_i = 0$). El problema consiste en maximizar \[\sum_{i=1}^{n} v_i x_i\] con la restricción de $\sum_{i=1}^{n} p_i x_i < M$. La solución del problema vendrá dada por el conjunto de las $x_i$, de las cuales podremos obtener también el valor óptimo.\\
 
 El caso en el que todos los objetos caben juntos en la mochila no tiene mucho interés ya que la solución consistiría en añadirlos todos. Por tanto consideraremos el caso en el que $\sum_{i=1}^{n} p_i > M$.\\
 
@@ -90,17 +90,18 @@ Para el método voraz que veremos en la sección \ref{sec:voraz} tomaremos la vari
 
 A la hora de evaluar los algoritmos generaremos ficheros donde guardar los casos de prueba que vayamos a ejecutar y posteriormente los ejecutaremos calculando el tiempo que tardan y comprobando la solución.\\
 
-Para generar los casos de prueba lo haremos de manera aleatoria. Generaremos un número de objetos a los cuales les limitaremos el peso y valor para evitar desbordamientos en casos muy grandes. Además se guardará también el peso máximo de la mochila y el numero de objetos. Incluimos a continuación el código para generar un caso de prueba donde los pesos de los objetos y el tamaño máximo de la mochila son números reales. El caso en que estos números sean enteros es análogo.
+Para producir los casos de prueba lo haremos de manera aleatoria. Generaremos un número de objetos a los cuales les limitaremos el peso y valor para evitar desbordamientos en casos muy grandes. Además, se guardará también el peso máximo de la mochila y el número de objetos. Incluimos a continuación el código para generar un caso de prueba donde los pesos de los objetos y el tamaño máximo de la mochila son números reales. El caso en que estos números sean enteros es análogo.
 
 \lstinputlisting[firstline=558, lastline=588]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Posteriormente leeremos los ficheros que hemos generado, guardando los objetos y los valores del caso en las estructuras que utilizaremos para llamar al algoritmo. El código en el caso de construir objetos con pesos reales es el siguiente: 
+\ \\
+Posteriormente leeremos los ficheros que hemos generado, guardando los objetos y los valores del caso de prueba en las estructuras que utilizaremos para llamar al algoritmo. El código en el caso de construir objetos con pesos reales es el siguiente: 
 
 \lstinputlisting[firstline=609, lastline=636]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Finalmente ejecutaremos el algoritmo en cuestión varias veces para evitar las pequeñas variaciones de los tiempos, ajenas a los algoritmos, entre unas ejecuciones y otras. Devolveremos por pantalla el valor de la solución y el tiempo transcurrido. El código para ejecutar un caso de prueba sobre el algoritmo voraz lo incluimos a continuación.
+Finalmente ejecutaremos el algoritmo en cuestión varias veces para evitar las pequeñas variaciones de los tiempos, ajenas a los algoritmos, entre unas realizaciones y otras. Devolveremos por pantalla el valor de la solución y el tiempo transcurrido. El código para ejecutar un caso de prueba sobre el algoritmo voraz lo incluimos a continuación.
 
-\lstinputlisting[firstline=773, lastline=809]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
+\lstinputlisting[firstline=790, lastline=826]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 
 \section{Implementación de los algoritmos}
@@ -132,7 +133,7 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 \begin{split}
 	\sum_{i=1}^{n} v_i z_i &= \sum_{i=1}^{n} v_i y_i + v_k(z_k - y_k) - \sum_{i=k+1}^{n} v_i(y_i - z_i) = \\
 	& = \sum_{i=1}^{n} v_i y_i + \frac{v_k}{p_k}p_k(z_k - y_k) - \sum_{i=k+1}^{n} \frac{v_i}{p_i}p_i(y_i - z_i) \stackrel{\frac{v_k}{p_k} \geq \frac{v_i}{p_i} \implies -\frac{v_i}{p_i} \geq - \frac{v_k}{p_k}} \geq \\
-	& \geq \sum_{i=1}^{n} v_i y_i + (p_k(z_k - y_k) - \sum_{i=k+1}^{n} p_i(y_i - z_i)) \frac{v_k}{p_k} \overset{(*)}{=} \\
+	& \geq \sum_{i=1}^{n} v_i y_i + \frac{v_k}{p_k}[p_k(z_k - y_k) - \sum_{i=k+1}^{n} p_i(y_i - z_i)] \overset{(*)}{=} \\
 	& = \sum_{i=1}^{n} v_i y_i
 \end{split}
 \]
@@ -167,14 +168,14 @@ Y como función recursiva:
 \[
 mochila(i, j) = \twopartdef{mochila(i-1, j)}{p_i > j}{\max \{mochila(i-1, j), mochila(i-1, j-p_i)+v_i\}}{p_i \leq j}
 \]
-Así pues vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tomamos el máximo entre cogerlo y no cogerlo. Para ello recorremos la tabla por filas de forma ascendente (cada vez el intervalo $[0, i]$ es más grande) y cada fila la recorremos también de forma ascendente (cada vez la mochila soporta un peso mayor $j$ hasta llegar a $M$). De esta forma el valor que buscamos lo tendremos en la posición $(n, M)$.
+Así pues, vamos probando cada objeto y si no cabe no lo cogemos, pero si cabe tomamos el máximo entre cogerlo y no cogerlo. Para ello recorremos la tabla por filas de forma descendente (cada vez el intervalo $[0, i]$ es más grande) y cada fila la recorremos de izquierda a derecha (cada vez la mochila soporta un peso mayor $j$ hasta llegar a $M$). De esta forma el valor que buscamos lo tendremos en la posición $(n, M)$.
 
 \begin{figure}[h]
 \includegraphics[scale=0.5]{tablaProgDin}
 \centering
 \end{figure}
 
-Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución haremos el proceso inverso. Recorreremos las filas de forma descendente y para cada objeto comprobaremos si lo hemos cogido o no.
+Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución haremos el proceso inverso. Recorreremos las filas de forma ascendente empezando por $n$ y para cada objeto comprobaremos si lo hemos cogido o no.
 
 \subsubsection{Código}
 
@@ -182,7 +183,7 @@ Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución ha
 
 \subsubsection{Análisis de costes}
 
-Vemos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nxM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico, en realidad tenemos un coste exponencial con respecto al tamaño de los datos de entrada. Esto se debe a que $M$ es un número que representaremos en una cierta base $d$ y esta representación, $\log_d(M)$, es exponencial frente a $M$.
+Veamos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico, en realidad tenemos un coste exponencial con respecto al tamaño de los datos de entrada. Esto se debe a que $M$ es un número que representaremos en una cierta base $b$ y esta representación, $\log_b(M)$, es exponencial frente a $M$.
 
 \subsection{Ramificación y poda}
 
@@ -206,7 +207,7 @@ donde $valorFinal(X)$ será el valor que tendrá la mochila en la mejor solución a
 
 A la hora de calcular $valorOpt(X)$, como el problema es de maximización, tendremos que calcular una cota superior de la mejor solución alcanzable. Para ello utilizaremos el algoritmo voraz que resuelve el problema cuando los objetos se pueden partir. Como esa solución es óptima y tiene menos restricciones que la solución 0-1, no puede haber ninguna solución sin fraccionar objetos que sea mejor.\\
 
-Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochila todos los objetos que se pueda sobre los que todavía no hayamos decidido. Para ello los tomaremos en el orden del algoritmo voraz.
+Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochila todos los objetos que se pueda sobre los que todavía no hayamos decidido. Para ello los tomaremos en el orden de densidades del algoritmo voraz.
 
 \subsubsection{Código}
 
@@ -214,9 +215,9 @@ Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochi
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad y hay como mucho $2^{n-1}$ hojas. Luego el coste en memoria es también de $O(n2^n)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad y hay como mucho $2^{n-1}$ hojas en cada momento. Luego el coste en memoria es también de $O(n2^n)$.
 
-\subsection{Algoritmo genético}
+\subsection{Algoritmo genético} \label{sec:algGen}
 
 En este apartado implementaremos un algoritmo genético para resolver el problema de la mochila 0-1. Al tratarse de un algoritmo heurístico no se asegura una solución óptima aunque generalmente obtendremos una buena solución en un tiempo razonable.
 
@@ -226,13 +227,13 @@ Veamos las estructuras y las funciones que hemos utilizado a la hora de implemen
 
 \lstinputlisting[firstline=256, lastline=275]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de los objetos que tiene. Como tenemos que tener en cuenta la restricción de que el total de los pesos de la mochila no puede superar el peso máximo $M$, será aquí donde impongamos esto. Si una solución de las que hemos obtenido al inicio o después de un cruce o mutación supera en peso a $M$, iremos quitando objetos de manera aleatoria hasta que cumplamos dicha condición. Para inicializar la población lo haremos de manera aleatoria.
+A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de los objetos que tiene. Como tenemos que tener en cuenta la restricción de que el total de los pesos de la mochila no puede superar el peso máximo $M$, será aquí donde impongamos esto. Si una solución de las que hemos obtenido al inicio o después de un cruce o mutación supera en peso a $M$, iremos quitando objetos de manera aleatoria hasta que cumplamos dicha condición. Para inicializar la población lo haremos también de manera aleatoria.
 
 \lstinputlisting[firstline=288, lastline=339]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
 Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.\\
 
-Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar un cromosoma más de una vez.
+Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos, dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar cada cromosoma más de una vez.
 
 \lstinputlisting[firstline=341, lastline=384]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
@@ -240,7 +241,7 @@ Veamos como haremos los cruces y las mutaciones de los individuos seleccionados.
 
 \lstinputlisting[firstline=386, lastline=432]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Como condición de terminación iremos comprobando si se ha mejorado la mejor solución que teníamos hasta el momento o la media de la población en alguna de las últimas generaciones. Si se ha mejorado alguna de ambas se seguirá con la ejecución y sino terminará. Añadiremos también un máximo de generaciones tras las cuales el algoritmo se detendrá aunque no se cumpla la condición anterior.
+Como condición de terminación iremos comprobando si se ha mejorado la mejor solución que teníamos hasta el momento o la media de la población en alguna de las últimas generaciones. Si se ha mejorado alguna de ambas se seguirá con la ejecución y sino terminará. Añadiremos también un máximo de generaciones tras las cuales el algoritmo se detendrá aunque no se cumpla la condición anterior. Valoramos también el tomar como condición de terminación que la media de la población esté muy cerca del mejor valor. Sin embargo, tras probar ambas, nos decantamos por la primera ya que de esta segunda forma el algoritmo terminaba demasiado rápido aunque tomásemos diferencias muy pequeñas.
 
 \lstinputlisting[firstline=434, lastline=466]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
@@ -248,7 +249,7 @@ Utilizaremos una función auxiliar para actualizar los valores de la mejor soluci
 
 \lstinputlisting[firstline=468, lastline=506]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Finalmente nuestro programa principal será el encargado de inicializar la población e ir evolucionando las sucesivas generaciones hasta que se cumpla la condición de terminación. Devolverá como parámetro el mejor valor que hayamos encontrado en todas las generaciones y los objetos que componían la mochila para ese valor.
+Finalmente, nuestro programa principal será el encargado de inicializar la población e ir evolucionando las sucesivas generaciones hasta que se cumpla la condición de terminación. Devolverá como parámetro el mejor valor que hayamos encontrado en todas las generaciones y los objetos que componían la mochila para ese valor.
 
 \subsubsection{Código}
 
@@ -262,11 +263,9 @@ En cuanto al coste en tiempo, se trata de un algoritmo heurístico que en el caso
 
 \section{Comparación}
 
-Comparativa de tiempos en las ejecuciones de los distintos algoritmos. Analizar diferencias entre programación dinámica y ramificación y poda. Ver que el voraz es mucho más rápido y justificar lo bueno, o no, que puede llegar a ser el algoritmo genético según los resultados.\\
-
 Comparemos ahora los distintos algoritmos que hemos implementado ejecutando una batería de casos de prueba según hemos construido en el apartado \ref{sec:desCasosPrueba}. Construiremos tres casos de prueba para cada número de objetos y los ejecutaremos 3 veces cada uno con los distintos algoritmos, salvo en el caso del algoritmo genético. Para este algoritmo, con el fin de poder estudiar mejor su comportamiento, ejecutaremos cada caso 10 veces. El peso y el valor máximo de cada objeto será 100 y el peso máximo soportado por la mochila será 2500. Estos valores son completamente arbitrarios ya que, salvo casos extremos, el comportamiento de los algoritmos es independiente de estos factores y la relación entre ellos.\\
 
-Generaremos casos de 1000, 100000 y 1000000 objetos. Probaremos el algoritmo voraz con las tres cantidades, los algoritmos de ramificación y poda y programación dinámica solo con 1000 y 100000 objetos y el algoritmo genético solo con 1000 objetos. Estos números y el hecho de ejecutar los algoritmos solo para algunos tamaños de casos de prueba lo hemos deducido empíricamente viendo los tiempos que tardaba cada algoritmo.
+Generaremos casos de 1000, 100000 y 1000000 objetos. Probaremos el algoritmo voraz con las tres cantidades, los algoritmos de ramificación y poda y programación dinámica solo con 1000 y 100000 objetos y el algoritmo genético solo con 1000 objetos. Estos números y el hecho de ejecutar los algoritmos solo para algunos tamaños de casos de prueba lo hemos deducido empíricamente viendo los tiempos que tardaba cada algoritmo.\\
 
 Mostramos a continuación en la tabla \ref{tab:casosPruebaVorYRamPodaR} los datos recopilados en las diferentes ejecuciones. Los tiempos que se muestran son la media de las tres ejecuciones de cada caso.
 
@@ -309,9 +308,11 @@ Si nos fijamos ahora en los valores que devuelven ambos algoritmos veremos como 
 	\label{tab:casosRamPodaIYProgDin}
 \end{table}
 
-A la hora de comparar los dos algoritmos exponenciales, vemos que el de programación dinámica es sustancialmente más rápido que el de ramificación y poda cuando este último trabaja con números reales. Sorprendentemente, ejecutando este último algoritmo con números enteros en lugar de reales los tiempos bajan drásticamente como podemos ver en la comparación de la tabla \ref{tab:casosRamPodaIYProgDin}. Así vemos que en este caso ambos algoritmos tienen resultados sin diferencias notables entre uno y otro. Evidentemente, ambos algoritmos devuelven el mismo valor como resultado.\\
+A la hora de comparar los dos algoritmos exponenciales, vemos que el de programación dinámica es sustancialmente más rápido que el de ramificación y poda cuando este último trabaja con números reales. Sin embargo, sorprendentemente, si ejecutamos este último algoritmo con números enteros en lugar de reales, los tiempos bajan drásticamente como podemos ver en la comparación de la tabla \ref{tab:casosRamPodaIYProgDin}. Así, vemos que en este caso ambos algoritmos tienen resultados sin diferencias notables entre uno y otro. Evidentemente, ambos algoritmos devuelven el mismo valor como resultado.\\
 
-Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000. 
+Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000, así como las medias correspondientes para poder estimar mejor los resultados. Como se puede ver a simple vista, tanto los tiempos como los valores obtenidos distan mucho de lo que desearíamos. Aunque teóricamente este algoritmo es polinómico, en la práctica hemos comprobado que se comporta bastante peor que los algoritmos exponenciales que hemos estudiado. \\
+
+Variando los parámetros (probabilidades, iteraciones, etc.) asociados al algoritmo genético según se recoge en la tabla \ref{tab:paramGen}, conseguimos distintos tiempos y valores. Para obtener valores en torno al 50\% del resultado óptimo, el algoritmo tarda 1,5 segundos aproximadamente. Si ya buscamos una precisión del 75\%, el tiempo se dispara a 4,5 segundos. \\
 
 \begin{table}[H]
 	\centering
@@ -358,6 +359,28 @@ Finalmente nos falta por analizar el comportamiento del algoritmo genético. En l
 	\caption{Tiempos (en segundos) y valores de las distintas ejecuciones de cada caso de prueba sobre el algoritmo genético en sus versiones con parámetros A y B.}
 	\label{tab:casosPruebaGen}
 \end{table}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|c|c}
+		& \textbf{Parámetros A} & \textbf{Parámetros B} \\ \hline
+		\multicolumn{1}{c|}{\textbf{MAX\_GENERACIONES}} & 1000 & 2000 \\
+		\textbf{TAM\_POBL} & 100 & 100 \\
+		\textbf{TAM\_ULT} & 10 & 30 \\ \hline
+		\textbf{PROB\_MUTACION} & 0,05 & 0,05 \\
+		\textbf{PORC\_MUTACION} & 0,01 & 0,01 \\ \hline
+		\textbf{PROB\_CRUCE} & 0,85 & 0,95 \\
+		\textbf{PROB\_ELITISMO} & 0,1 & 0,05 \\ \hline
+		\textbf{PROB\_1CUARTIL} & 0,5 & 0,5 \\
+		\textbf{PROB\_2CUARTIL} & 0,8 & 0,8 \\
+		\textbf{PROB\_3CUARTIL} & 0,95 & 0,95
+	\end{tabular}
+	\caption{Parámetros para las dos ejecuciones del algoritmo genético. Los nombres se corresponden con los del código descrito en la sección \ref{sec:algGen}.}
+	\label{tab:paramGen}
+\end{table}
+
+Concluimos que, al contrario de lo que podría parecer en un principio, este algoritmo genético en particular no nos es útil para resolver el problema. Sin embargo, obtenemos tiempos muy razonables para cantidades grandes de objetos con los algoritmos exponenciales, además de hallar la solución óptima. Por lo tanto vemos que, entre los algoritmos que hemos estudiado, los más adecuados al problema de la mochila son
+estos últimos. Sin diferenciar entre programación dinámica y ramificación y poda salvo en el caso de escoger parámetros enteros o reales.
 
 % Bibliografía.
 %-------------------------------------------------------
