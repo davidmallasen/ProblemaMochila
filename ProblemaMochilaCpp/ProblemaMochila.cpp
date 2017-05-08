@@ -96,7 +96,7 @@ void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int M,
             (M + 1, 0));
 
     //Rellenamos la tabla
-    //objetos[i - 1] ya que mochila va de [1..n] y objetos va de [0, n)
+    //objetos[i - 1] ya que la tabla va de [1..n] y objetos va de [0, n)
     for (size_t i = 1; i <= n; ++i) {
         for (int j = 1; j <= M; ++j) {
             if (objetos[i - 1].peso > j)    //Si no cabe no lo cogemos
@@ -142,7 +142,7 @@ bool operator<(Nodo const &n1, Nodo const &n2) {
  * Coste: O(n-k), n = numero de objetos, k = indice por el que vamos.
  *
  * @param objetos Conjunto de objetos que tenemos disponibles.
- * @param d Vector ordenado en orden creciente de las densidades.
+ * @param d Vector ordenado en orden decreciente de las densidades.
  * @param M Peso maximo que soporta la mochila.
  * @param k Indice del objeto por el que vamos.
  * @param pesoAc Peso acumulado en la mochila.
@@ -506,7 +506,7 @@ void calcMejores(std::vector<Cromosoma> const &poblacion, std::deque<double>
 }
 
 /**
- * Resuelve el problema de la mochila O-1 mediante un algoritmo genetico. No
+ * Resuelve el problema de la mochila 0-1 mediante un algoritmo genetico. No
  * se asegura la solucion optima. Se suele obtener una solucion buena en un
  * tiempo razonable.
  *
@@ -558,16 +558,16 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
 /**
  * Genera un fichero de nombre nombreFichero con el tamanyo de la mochila
  * M y el numero de objetos nObjetos en la primera linea separados por un
- * espacio. Genera nObjetos aleatorios con la restriccion de que el peso y
+ * espacio. Produce nObjetos aleatorios con la restriccion de que el peso y
  * el valor esten en (0, maxPesoObjeto) o (0, maxValorObjeto).
  * Escribe los objetos a partir de la segunda linea. Cada linea de
- * objeto son dos numeros, peso y valor separados por un espacio.
+ * objeto son dos numeros, peso y valor, separados por un espacio.
  *
- * @param nombreFichero Nombre del fichero donde guardar los datos
- * @param nObjetos Numero de objetos a generar
- * @param maxPesoObjeto Peso maximo de cada objeto
- * @param maxValorObjeto Valor maximo de cada objeto
- * @param M Peso maximo soportado por la mochila
+ * @param nombreFichero Nombre del fichero donde guardar los datos.
+ * @param nObjetos Numero de objetos a generar.
+ * @param maxPesoObjeto Peso maximo de cada objeto.
+ * @param maxValorObjeto Valor maximo de cada objeto.
+ * @param M Peso maximo soportado por la mochila.
  */
 void generaCasoPruebaMochilaReal(std::string nombreFichero, int nObjetos,
                                  double maxPesoObjeto, double maxValorObjeto,
