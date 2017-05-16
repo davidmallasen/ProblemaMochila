@@ -788,7 +788,7 @@ void casoPruebaGenetico() {
 }
 
 /**
- * Ejecuta sobre el algoritmo voraz el caso de prueba casoPrueba contenido en
+ * Ejecuta el algoritmo voraz sobre el caso de prueba casoPrueba contenido en
  * el fichero nombreFichero un numero de veces dado por nIt. Muestra por
  * pantalla el valor de la solucion obtenida por el algoritmo y el tiempo
  * que ha tardado.

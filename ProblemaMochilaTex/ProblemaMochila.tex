@@ -144,7 +144,7 @@ Finalmente veamos que $Z$ también es óptima. Para ello, como $Y$ lo era, basta v
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log n)$, donde $n$ es el número de objetos, que viene dado por la ordenación de las densidades. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades pero como es del orden del tamaño de los datos obtenemos un coste en memoria de $O(1)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste medio $O(n \log n)$, donde $n$ es el número de objetos, que viene dado por la ordenación de las densidades. En el caso peor obtendremos un coste cuadrático $O(n^2)$, que viene dado también por la ordenación. Los dos bucles son de coste lineal y el resto de operaciones son constantes. En cuanto al espacio usamos un vector de tamaño $n$ para almacenar las densidades, luego obtenemos un coste en memoria de $O(n)$.
 
 \subsection{Programación dinámica}
 
@@ -183,7 +183,7 @@ Para calcular qué objetos hemos cogido una vez que hemos obtenido la solución ha
 
 \subsubsection{Análisis de costes}
 
-Veamos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico, en realidad tenemos un coste exponencial con respecto al tamaño de los datos de entrada. Esto se debe a que $M$ es un número que representaremos en una cierta base $b$ y esta representación, $\log_b(M)$, es exponencial frente a $M$.
+Veamos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos un coste $O(nM)$, donde $n$ es el numero de objetos. Esto lo obtenemos al recorrer la tabla (de tamaño $nM$) realizando operaciones constantes en cada posición. El coste de recuperar los objetos seleccionados será lineal en $n$ así que no empeora el orden que ya tenemos. En cuanto a la memoria tenemos un coste $O(nM)$ dado también por la tabla. Aunque pueda parecer que estamos ante un algoritmo polinómico, en realidad tenemos un coste exponencial con respecto al tamaño de los datos de entrada. Esto se debe a que $M$ es un número que representaremos en una cierta base $b$ y esta representación, $\log_b(M)$, es logarítmica frente a $M$. De aquí deducimos que $M$ es exponencial frente al tamaño de su representación.
 
 \subsection{Ramificación y poda}
 
@@ -237,7 +237,7 @@ Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente c
 
 \lstinputlisting[firstline=341, lastline=384]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
-Veamos como haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas, y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información hasta dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria un porcentaje de sus elementos (si antes un objeto se cogía ahora no y viceversa).
+Veamos có mo haremos los cruces y las mutaciones de los individuos seleccionados. Sólo se cruzarán un porcentaje, que tomaremos alto, de los cromosomas, y de esta manera algunos se transmitirán intactos a la siguiente generación. Para cruzar los cromosomas los iremos cogiendo por parejas, escogeremos un punto aleatorio de la cadena del cromosoma e intercambiaremos la información hasta dicho punto. Las mutaciones se harán sólo en un porcentaje muy bajo de los individuos. Si un cromosoma debe mutarse, invertiremos de forma aleatoria un porcentaje de sus elementos (si antes un objeto se cogía ahora no y viceversa).
 
 \lstinputlisting[firstline=386, lastline=432]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
