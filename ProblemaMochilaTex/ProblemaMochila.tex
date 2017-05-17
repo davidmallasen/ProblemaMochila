@@ -215,11 +215,13 @@ Para $valorPes(X)$ completaremos una posible solución. Incorporaremos a la mochi
 
 \subsubsection{Análisis de costes}
 
-Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad y hay como mucho $2^{n-1}$ hojas en cada momento. Luego el coste en memoria es también de $O(n2^n)$.
+Analizaremos ahora los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tendremos un coste en el caso peor $O(n2^n)$, donde $n$ es el número de objetos. Cada iteración del bucle tendrá un coste lineal en $n$ y el bucle se realizará en el caso peor $2^n$ veces. Esto lo podemos razonar desde la estructura de árbol binario que se va generando. Veremos más adelante en la sección \ref{sec:Comparacion} cómo afecta la poda al número de nodos explorados frente al número máximo de nodos que podremos tener. Se reducirá así el tiempo de ejecución del algoritmo tanto más cuanta más poda hagamos.\\ 
+
+En cuanto al coste en espacio tenemos un coste lineal en $n$ por cada nodo y a lo sumo $2^{n-1}$ nodos ya que cada vez vamos sacando uno de la cola de prioridad y hay como mucho $2^{n-1}$ hojas en cada momento. Luego el coste en memoria es también de $O(n2^n)$.
 
 \subsection{Algoritmo genético} \label{sec:algGen}
 
-En este apartado implementaremos un algoritmo genético para resolver el problema de la mochila 0-1. Al tratarse de un algoritmo heurístico no se asegura una solución óptima aunque generalmente obtendremos una buena solución en un tiempo razonable.
+Implementaremos ahora un algoritmo genético para resolver el problema de la mochila 0-1. Al tratarse de un algoritmo heurístico no se asegura una solución óptima aunque generalmente obtendremos una buena solución en un tiempo razonable. Las ideas expuestas en esta sección son mayoritariamente propias, salvo las referencias a \cite{hrist-shre04}. Los conocimientos previos para llegar al algoritmo vienen de un estudio anterior basado en \cite{micha95}, \cite{mitch99} y \cite{neap15} capítulo 10.
 
 \subsubsection{Descripción de la solución y código de las funciones}
 
@@ -233,7 +235,7 @@ A la hora de calcular la aptitud de un cromosoma calcularemos el valor total de 
 
 Estudiemos la elección de los cromosomas a cruzarse para obtener la siguiente generación. La idea básica detrás de lo que vamos a hacer es escoger con una probabilidad mayor los mejores cromosomas (para que el algoritmo converja más rápido), pero sin dejar de lado los menos aptos (para evitar converger en un mínimo local). Además utilizaremos elitismo, es decir, un porcentaje de los mejores cromosomas se cruzarán siempre. De esta forma nos aseguramos de que no perdemos los mejores candidatos que tenemos por el momento.\\
 
-Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos, dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar cada cromosoma más de una vez.
+Así, primero ordenaremos la población, luego aplicaremos elitismo y finalmente completaremos el conjunto de los cromosomas seleccionando de forma aleatoria. Para elegir con mayor probabilidad los mejores candidatos, dividiremos la población en cuatro intervalos y seleccionaremos de forma ponderada individuos de cada intervalo. Cabe destacar que se puede seleccionar cada cromosoma más de una vez. Estas ideas de selección y el elitismo pueden verse en \cite{hrist-shre04}.
 
 \lstinputlisting[firstline=341, lastline=384]{../ProblemaMochilaCpp/ProblemaMochila.cpp}
 
@@ -261,7 +263,7 @@ Analizaremos ahora los costes en tiempo y memoria del algoritmo. Veamos primero 
 
 En cuanto al coste en tiempo, se trata de un algoritmo heurístico que en el caso peor terminará cuando complete el máximo de generaciones. Luego llamando $n$ al numero de objetos, $m$ al tamaño que elijamos de la población y $g$ al número máximo de generaciones, obtendremos un coste $O(g\max\{nm, n\log n\})$. Justificamos el coste viendo que el bucle se ejecutará un máximo de $g$ veces y cada iteración tiene un coste $\max\{nm, n\log n\}$ dado por las funciones de cruce y selección respectivamente.
 
-\section{Comparación}
+\section{Comparación} \label{sec:Comparacion}
 
 Comparemos ahora los distintos algoritmos que hemos implementado ejecutando una batería de casos de prueba según hemos construido en el apartado \ref{sec:desCasosPrueba}. Construiremos tres casos de prueba para cada número de objetos y los ejecutaremos 3 veces cada uno con los distintos algoritmos, salvo en el caso del algoritmo genético. Para este algoritmo, con el fin de poder estudiar mejor su comportamiento, ejecutaremos cada caso 10 veces. El peso y el valor máximo de cada objeto será 100 y el peso máximo soportado por la mochila será 2500. Estos valores son completamente arbitrarios ya que, salvo casos extremos, el comportamiento de los algoritmos es independiente de estos factores y la relación entre ellos.\\
 
@@ -312,7 +314,7 @@ A la hora de comparar los dos algoritmos exponenciales, vemos que el de programa
 
 Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000, así como las medias correspondientes para poder estimar mejor los resultados. Como se puede ver a simple vista, tanto los tiempos como los valores obtenidos distan mucho de lo que desearíamos. Aunque teóricamente este algoritmo es polinómico, en la práctica hemos comprobado que se comporta bastante peor que los algoritmos exponenciales que hemos estudiado. \\
 
-Variando los parámetros (probabilidades, iteraciones, etc.) asociados al algoritmo genético según se recoge en la tabla \ref{tab:paramGen}, conseguimos distintos tiempos y valores. Para obtener valores en torno al 50\% del resultado óptimo, el algoritmo tarda 1,5 segundos aproximadamente. Si ya buscamos una precisión del 75\%, el tiempo se dispara a 4,5 segundos. \\
+Variando los parámetros (probabilidades, iteraciones, etc.) asociados al algoritmo genético según se recoge en la tabla \ref{tab:paramGen}, conseguimos distintos tiempos y valores. Los valores iniciales de referencia para el cruce, el elitismo y los diferentes cuartiles los tomamos de \cite{hrist-shre04}. Para obtener valores en torno al 50\% del resultado óptimo, el algoritmo tarda 1,5 segundos aproximadamente. Si ya buscamos una precisión del 75\%, el tiempo se dispara a 4,5 segundos. \\
 
 \begin{table}[H]
 	\centering

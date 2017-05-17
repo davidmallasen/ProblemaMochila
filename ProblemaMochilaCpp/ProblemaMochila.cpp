@@ -189,11 +189,13 @@ const &d, double M, int k, double pesoAc, double valorAc, double &opt,
  * @param valorMejor Valor de la mochila con los objetos dados por solMejor.
  */
 void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
-                    std::vector<bool> &solMejor, double &valorMejor) {
+                    std::vector<bool> &solMejor, double &valorMejor,
+                    long long int &nodosVisitados) {
     Nodo X, Y;
     std::priority_queue<Nodo> C;
     const size_t n = objetos.size();
     double pes;
+    nodosVisitados = 0;
 
     //Calculamos las densidades de cada objeto
     std::vector<Densidad> d(n);
@@ -216,6 +218,7 @@ void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
     C.push(Y);
     while (!C.empty() && C.top().valorOpt >= valorMejor) {
         Y = C.top();
+        nodosVisitados++;
         C.pop();
         X.k = Y.k + 1;
         X.sol = Y.sol;
@@ -274,16 +277,16 @@ struct IndCompValor {
     }
 };
 
-const int MAX_GENERACIONES = 2000;
-const int TAM_POBL = 100;
-const int TAM_ULT = 30;
-const double PROB_MUTACION = 0.05;
-const double PORC_MUTACION = 0.01;
-const double PROB_CRUCE = 0.95;
-const double PROB_ELITISMO = 0.05;
-const double PROB_1CUARTIL = 0.5;
-const double PROB_2CUARTIL = 0.8;
-const double PROB_3CUARTIL = 0.95;
+int MAX_GENERACIONES = 1000;
+int TAM_POBL = 100;
+int TAM_ULT = 10;
+double PROB_MUTACION = 0.05;
+double PORC_MUTACION = 0.01;
+double PROB_CRUCE = 0.85;
+double PROB_ELITISMO = 0.1;
+double PROB_1CUARTIL = 0.5;
+double PROB_2CUARTIL = 0.8;
+double PROB_3CUARTIL = 0.95;
 
 /**
  * Calcula la aptitud de un cromosoma. Tomamos la aptitud de cada cromosoma
@@ -663,7 +666,9 @@ const double MAX_PESO_OBJETO = 100;
 const double MAX_VALOR_OBJETO = 100;
 const double MAX_MOCHILA = 2500;
 
-const int NUM_IT_CASO_PRUEBA = 3;
+const int N_IT_CASO_PEQ = 3;
+const int N_IT_CASO_GR = 1;
+const int N_IT_GEN = 5;
 
 void casoPruebaVoraz();
 void casoPruebaVoraz(std::string const &casoPrueba, std::string const &
@@ -686,105 +691,215 @@ int main() {
 
     auto t1 = std::chrono::steady_clock::now();
 
-    //casoPruebaVoraz();
-    //casoPruebaProgDin();
+    casoPruebaVoraz();
+    casoPruebaProgDin();
     casoPruebaRamPoda();
-    //casoPruebaGenetico();
+    casoPruebaGenetico();
 
     auto t2 = std::chrono::steady_clock::now();
     auto time_span =
           std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
     std::cout << "Los casos de prueba han tardado " << time_span.count()
-              << " segundos.\n\n";
-
+              << " segundos.\n";
     return 0;
 }
 
 void casoPruebaVoraz() {
     std::cout << "-----CASO PRUEBA VORAZ-----\n";
-
+/*
     casoPruebaVoraz("Caso Prueba 1000A", "CasoPruebaReal1000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 1000B", "CasoPruebaReal1000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 1000C", "CasoPruebaReal1000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
 
     casoPruebaVoraz("Caso Prueba 100000A", "CasoPruebaReal100000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 100000B", "CasoPruebaReal100000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
 
     casoPruebaVoraz("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
     casoPruebaVoraz("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                    N_IT_CASO_PEQ);
+*/
+
+    casoPruebaVoraz("Caso Prueba 10000000A", "CasoPruebaReal10000000A.txt",
+                    N_IT_CASO_GR);
+    casoPruebaVoraz("Caso Prueba 10000000B", "CasoPruebaReal10000000B.txt",
+                    N_IT_CASO_GR);
+    casoPruebaVoraz("Caso Prueba 10000000C", "CasoPruebaReal10000000C.txt",
+                    N_IT_CASO_GR);
+
+    casoPruebaVoraz("Caso Prueba 100000000A", "CasoPruebaReal100000000A.txt",
+                    N_IT_CASO_GR);
+    casoPruebaVoraz("Caso Prueba 100000000B", "CasoPruebaReal100000000B.txt",
+                    N_IT_CASO_GR);
+    casoPruebaVoraz("Caso Prueba 100000000C", "CasoPruebaReal100000000C.txt",
+                    N_IT_CASO_GR);
 }
 
 void casoPruebaProgDin() {
     std::cout << "-----CASO PRUEBA PROG DIN-----\n";
-
+/*
     casoPruebaProgDin("Caso Prueba 1000A", "CasoPruebaInt1000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaProgDin("Caso Prueba 1000B", "CasoPruebaInt1000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaProgDin("Caso Prueba 1000C", "CasoPruebaInt1000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
 
     casoPruebaProgDin("Caso Prueba 100000A", "CasoPruebaInt100000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaProgDin("Caso Prueba 100000B", "CasoPruebaInt100000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaProgDin("Caso Prueba 100000C", "CasoPruebaInt100000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
+*/
+    casoPruebaProgDin("Caso Prueba 1000000A", "CasoPruebaInt1000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaProgDin("Caso Prueba 1000000B", "CasoPruebaInt1000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaProgDin("Caso Prueba 1000000C", "CasoPruebaInt1000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaProgDin("Caso Prueba 10000000A", "CasoPruebaInt10000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaProgDin("Caso Prueba 10000000B", "CasoPruebaInt10000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaProgDin("Caso Prueba 10000000C", "CasoPruebaInt10000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaProgDin("Caso Prueba 100000000A",
+                      "CasoPruebaInt100000000A.txt",
+                      N_IT_CASO_GR);
 }
 
 void casoPruebaRamPoda() {
     std::cout << "-----CASO PRUEBA RAM PODA-----\n";
 /*
     casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaReal1000A.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaReal1000B.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaReal1000C.txt",
-                    NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
 
     casoPruebaRamPoda("Caso Prueba Real 100000A",
                       "CasoPruebaReal100000A.txt",
-                      NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaRamPoda("Caso Prueba Real 100000B",
                       "CasoPruebaReal100000B.txt",
-                      NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
     casoPruebaRamPoda("Caso Prueba Real 100000C",
                       "CasoPruebaReal100000C.txt",
-                      NUM_IT_CASO_PRUEBA);
-*/
-    casoPruebaProgDin("Caso Prueba 1000A", "CasoPruebaInt1000A.txt",
-                      NUM_IT_CASO_PRUEBA);
-    casoPruebaProgDin("Caso Prueba 1000B", "CasoPruebaInt1000B.txt",
-                      NUM_IT_CASO_PRUEBA);
-    casoPruebaProgDin("Caso Prueba 1000C", "CasoPruebaInt1000C.txt",
-                      NUM_IT_CASO_PRUEBA);
+                      N_IT_CASO_PEQ);
 
-    casoPruebaProgDin("Caso Prueba Int 100000A", "CasoPruebaInt100000A.txt",
-                      NUM_IT_CASO_PRUEBA);
-    casoPruebaProgDin("Caso Prueba Int 100000B", "CasoPruebaInt100000B.txt",
-                      NUM_IT_CASO_PRUEBA);
-    casoPruebaProgDin("Caso Prueba Int 100000C", "CasoPruebaInt100000C.txt",
-                      NUM_IT_CASO_PRUEBA);
+    casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaInt1000A.txt",
+                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaInt1000B.txt",
+                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaInt1000C.txt",
+                      N_IT_CASO_PEQ);
+
+    casoPruebaRamPoda("Caso Prueba Int 100000A", "CasoPruebaInt100000A.txt",
+                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba Int 100000B", "CasoPruebaInt100000B.txt",
+                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba Int 100000C", "CasoPruebaInt100000C.txt",
+                      N_IT_CASO_PEQ);
+*/
+    std::cout << "==========CASO REAL===================\n";
+
+    casoPruebaRamPoda("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaRamPoda("Caso Prueba 10000000A", "CasoPruebaReal10000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 10000000B", "CasoPruebaReal10000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 10000000C", "CasoPruebaReal10000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaRamPoda("Caso Prueba 100000000A",
+                      "CasoPruebaReal100000000A.txt",
+                      N_IT_CASO_GR);
+
+    std::cout << "==========CASO INT===================\n";
+
+    casoPruebaRamPoda("Caso Prueba 1000000A", "CasoPruebaInt1000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 1000000B", "CasoPruebaInt1000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 1000000C", "CasoPruebaInt1000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaRamPoda("Caso Prueba 10000000A", "CasoPruebaInt10000000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 10000000B", "CasoPruebaInt10000000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba 10000000C", "CasoPruebaInt10000000C.txt",
+                      N_IT_CASO_GR);
+
+    casoPruebaRamPoda("Caso Prueba 100000000A",
+                      "CasoPruebaInt100000000A.txt",
+                      N_IT_CASO_GR);
 }
 
 void casoPruebaGenetico() {
     std::cout << "-----CASO PRUEBA GENETICO-----\n";
+/*
+    casoPruebaGenetico("Caso Prueba 1000A", "CasoPruebaReal1000A.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000B", "CasoPruebaReal1000B.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000C", "CasoPruebaReal1000C.txt",
+                       N_IT_GEN);
+*/
+    std::cout << "=======PARAM A===========\n";
+    casoPruebaGenetico("Caso Prueba 100000A", "CasoPruebaReal100000A.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 100000B", "CasoPruebaReal100000B.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
+                       N_IT_GEN);
 
-    casoPruebaGenetico("Caso Prueba 1000A", "CasoPruebaReal1000A.txt", 10);
-    casoPruebaGenetico("Caso Prueba 1000B", "CasoPruebaReal1000B.txt", 10);
-    casoPruebaGenetico("Caso Prueba 1000C", "CasoPruebaReal1000C.txt", 10);
+    casoPruebaGenetico("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
+                       N_IT_GEN);
+
+    MAX_GENERACIONES = 2000;
+    TAM_ULT = 30;
+    PROB_CRUCE = 0.95;
+    PROB_ELITISMO = 0.05;
+
+    std::cout << "=======PARAM B===========\n";
+    casoPruebaGenetico("Caso Prueba 100000A", "CasoPruebaReal100000A.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 100000B", "CasoPruebaReal100000B.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
+                       N_IT_GEN);
+
+    casoPruebaGenetico("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
+                       N_IT_GEN);
+    casoPruebaGenetico("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
+                       N_IT_GEN);
 }
 
 /**
@@ -803,7 +918,7 @@ nombreFichero, const int nIt) {
     double M;
     double valorSol;
 
-    std::cout << casoPrueba << "\n\n";
+    std::cout << casoPrueba << "\n";
     for (int i = 1; i <= nIt; ++i) {
 
         leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
@@ -820,7 +935,7 @@ nombreFichero, const int nIt) {
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()
-                  << " segundos.\n\n";
+                  << " segundos.\n";
     }
     std::cout << "-------------------------------\n";
 }
@@ -831,7 +946,7 @@ nombreFichero, const int nIt) {
     int M;
     double valorSol;
 
-    std::cout << casoPrueba << "\n\n";
+    std::cout << casoPrueba << "\n";
     for (int i = 1; i <= nIt; ++i) {
 
         leeCasoPruebaMochilaInt(nombreFichero, M, objetos);
@@ -848,7 +963,7 @@ nombreFichero, const int nIt) {
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()
-                  << " segundos.\n\n";
+                  << " segundos.\n";
     }
     std::cout << "-------------------------------\n";
 }
@@ -858,8 +973,9 @@ nombreFichero, const int nIt) {
     std::vector<ObjetoReal> objetos;
     double M;
     double valorSol;
+    long long int nodosVisitados;
 
-    std::cout << casoPrueba << "\n\n";
+    std::cout << casoPrueba << "\n";
     for (int i = 1; i <= nIt; ++i) {
 
         leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
@@ -868,7 +984,7 @@ nombreFichero, const int nIt) {
 
         auto t1 = std::chrono::steady_clock::now();
 
-        mochilaRamPoda(objetos, M, solucion, valorSol);
+        mochilaRamPoda(objetos, M, solucion, valorSol, nodosVisitados);
 
         auto t2 = std::chrono::steady_clock::now();
         auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(
@@ -876,7 +992,8 @@ nombreFichero, const int nIt) {
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()
-                  << " segundos.\n\n";
+                  << " segundos y ha atravesado " << nodosVisitados <<
+                " nodos.\n";
     }
     std::cout << "-------------------------------\n";
 }
@@ -887,7 +1004,7 @@ nombreFichero, const int nIt) {
     double M;
     double valorSol;
 
-    std::cout << casoPrueba << "\n\n";
+    std::cout << casoPrueba << "\n";
     for (int i = 1; i <= nIt; ++i) {
 
         leeCasoPruebaMochilaReal(nombreFichero, M, objetos);
@@ -904,7 +1021,7 @@ nombreFichero, const int nIt) {
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()
-                  << " segundos.\n\n";
+                  << " segundos.\n";
     }
     std::cout << "-------------------------------\n";
 }
