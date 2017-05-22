@@ -187,7 +187,7 @@ Veamos los costes en tiempo y memoria del algoritmo. En cuanto al tiempo tenemos
 
 \subsection{Ramificación y poda}
 
-En este apartado implementaremos un algoritmo de ramificación y poda para resolver el problema de la mochila en la versión 0-1. Al igual que en programación dinámica, obtendremos un coste exponencial ($O(n2^n)$).
+En este apartado implementaremos un algoritmo de ramificación y poda para resolver el problema de la mochila en la versión 0-1. Al igual que en programación dinámica, obtendremos un coste exponencial ($O(n2^n)$) aunque con las podas se conseguirá reducir esto de forma efectiva.
 
 \subsubsection{Descripción de la solución}
 
@@ -265,56 +265,84 @@ En cuanto al coste en tiempo, se trata de un algoritmo heurístico que en el caso
 
 \section{Comparación} \label{sec:Comparacion}
 
-Comparemos ahora los distintos algoritmos que hemos implementado ejecutando una batería de casos de prueba según hemos construido en el apartado \ref{sec:desCasosPrueba}. Construiremos tres casos de prueba para cada número de objetos y los ejecutaremos 3 veces cada uno con los distintos algoritmos, salvo en el caso del algoritmo genético. Para este algoritmo, con el fin de poder estudiar mejor su comportamiento, ejecutaremos cada caso 10 veces. El peso y el valor máximo de cada objeto será 100 y el peso máximo soportado por la mochila será 2500. Estos valores son completamente arbitrarios ya que, salvo casos extremos, el comportamiento de los algoritmos es independiente de estos factores y la relación entre ellos.\\
+Comparemos ahora los distintos algoritmos que hemos implementado ejecutando una batería de casos de prueba según hemos construido en el apartado \ref{sec:desCasosPrueba}. Construiremos tres casos de prueba para cada número de objetos y los ejecutaremos 3 veces cada uno con los distintos algoritmos, salvo en el caso del algoritmo genético. Para este algoritmo, con el fin de poder estudiar mejor su comportamiento, ejecutaremos cada caso 10 veces. El peso y el valor máximo de cada objeto será 100 y el peso máximo soportado por la mochila será 2500. En el caso de programación dinámica con 1000000 objetos, por cuestiones de memoria, reducimos el tamaño máximo de la mochila a 1000. Estos valores son completamente arbitrarios ya que, salvo casos extremos y en programación dinámica, el comportamiento de los algoritmos es independiente de estos factores y la relación entre ellos.\\
 
-Generaremos casos de 1000, 100000 y 1000000 objetos. Probaremos el algoritmo voraz con las tres cantidades, los algoritmos de ramificación y poda y programación dinámica solo con 1000 y 100000 objetos y el algoritmo genético solo con 1000 objetos. Estos números y el hecho de ejecutar los algoritmos solo para algunos tamaños de casos de prueba lo hemos deducido empíricamente viendo los tiempos que tardaba cada algoritmo.\\
+Generaremos casos de $10^3$, $10^5$, $10^6$, $10^7$ y $10^8$ objetos. Probaremos el algoritmo voraz con todas las cantidades, los algoritmos de ramificación y poda y programación dinámica solo con hasta $10^6$ objetos y el algoritmo genético solo con 1000 objetos. Estos números y el hecho de ejecutar los algoritmos solo para algunos tamaños de casos de prueba lo hemos deducido empíricamente viendo los tiempos que tardaba cada algoritmo.\\
 
-Mostramos a continuación en la tabla \ref{tab:casosPruebaVorYRamPodaR} los datos recopilados en las diferentes ejecuciones. Los tiempos que se muestran son la media de las tres ejecuciones de cada caso.
+Mostramos a continuación en la tabla \ref{tab:casosPruebaVorYRamPodaR} los datos recopilados en diferentes ejecuciones de voraz y ramificación y poda. Los tiempos que se muestran son la media de las tres ejecuciones de cada caso.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|c|c|cc}
-		& \multicolumn{2}{c|}{\textbf{Voraz}} & \multicolumn{2}{c|}{\textbf{Ram. y Poda (Real)}} \\ \hline
-		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & \multicolumn{1}{c|}{Tiempo} & \multicolumn{1}{c|}{Valor} \\ \hline
-		1000A & 0,000249 & 12803,3 & \multicolumn{1}{c|}{0,0171} & \multicolumn{1}{c|}{12801} \\
-		1000B & 0,000262 & 12445,7 & \multicolumn{1}{c|}{0,0130} & \multicolumn{1}{c|}{12444,5} \\
-		1000C & 0,000252 & 12905,5 & \multicolumn{1}{c|}{0,0110} & \multicolumn{1}{c|}{12904,1} \\ \hline
-		100000A & 0,0422 & 128475 & \multicolumn{1}{c|}{38,6} & \multicolumn{1}{c|}{128474} \\
-		100000B & 0,0421 & 133659 & \multicolumn{1}{c|}{66,8} & \multicolumn{1}{c|}{133659} \\
-		100000C & 0,0423 & 129030 & \multicolumn{1}{c|}{33,8} & \multicolumn{1}{c|}{129029} \\ \hline
-		1000000A & 0,460 & 410797 &  &  \\
-		1000000B & 0,454 & 408655 &  &  \\
-		1000000C & 0,457 & 407775 &  &  \\ \cline{1-3}
+	\begin{tabular}{l|c|c|ccc}
+		\multicolumn{1}{c|}{} & \multicolumn{2}{c|}{\textbf{Voraz}} & \multicolumn{3}{c|}{\textbf{Ram. y Poda (Real)}} \\ \hline
+		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & \multicolumn{1}{c|}{Tiempo} & \multicolumn{1}{c|}{Valor} & \multicolumn{1}{c|}{Nodos Expl.} \\ \hline
+		1000A & 0,000249 & 12803,3 & \multicolumn{1}{c|}{0,0170} & \multicolumn{1}{c|}{12801} & \multicolumn{1}{c|}{2085} \\
+		1000B & 0,000262 & 12445,7 & \multicolumn{1}{c|}{0,0130} & \multicolumn{1}{c|}{12444,5} & \multicolumn{1}{c|}{1517} \\
+		1000C & 0,000252 & 12905,5 & \multicolumn{1}{c|}{0,0110} & \multicolumn{1}{c|}{12904,1} & \multicolumn{1}{c|}{1324} \\ \hline
+		100000A & 0,0422 & 128475 & \multicolumn{1}{c|}{38,5951} & \multicolumn{1}{c|}{128474} & \multicolumn{1}{c|}{109963} \\
+		100000B & 0,0421 & 133659 & \multicolumn{1}{c|}{66,7556} & \multicolumn{1}{c|}{133659} & \multicolumn{1}{c|}{157155} \\
+		100000C & 0,0423 & 129030 & \multicolumn{1}{c|}{33,7666} & \multicolumn{1}{c|}{129029} & \multicolumn{1}{c|}{102094} \\ \hline
+		1000000A & 0,460 & 410797 & \multicolumn{1}{c|}{10156,7} & \multicolumn{1}{c|}{410797} & \multicolumn{1}{c|}{1011655} \\
+		1000000B & 0,454 & 408655 & \multicolumn{1}{c|}{11803,6} & \multicolumn{1}{c|}{408655} & \multicolumn{1}{c|}{1104093} \\
+		1000000C & 0,457 & 407775 & \multicolumn{1}{c|}{9890,5} & \multicolumn{1}{c|}{407775} & \multicolumn{1}{c|}{1017631} \\ \hline
+		10000000A & 5,247 & 1.28659e+06 &  &  &  \\
+		10000000B & 5,129 & 1.29597e+06 &  &  &  \\
+		10000000C & 5,083 & 1.28924e+06 &  &  &  \\ \cline{1-3}
+		100000000A & 58,056 & 4.06947e+06 &  &  &  \\
+		100000000B & 58,578 & 4.08822e+06 &  &  &  \\
+		100000000C & 58,190 & 4.09475e+06 &  &  &  \\ \cline{1-3}
 	\end{tabular}
-	\caption{Tiempos (en segundos) y valores de las ejecuciones de los distintos casos de prueba sobre los algoritmos voraz y ramificación y poda en su variante con números reales.}
+	\caption{Tiempos (en segundos), valores y nodos explorados de las ejecuciones de los distintos casos de prueba sobre los algoritmos voraz y ramificación y poda en su variante con números reales.}
 	\label{tab:casosPruebaVorYRamPodaR}
 \end{table}
 
-Observamos que, como era de esperar, el algoritmo voraz es el más rápido con diferencia e incluso tomando tamaños de 1000000 de elementos tarda menos de medio segundo. En comparación tenemos el algoritmo de ramificación y poda cuando trabaja con números reales (veremos a continuación por qué diferenciamos). Este algoritmo exponencial ya para el caso de 100000 de elementos tarda entre medio minuto y un minuto dependiendo del caso en particular. Esta diferencia considerable entre unos casos (el caso 100000A y 100000C) y otros (el 100000B) del mismo tamaño la podemos achacar a la cantidad de ramas que podrá podar el algoritmo en su ejecución.\\
+Observamos que, como era de esperar, el algoritmo voraz es el más rápido con diferencia e incluso tomando tamaños de $10^8$ elementos tarda menos de un minuto. En comparación tenemos el algoritmo de ramificación y poda cuando trabaja con números reales (veremos a continuación por qué diferenciamos). Este algoritmo exponencial para el caso de $10^6$ elementos tarda entre dos horas y tres cuartos y tres horas y cuarto dependiendo del caso en particular. Esta diferencia considerable entre unos casos (100000A y 100000C) y otros (100000B) del mismo tamaño la podemos achacar a la cantidad de ramas que podrá podar el algoritmo en su ejecución. Como podemos observar, en el caso en que tarda más explora unos 90000 nodos más que en los otros dos.\\
 
 Si nos fijamos ahora en los valores que devuelven ambos algoritmos veremos como el valor del algoritmo voraz siempre será mayor o igual que el del algoritmo de ramificación y poda. Esto era esperable desde el planteamiento del problema para ambos casos ya que en el primero permitimos trocear los objetos y en el segundo no. Aún así, cabe destacar la poca diferencia que hay entre ambos valores. Esto se deberá a la forma de construir los casos de prueba, de forma aleatoria, ya que se pueden construir fácilmente casos pequeños donde esta diferencia sea muy grande.\\
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|c|c|c|c|}
-		& \multicolumn{2}{c|}{\textbf{Ram. y Poda (Int)}} & \multicolumn{2}{c|}{\textbf{Prog. Din.}} \\ \hline
-		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & Tiempo & Valor \\ \hline
-		1000A & 0,0602 & 13165,8 & 0,0520 & 13165,8 \\
-		1000B & 0,0644 & 12972,5 & 0,0512 & 12972,5 \\
-		1000C & 0,0632 & 13647,5 & 0,0511 & 13647,5 \\ \hline
-		100000A & 5,6010 & 159232 & 5,4551 & 159232 \\
-		100000B & 5,5077 & 156013 & 5,4382 & 156013 \\
-		100000C & 5,5036 & 157786 & 5,4287 & 157786 \\ \hline
+	\begin{tabular}{l|c|c|c|c|c|}
+		& \multicolumn{3}{c|}{\textbf{Ram. y Poda (Int)}} & \multicolumn{2}{c|}{\textbf{Prog. Din.}} \\ \hline
+		\multicolumn{1}{c|}{\textbf{Caso}} & Tiempo & Valor & Nodos Expl. & Tiempo & Valor \\ \hline
+		1000A & 0,0602 & 13165,8 & 1107 & 0,0520 & 13165,8 \\
+		1000B & 0,0644 & 12972,5 & 1750 & 0,0512 & 12972,5 \\
+		1000C & 0,0632 & 13647,5 & 1050 & 0,0511 & 13647,5 \\ \hline
+		100000A & 5,6010 & 159232 & 100000 & 5,4551 & 159232 \\
+		100000B & 5,5077 & 156013 & 100000 & 5,4382 & 156013 \\
+		100000C & 5,5036 & 157786 & 100000 & 5,4287 & 157786 \\ \hline
+		1000000A & \multicolumn{1}{l|}{17,950} & \multicolumn{1}{l|}{596031} & 1000000 & 202,289 & 596031 \\
+		1000000B & \multicolumn{1}{l|}{18,114} & \multicolumn{1}{l|}{591627} & 1000000 & 227,599 & 591627 \\
+		1000000C & \multicolumn{1}{l|}{17,716} & \multicolumn{1}{l|}{592740} & 1000000 & 243,982 & 592740 \\ \hline
 	\end{tabular}
 	\caption{Tiempos (en segundos) y valores de las ejecuciones de los distintos casos de prueba sobre los algoritmos.}
 	\label{tab:casosRamPodaIYProgDin}
 \end{table}
 
-A la hora de comparar los dos algoritmos exponenciales, vemos que el de programación dinámica es sustancialmente más rápido que el de ramificación y poda cuando este último trabaja con números reales. Sin embargo, sorprendentemente, si ejecutamos este último algoritmo con números enteros en lugar de reales, los tiempos bajan drásticamente como podemos ver en la comparación de la tabla \ref{tab:casosRamPodaIYProgDin}. Así, vemos que en este caso ambos algoritmos tienen resultados sin diferencias notables entre uno y otro. Evidentemente, ambos algoritmos devuelven el mismo valor como resultado.\\
+A la hora de comparar los dos algoritmos exponenciales, vemos que el de programación dinámica es sustancialmente más rápido que el de ramificación y poda cuando este último trabaja con números reales. Sin embargo, sorprendentemente, si ejecutamos este último algoritmo con números enteros en lugar de reales, los tiempos bajan drásticamente como podemos ver en la comparación de la tabla \ref{tab:casosRamPodaIYProgDin}. Así, vemos que en este caso ambos algoritmos tienen resultados sin diferencias notables entre uno y otro hasta que llegamos al millón de nodos. Cabe destacar el hecho de que, para $10^5$ y $10^6$ nodos, los nodos explorados coincidan con el numero de objetos, es decir, el algoritmo encuentre la solución en el primer camino que toma. Evidentemente, ambos algoritmos devuelven el mismo valor como resultado.\\
 
-Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000, así como las medias correspondientes para poder estimar mejor los resultados. Como se puede ver a simple vista, tanto los tiempos como los valores obtenidos distan mucho de lo que desearíamos. Aunque teóricamente este algoritmo es polinómico, en la práctica hemos comprobado que se comporta bastante peor que los algoritmos exponenciales que hemos estudiado. \\
+Finalmente nos falta por analizar el comportamiento del algoritmo genético. En la tabla \ref{tab:casosPruebaGen} hemos recogido los tiempos y los valores devueltos en cada ejecución de los distintos casos de prueba de tamaño 1000, así como las medias correspondientes para poder estimar mejor los resultados. Hicimos ejecuciones también con $10^5$ y $10^6$ objetos pero los resultados fueron mucho peor de lo deseable (los valores rondaban el $2-3\%$ del valor óptimo tardando entre uno y dos minutos) así que los hemos omitido. Como se puede ver a simple vista, tanto los tiempos como los valores obtenidos distan mucho de lo que desearíamos. Aunque teóricamente este algoritmo es polinómico, en la práctica hemos comprobado que se comporta bastante peor que los algoritmos exponenciales que hemos estudiado. \\
 
 Variando los parámetros (probabilidades, iteraciones, etc.) asociados al algoritmo genético según se recoge en la tabla \ref{tab:paramGen}, conseguimos distintos tiempos y valores. Los valores iniciales de referencia para el cruce, el elitismo y los diferentes cuartiles los tomamos de \cite{hrist-shre04}. Para obtener valores en torno al 50\% del resultado óptimo, el algoritmo tarda 1,5 segundos aproximadamente. Si ya buscamos una precisión del 75\%, el tiempo se dispara a 4,5 segundos. \\
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|c|c}
+		& \textbf{Parámetros A} & \textbf{Parámetros B} \\ \hline
+		\multicolumn{1}{c|}{\textbf{MAX\_GENERACIONES}} & 1000 & 2000 \\
+		\textbf{TAM\_POBL} & 100 & 100 \\
+		\textbf{TAM\_ULT} & 10 & 30 \\ \hline
+		\textbf{PROB\_MUTACION} & 0,05 & 0,05 \\
+		\textbf{PORC\_MUTACION} & 0,01 & 0,01 \\ \hline
+		\textbf{PROB\_CRUCE} & 0,85 & 0,95 \\
+		\textbf{PROB\_ELITISMO} & 0,1 & 0,05 \\ \hline
+		\textbf{PROB\_1CUARTIL} & 0,5 & 0,5 \\
+		\textbf{PROB\_2CUARTIL} & 0,8 & 0,8 \\
+		\textbf{PROB\_3CUARTIL} & 0,95 & 0,95
+	\end{tabular}
+	\caption{Parámetros para las dos ejecuciones del algoritmo genético. Los nombres se corresponden con los del código descrito en la sección \ref{sec:algGen}.}
+	\label{tab:paramGen}
+\end{table}
 
 \begin{table}[H]
 	\centering
@@ -362,27 +390,9 @@ Variando los parámetros (probabilidades, iteraciones, etc.) asociados al algorit
 	\label{tab:casosPruebaGen}
 \end{table}
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{l|c|c}
-		& \textbf{Parámetros A} & \textbf{Parámetros B} \\ \hline
-		\multicolumn{1}{c|}{\textbf{MAX\_GENERACIONES}} & 1000 & 2000 \\
-		\textbf{TAM\_POBL} & 100 & 100 \\
-		\textbf{TAM\_ULT} & 10 & 30 \\ \hline
-		\textbf{PROB\_MUTACION} & 0,05 & 0,05 \\
-		\textbf{PORC\_MUTACION} & 0,01 & 0,01 \\ \hline
-		\textbf{PROB\_CRUCE} & 0,85 & 0,95 \\
-		\textbf{PROB\_ELITISMO} & 0,1 & 0,05 \\ \hline
-		\textbf{PROB\_1CUARTIL} & 0,5 & 0,5 \\
-		\textbf{PROB\_2CUARTIL} & 0,8 & 0,8 \\
-		\textbf{PROB\_3CUARTIL} & 0,95 & 0,95
-	\end{tabular}
-	\caption{Parámetros para las dos ejecuciones del algoritmo genético. Los nombres se corresponden con los del código descrito en la sección \ref{sec:algGen}.}
-	\label{tab:paramGen}
-\end{table}
+Concluimos que, al contrario de lo que podría parecer en un principio, este algoritmo genético en particular no nos es útil para resolver el problema. Sin embargo, obtenemos tiempos muy razonables para cantidades grandes de objetos con los algoritmos exponenciales, además de hallar la solución óptima. Por lo tanto vemos que, entre los algoritmos que hemos estudiado, los más adecuados al problema de la mochila son estos últimos. Sin diferenciar entre programación dinámica y ramificación y poda salvo en el caso de escoger parámetros enteros o reales.
 
-Concluimos que, al contrario de lo que podría parecer en un principio, este algoritmo genético en particular no nos es útil para resolver el problema. Sin embargo, obtenemos tiempos muy razonables para cantidades grandes de objetos con los algoritmos exponenciales, además de hallar la solución óptima. Por lo tanto vemos que, entre los algoritmos que hemos estudiado, los más adecuados al problema de la mochila son
-estos últimos. Sin diferenciar entre programación dinámica y ramificación y poda salvo en el caso de escoger parámetros enteros o reales.
+\newpage
 
 % Bibliografía.
 %-------------------------------------------------------

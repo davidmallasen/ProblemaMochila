@@ -359,3 +359,236 @@ Los casos de prueba han tardado 520.535 segundos.
 
 Process finished with exit code 0
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/home/david/Desktop/TrabajoProblemaMochila/ProblemaMochilaCpp/cmake-build-debug/ProblemaMochilaCpp
+-----CASO PRUEBA VORAZ-----
+Caso Prueba 10000000A
+Vuelta: 1 ValorSol: 1.28659e+06
+El algoritmo ha tardado 5.24746 segundos.
+-------------------------------
+Caso Prueba 10000000B
+Vuelta: 1 ValorSol: 1.29597e+06
+El algoritmo ha tardado 5.12904 segundos.
+-------------------------------
+Caso Prueba 10000000C
+Vuelta: 1 ValorSol: 1.28924e+06
+El algoritmo ha tardado 5.08292 segundos.
+-------------------------------
+Caso Prueba 100000000A
+Vuelta: 1 ValorSol: 4.06947e+06
+El algoritmo ha tardado 58.0561 segundos.
+-------------------------------
+Caso Prueba 100000000B
+Vuelta: 1 ValorSol: 4.08822e+06
+El algoritmo ha tardado 58.5779 segundos.
+-------------------------------
+Caso Prueba 100000000C
+Vuelta: 1 ValorSol: 4.09475e+06
+El algoritmo ha tardado 58.1895 segundos.
+-------------------------------
+-----CASO PRUEBA PROG DIN-----
+Caso Prueba 1000000A
+Vuelta: 1 ValorSol: 595966
+El algoritmo ha tardado 202.289 segundos.
+-------------------------------
+Caso Prueba 1000000B
+Vuelta: 1 ValorSol: 591627
+El algoritmo ha tardado 227.599 segundos.
+-------------------------------
+Caso Prueba 1000000C
+Vuelta: 1 ValorSol: 592724
+El algoritmo ha tardado 243.982 segundos.
+-------------------------------
+-----CASO PRUEBA RAM PODA-----
+==========CASO REAL===================
+Caso Prueba 1000000B
+Vuelta: 1 ValorSol: 408655
+El algoritmo ha tardado 11803.6 segundos y ha atravesado 1104093 nodos.
+-------------------------------
+Caso Prueba 1000000C
+Vuelta: 1 ValorSol: 407775
+El algoritmo ha tardado 9890.51 segundos y ha atravesado 1017631 nodos.
+-------------------------------
+==========CASO INT===================
+Caso Prueba 1000000A
+Vuelta: 1 ValorSol: 596031
+El algoritmo ha tardado 17.3316 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+Caso Prueba 1000000B
+Vuelta: 1 ValorSol: 591627
+El algoritmo ha tardado 17.2912 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+Caso Prueba 1000000C
+Vuelta: 1 ValorSol: 592740
+El algoritmo ha tardado 17.3422 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+-----CASO PRUEBA GENETICO-----
+=======PARAM A===========
+Caso Prueba 100000A
+Vuelta: 1 ValorSol: 4361.02
+El algoritmo ha tardado 37.1492 segundos.
+Vuelta: 2 ValorSol: 3887.93
+El algoritmo ha tardado 23.4099 segundos.
+Vuelta: 3 ValorSol: 3367.54
+El algoritmo ha tardado 10.8166 segundos.
+Vuelta: 4 ValorSol: 3422.88
+El algoritmo ha tardado 26.9285 segundos.
+Vuelta: 5 ValorSol: 3899.63
+El algoritmo ha tardado 16.3249 segundos.
+-------------------------------
+Caso Prueba 100000B
+Vuelta: 1 ValorSol: 3732.56
+El algoritmo ha tardado 33.4763 segundos.
+Vuelta: 2 ValorSol: 3536.93
+El algoritmo ha tardado 31.6682 segundos.
+Vuelta: 3 ValorSol: 4070.85
+El algoritmo ha tardado 31.5959 segundos.
+Vuelta: 4 ValorSol: 3778.6
+El algoritmo ha tardado 25.0163 segundos.
+Vuelta: 5 ValorSol: 3744.83
+El algoritmo ha tardado 33.2739 segundos.
+-------------------------------
+Caso Prueba 100000C
+Vuelta: 1 ValorSol: 3984.07
+El algoritmo ha tardado 37.7528 segundos.
+Vuelta: 2 ValorSol: 4224.72
+El algoritmo ha tardado 64.7437 segundos.
+Vuelta: 3 ValorSol: 3699.91
+El algoritmo ha tardado 13.1677 segundos.
+Vuelta: 4 ValorSol: 3423.13
+El algoritmo ha tardado 14.9997 segundos.
+Vuelta: 5 ValorSol: 4441.55
+El algoritmo ha tardado 69.295 segundos.
+-------------------------------
+=======PARAM B===========
+Caso Prueba 100000A
+Vuelta: 1 ValorSol: 3743.26
+El algoritmo ha tardado 72.4669 segundos.
+Vuelta: 2 ValorSol: 3888.04
+El algoritmo ha tardado 36.4668 segundos.
+Vuelta: 3 ValorSol: 4227.36
+El algoritmo ha tardado 164.645 segundos.
+Vuelta: 4 ValorSol: 3882.67
+El algoritmo ha tardado 87.8602 segundos.
+Vuelta: 5 ValorSol: 4521.27
+El algoritmo ha tardado 124.378 segundos.
+-------------------------------
+Caso Prueba 100000B
+Vuelta: 1 ValorSol: 4116.14
+El algoritmo ha tardado 58.0565 segundos.
+Vuelta: 2 ValorSol: 4152.76
+El algoritmo ha tardado 147.072 segundos.
+Vuelta: 3 ValorSol: 3894.04
+El algoritmo ha tardado 75.7919 segundos.
+Vuelta: 4 ValorSol: 4522.25
+El algoritmo ha tardado 121.851 segundos.
+Vuelta: 5 ValorSol: 3805.85
+El algoritmo ha tardado 66.6771 segundos.
+-------------------------------
+Caso Prueba 100000C
+Vuelta: 1 ValorSol: 4294.71
+El algoritmo ha tardado 89.5625 segundos.
+Vuelta: 2 ValorSol: 4457.82
+El algoritmo ha tardado 108.853 segundos.
+Vuelta: 3 ValorSol: 3800.69
+El algoritmo ha tardado 86.4827 segundos.
+Vuelta: 4 ValorSol: 4273.33
+El algoritmo ha tardado 56.8539 segundos.
+Vuelta: 5 ValorSol: 4322.63
+El algoritmo ha tardado 92.3136 segundos.
+-------------------------------
+Los casos de prueba han tardado 24619.3 segundos.
+
+Process finished with exit code 0
+
+
+
+
+
+
+
+/home/david/Desktop/TrabajoProblemaMochila/ProblemaMochilaCpp/cmake-build-debug/ProblemaMochilaCpp
+-----CASO PRUEBA RAM PODA-----
+Caso Prueba Real 1000A
+Vuelta: 1 ValorSol: 12801
+El algoritmo ha tardado 0.0184444 segundos y ha atravesado 2085 nodos.
+-------------------------------
+Caso Prueba Real 1000B
+Vuelta: 1 ValorSol: 12444.5
+El algoritmo ha tardado 0.0136468 segundos y ha atravesado 1517 nodos.
+-------------------------------
+Caso Prueba Real 1000C
+Vuelta: 1 ValorSol: 12904.1
+El algoritmo ha tardado 0.0116388 segundos y ha atravesado 1324 nodos.
+-------------------------------
+Caso Prueba Real 100000A
+Vuelta: 1 ValorSol: 128474
+El algoritmo ha tardado 40.0492 segundos y ha atravesado 109963 nodos.
+-------------------------------
+Caso Prueba Real 100000B
+Vuelta: 1 ValorSol: 133659
+El algoritmo ha tardado 71.1397 segundos y ha atravesado 157155 nodos.
+-------------------------------
+Caso Prueba Real 100000C
+Vuelta: 1 ValorSol: 129029
+El algoritmo ha tardado 35.13 segundos y ha atravesado 102094 nodos.
+-------------------------------
+Caso Prueba Int 1000A
+Vuelta: 1 ValorSol: 13165.8
+El algoritmo ha tardado 0.00701478 segundos y ha atravesado 1107 nodos.
+-------------------------------
+Caso Prueba Int 1000B
+Vuelta: 1 ValorSol: 12972.5
+El algoritmo ha tardado 0.0109913 segundos y ha atravesado 1750 nodos.
+-------------------------------
+Caso Prueba Int 1000C
+Vuelta: 1 ValorSol: 13650.5
+El algoritmo ha tardado 0.00645011 segundos y ha atravesado 1050 nodos.
+-------------------------------
+Caso Prueba Int 100000A
+Vuelta: 1 ValorSol: 159232
+El algoritmo ha tardado 0.551877 segundos y ha atravesado 100000 nodos.
+-------------------------------
+Caso Prueba Int 100000B
+Vuelta: 1 ValorSol: 156013
+El algoritmo ha tardado 0.554493 segundos y ha atravesado 100000 nodos.
+-------------------------------
+Caso Prueba Int 100000C
+Vuelta: 1 ValorSol: 157786
+El algoritmo ha tardado 0.550397 segundos y ha atravesado 100000 nodos.
+-------------------------------
+==========CASO INT===================
+Caso Prueba 1000000A
+Vuelta: 1 ValorSol: 596031
+El algoritmo ha tardado 17.9499 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+Caso Prueba 1000000B
+Vuelta: 1 ValorSol: 591627
+El algoritmo ha tardado 18.1143 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+Caso Prueba 1000000C
+Vuelta: 1 ValorSol: 592740
+El algoritmo ha tardado 17.7164 segundos y ha atravesado 1000000 nodos.
+-------------------------------
+Los casos de prueba han tardado 203.418 segundos.
+
+Process finished with exit code 0
+

@@ -87,13 +87,13 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
  * @param solucion Indica si se coge el objeto o no.
  * @param valorSol Valor de la mochila con los objetos dados por solucion.
  */
-void mochilaProgDin(std::vector<ObjetoInt> const &objetos, int M,
+void mochilaProgDin(std::vector<ObjetoInt> const &objetos, unsigned int M,
                     std::vector<bool> &solucion, double &valorSol) {
     const size_t n = objetos.size();
 
     //Creamos e inicializamos a 0 la tabla con la que resolvemos el problema
-    std::vector<std::vector<double>> mochila(n + 1, std::vector<double>
-            (M + 1, 0));
+    std::vector<std::vector<double>> mochila(n + 1,
+                                             std::vector<double>(M + 1, 0));
 
     //Rellenamos la tabla
     //objetos[i - 1] ya que la tabla va de [1..n] y objetos va de [0, n)
@@ -567,7 +567,8 @@ void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
  * objeto son dos numeros, peso y valor, separados por un espacio.
  *
  * @param nombreFichero Nombre del fichero donde guardar los datos.
- * @param nObjetos Numero de objetos a generar.
+ * @param nObjetos Numero de objetos
+ * a generar.
  * @param maxPesoObjeto Peso maximo de cada objeto.
  * @param maxValorObjeto Valor maximo de cada objeto.
  * @param M Peso maximo soportado por la mochila.
@@ -691,10 +692,10 @@ int main() {
 
     auto t1 = std::chrono::steady_clock::now();
 
-    casoPruebaVoraz();
-    casoPruebaProgDin();
+    //casoPruebaVoraz();
+    //casoPruebaProgDin();
     casoPruebaRamPoda();
-    casoPruebaGenetico();
+    //casoPruebaGenetico();
 
     auto t2 = std::chrono::steady_clock::now();
     auto time_span =
@@ -762,13 +763,14 @@ void casoPruebaProgDin() {
     casoPruebaProgDin("Caso Prueba 100000C", "CasoPruebaInt100000C.txt",
                       N_IT_CASO_PEQ);
 */
+    //SOLO CON 1 MILLON DE OBJETOS Y CON EL TAMANYO DE LA MOCHILA A 1000
     casoPruebaProgDin("Caso Prueba 1000000A", "CasoPruebaInt1000000A.txt",
                       N_IT_CASO_GR);
     casoPruebaProgDin("Caso Prueba 1000000B", "CasoPruebaInt1000000B.txt",
                       N_IT_CASO_GR);
     casoPruebaProgDin("Caso Prueba 1000000C", "CasoPruebaInt1000000C.txt",
                       N_IT_CASO_GR);
-
+/*
     casoPruebaProgDin("Caso Prueba 10000000A", "CasoPruebaInt10000000A.txt",
                       N_IT_CASO_GR);
     casoPruebaProgDin("Caso Prueba 10000000B", "CasoPruebaInt10000000B.txt",
@@ -778,45 +780,45 @@ void casoPruebaProgDin() {
 
     casoPruebaProgDin("Caso Prueba 100000000A",
                       "CasoPruebaInt100000000A.txt",
-                      N_IT_CASO_GR);
+                      N_IT_CASO_GR);*/
 }
 
 void casoPruebaRamPoda() {
     std::cout << "-----CASO PRUEBA RAM PODA-----\n";
 /*
-    casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaReal1000A.txt",
-                      N_IT_CASO_PEQ);
-    casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaReal1000B.txt",
-                      N_IT_CASO_PEQ);
-    casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaReal1000C.txt",
-                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba Real 1000A", "CasoPruebaReal1000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba Real 1000B", "CasoPruebaReal1000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba Real 1000C", "CasoPruebaReal1000C.txt",
+                      N_IT_CASO_GR);
 
     casoPruebaRamPoda("Caso Prueba Real 100000A",
                       "CasoPruebaReal100000A.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba Real 100000B",
                       "CasoPruebaReal100000B.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba Real 100000C",
                       "CasoPruebaReal100000C.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
 
-    casoPruebaRamPoda("Caso Prueba 1000A", "CasoPruebaInt1000A.txt",
-                      N_IT_CASO_PEQ);
-    casoPruebaRamPoda("Caso Prueba 1000B", "CasoPruebaInt1000B.txt",
-                      N_IT_CASO_PEQ);
-    casoPruebaRamPoda("Caso Prueba 1000C", "CasoPruebaInt1000C.txt",
-                      N_IT_CASO_PEQ);
+    casoPruebaRamPoda("Caso Prueba Int 1000A", "CasoPruebaInt1000A.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba Int 1000B", "CasoPruebaInt1000B.txt",
+                      N_IT_CASO_GR);
+    casoPruebaRamPoda("Caso Prueba Int 1000C", "CasoPruebaInt1000C.txt",
+                      N_IT_CASO_GR);
 
     casoPruebaRamPoda("Caso Prueba Int 100000A", "CasoPruebaInt100000A.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba Int 100000B", "CasoPruebaInt100000B.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba Int 100000C", "CasoPruebaInt100000C.txt",
-                      N_IT_CASO_PEQ);
+                      N_IT_CASO_GR);
 */
-    std::cout << "==========CASO REAL===================\n";
-
+//    std::cout << "==========CASO REAL===================\n";
+/*
     casoPruebaRamPoda("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
                       N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
@@ -833,7 +835,7 @@ void casoPruebaRamPoda() {
 
     casoPruebaRamPoda("Caso Prueba 100000000A",
                       "CasoPruebaReal100000000A.txt",
-                      N_IT_CASO_GR);
+                      N_IT_CASO_GR);*/
 
     std::cout << "==========CASO INT===================\n";
 
@@ -843,7 +845,7 @@ void casoPruebaRamPoda() {
                       N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba 1000000C", "CasoPruebaInt1000000C.txt",
                       N_IT_CASO_GR);
-
+/*
     casoPruebaRamPoda("Caso Prueba 10000000A", "CasoPruebaInt10000000A.txt",
                       N_IT_CASO_GR);
     casoPruebaRamPoda("Caso Prueba 10000000B", "CasoPruebaInt10000000B.txt",
@@ -853,7 +855,7 @@ void casoPruebaRamPoda() {
 
     casoPruebaRamPoda("Caso Prueba 100000000A",
                       "CasoPruebaInt100000000A.txt",
-                      N_IT_CASO_GR);
+                      N_IT_CASO_GR);*/
 }
 
 void casoPruebaGenetico() {
@@ -873,13 +875,13 @@ void casoPruebaGenetico() {
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
                        N_IT_GEN);
-
+/*
     casoPruebaGenetico("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
-                       N_IT_GEN);
+                       N_IT_GEN);*/
 
     MAX_GENERACIONES = 2000;
     TAM_ULT = 30;
@@ -893,13 +895,13 @@ void casoPruebaGenetico() {
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 100000C", "CasoPruebaReal100000C.txt",
                        N_IT_GEN);
-
+/*
     casoPruebaGenetico("Caso Prueba 1000000A", "CasoPruebaReal1000000A.txt",
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 1000000B", "CasoPruebaReal1000000B.txt",
                        N_IT_GEN);
     casoPruebaGenetico("Caso Prueba 1000000C", "CasoPruebaReal1000000C.txt",
-                       N_IT_GEN);
+                       N_IT_GEN);*/
 }
 
 /**
