@@ -3,6 +3,21 @@
 #include <fstream>
 #include <chrono>
 
+/**
+ * Genera un fichero de nombre nombreFichero con el tamanyo de la mochila
+ * M y el numero de objetos nObjetos en la primera linea separados por un
+ * espacio. Produce nObjetos aleatorios con la restriccion de que el peso y
+ * el valor esten en (0, maxPesoObjeto) o (0, maxValorObjeto).
+ * Escribe los objetos a partir de la segunda linea. Cada linea de
+ * objeto son dos numeros, peso y valor, separados por un espacio.
+ *
+ * @param nombreFichero Nombre del fichero donde guardar los datos.
+ * @param nObjetos Numero de objetos
+ * a generar.
+ * @param maxPesoObjeto Peso maximo de cada objeto.
+ * @param maxValorObjeto Valor maximo de cada objeto.
+ * @param M Peso maximo soportado por la mochila.
+ */
 void generaCasoPruebaMochilaReal(std::string nombreFichero, int nObjetos,
                                  double maxPesoObjeto, double maxValorObjeto,
                                  double M) {
@@ -40,6 +55,15 @@ void generaCasoPruebaMochilaInt(std::string nombreFichero, int nObjetos,
     out.close();
 }
 
+/**
+ * Construye el vector de objetos a partir de los datos de nombreFichero,
+ * se presupone estructura coherente con el metodo generaCasoPruebaMochila.
+ * Devuelve tambien el tamanyo maximo de la mochila M.
+ *
+ * @param nombreFichero Nombre del fichero del cual leer.
+ * @param M Tamanyo maximo de la mochila.
+ * @param objetos Vector de objetos. Se presupone vacio.
+ */
 void leeCasoPruebaMochilaReal(std::string nombreFichero, double &M,
                               std::vector<ObjetoReal> &objetos) {
     std::ifstream in;
@@ -307,7 +331,8 @@ nombreFichero, const int nIt) {
 
         auto t2 = std::chrono::steady_clock::now();
         auto time_span =
-                std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                std::chrono::duration_cast<std::chrono::duration<double>>(
+                        t2 - t1);
 
         std::cout << "Vuelta: " << i << " ValorSol: " << valorSol << '\n';
         std::cout << "El algoritmo ha tardado " << time_span.count()

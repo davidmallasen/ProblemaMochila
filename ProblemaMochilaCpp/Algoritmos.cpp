@@ -5,6 +5,18 @@
 #include <queue>
 #include <cmath>
 
+/**
+ * Resuelve el problema de la mochila con objetos fraccionables mediante un
+ * algoritmo voraz. Presuponemos que la suma de los pesos de todos los
+ * objetos > M.
+ *
+ * Coste en tiempo: O(n logn), n = numero de objetos.
+ *
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ * @param solucion Indica cuanto se debe coger de cada objeto [0, 1].
+ * @param valorSol Valor de la mochila con los objetos dados por solucion.
+ */
 void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
                   std::vector<double> &solucion, double &valorSol) {
     const size_t n = objetos.size();
@@ -35,6 +47,19 @@ void mochilaVoraz(std::vector<ObjetoReal> const &objetos, double M,
     }
 }
 
+/**
+ * Resuelve el problema de la mochila 0-1 mediante un algoritmo de
+ * programacion dinamica. El peso de cada objeto y el peso maximo de la
+ * mochila deben ser enteros positivos.
+ *
+ * Coste: O(nM) en tiempo y espacio, n = numero de objetos, M = peso que
+ * soporta la mochila.
+ *
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ * @param solucion Indica si se coge el objeto o no.
+ * @param valorSol Valor de la mochila con los objetos dados por solucion.
+ */
 void mochilaProgDin(std::vector<ObjetoInt> const &objetos, unsigned int M,
                     std::vector<bool> &solucion, double &valorSol) {
     const size_t n = objetos.size();
@@ -112,6 +137,17 @@ const &d, double M, int k, double pesoAc, double valorAc, double &opt,
     }
 }
 
+/**
+ * Resuelve el problema de la mochila 0-1 mediante un algoritmo de
+ * ramifiacion y poda.
+ *
+ * Coste: O(n 2^n) en tiempo y espacio, n = numero de objetos.
+ *
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ * @param solMejor Indica si se coge el objeto o no.
+ * @param valorMejor Valor de la mochila con los objetos dados por solMejor.
+ */
 void mochilaRamPoda(std::vector<ObjetoReal> const &objetos, double M,
                     std::vector<bool> &solMejor, double &valorMejor,
                     long long int &nodosVisitados) {
@@ -398,6 +434,20 @@ void calcMejores(std::vector<Cromosoma> const &poblacion, std::deque<double>
     }
 }
 
+/**
+ * Resuelve el problema de la mochila 0-1 mediante un algoritmo genetico. No
+ * se asegura la solucion optima. Se suele obtener una solucion buena en un
+ * tiempo razonable.
+ *
+ * Coste tiempo: O(nm * MAX_GENERACIONES), n = numero de objetos, m = tamanyo
+ *                  de la poblacion.
+ * Coste espacio: O(m)
+ *
+ * @param objetos Conjunto de objetos que tenemos disponibles.
+ * @param M Peso maximo que soporta la mochila.
+ * @param solMejor Indica si se coge el objeto o no.
+ * @param valorMejor Valor de la mochila con los objetos dados por solMejor.
+ */
 void mochilaGenetico(std::vector<ObjetoReal> const &objetos, double M,
                      std::vector<bool> &solMejor, double &valorMejor) {
 
